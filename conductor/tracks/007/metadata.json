@@ -1,0 +1,7 @@
+{
+  "id": "007",
+  "title": "Disciplines & Pricing: Info & Tables",
+  "status": "Completed",
+  "dependencies": ["001", "002"],
+  "tags": ["pages", "disciplines", "pricing", "ui"]
+}

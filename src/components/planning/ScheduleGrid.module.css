@@ -1,0 +1,105 @@
+.scheduleWrapper {
+  width: 100%;
+}
+
+.tabs {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--spacing-sm);
+}
+
+.tab {
+  padding: 0.8rem 1.5rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: all 0.3s ease;
+  position: relative;
+  border-radius: 4px;
+}
+
+.tab.active {
+  color: var(--accent);
+  background-color: rgba(197, 160, 89, 0.05);
+}
+
+.tab:hover {
+  color: var(--accent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.classCard {
+  background-color: var(--surface);
+  padding: var(--spacing-md);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.classCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border-color: var(--accent);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-md);
+}
+
+.cardHeader h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0;
+  color: var(--text-primary);
+}
+
+.levelTag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  background-color: var(--accent);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.infoItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.infoItem svg {
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .tabs {
+    justify-content: center;
+  }
+  
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 0.6rem 0.4rem;
+    font-size: 0.85rem;
+  }
+}

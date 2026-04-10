@@ -1,0 +1,7 @@
+{
+  "id": "006",
+  "title": "Instructors: Bio & Photo Grid",
+  "status": "Completed",
+  "dependencies": ["001", "002"],
+  "tags": ["pages", "instructors", "ui"]
+}

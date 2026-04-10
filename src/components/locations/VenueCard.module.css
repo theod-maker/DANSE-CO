@@ -1,0 +1,94 @@
+.card {
+  display: grid;
+  grid-template-columns: 1fr;
+  background-color: var(--background);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  margin-bottom: var(--spacing-lg);
+}
+
+@media (min-width: 992px) {
+  .card {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.mapContainer {
+  height: 300px;
+  background-color: var(--surface);
+}
+
+@media (min-width: 992px) {
+  .mapContainer {
+    height: auto;
+    min-height: 400px;
+  }
+}
+
+.content {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.name {
+  font-size: 2rem;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-primary);
+}
+
+.address {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+}
+
+.description {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--spacing-md);
+}
+
+.amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: var(--spacing-lg);
+}
+
+.amenity {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.amenity svg {
+  color: var(--accent);
+}
+
+.navBtn {
+  align-self: flex-start;
+  background-color: var(--text-primary);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+}
+
+.navBtn:hover {
+  background-color: var(--accent);
+  transform: translateX(5px);
+}

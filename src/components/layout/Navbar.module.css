@@ -1,0 +1,128 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  background-color: transparent;
+}
+
+.scrolled {
+  height: 70px;
+  background-color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.logo span {
+  color: var(--accent);
+}
+
+.desktopMenu {
+  display: none;
+  list-style: none;
+  gap: var(--spacing-md);
+}
+
+.desktopMenu a {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.desktopMenu a:hover,
+.desktopMenu a.active {
+  color: var(--accent);
+}
+
+.desktopMenu a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--accent);
+  transition: width 0.3s ease;
+}
+
+.desktopMenu a.active::after {
+  width: 100%;
+}
+
+.mobileToggle {
+  display: block;
+  color: var(--text-primary);
+  z-index: 1001;
+}
+
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 80%;
+  height: 100vh;
+  background-color: var(--background);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--spacing-lg);
+  transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
+}
+
+.mobileMenu.open {
+  right: 0;
+}
+
+.mobileMenu ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.mobileMenu a {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.mobileMenu a.active {
+  color: var(--accent);
+}
+
+@media (min-width: 768px) {
+  .desktopMenu {
+    display: flex;
+  }
+
+  .mobileToggle {
+    display: none;
+  }
+
+  .mobileMenu {
+    display: none;
+  }
+}

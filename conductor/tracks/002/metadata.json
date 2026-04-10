@@ -1,0 +1,7 @@
+{
+  "id": "002",
+  "title": "Common Components: Navigation & Footer",
+  "status": "Completed",
+  "dependencies": ["001"],
+  "tags": ["layout", "ui", "navigation"]
+}

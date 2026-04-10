@@ -1,0 +1,53 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+const InstagramIcon = ({ size = 16 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+  </svg>
+);
+
+const FacebookIcon = ({ size = 16 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+  </svg>
+);
+
+const AppFooter: React.FC = () => {
+  return (
+    <footer className="bg-[#F5F0EA] border-t border-[#18102E]/8 px-6 py-12">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+        <div>
+          <Link to="/">
+            <span
+              style={{ fontFamily: "'Instrument Serif', serif" }}
+              className="text-[#18102E] text-xl tracking-tight"
+            >
+              Danse&amp;CO
+            </span>
+          </Link>
+          <p className="text-[#18102E]/30 text-xs mt-2">Saint-Michel-Chef-Chef · Saison 2025–2026</p>
+        </div>
+
+        <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-[#18102E]/40">
+          <Link to="/planning" className="hover:text-[#6C5CA8] transition-colors">Planning</Link>
+          <Link to="/disciplines" className="hover:text-[#6C5CA8] transition-colors">Disciplines</Link>
+          <Link to="/instructors" className="hover:text-[#6C5CA8] transition-colors">Professeurs</Link>
+          <Link to="/pricing" className="hover:text-[#6C5CA8] transition-colors">Tarifs</Link>
+          <Link to="/locations" className="hover:text-[#6C5CA8] transition-colors">Nos Salles</Link>
+          <Link to="/contact" className="hover:text-[#6C5CA8] transition-colors">Contact</Link>
+        </div>
+
+        <div className="flex gap-3">
+          <a href="#" className="liquid-glass rounded-full p-2.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-colors">
+            <InstagramIcon size={16} />
+          </a>
+          <a href="#" className="liquid-glass rounded-full p-2.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-colors">
+            <FacebookIcon size={16} />
+          </a>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default AppFooter;

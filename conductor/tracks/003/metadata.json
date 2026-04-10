@@ -1,0 +1,7 @@
+{
+  "id": "003",
+  "title": "Homepage: Hero & Introduction",
+  "status": "Completed",
+  "dependencies": ["001", "002"],
+  "tags": ["pages", "home", "ui", "hero"]
+}

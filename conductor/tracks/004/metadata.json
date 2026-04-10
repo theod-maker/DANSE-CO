@@ -1,0 +1,7 @@
+{
+  "id": "004",
+  "title": "Planning: Interactive Class Schedule",
+  "status": "Completed",
+  "dependencies": ["001", "002"],
+  "tags": ["pages", "planning", "ui"]
+}

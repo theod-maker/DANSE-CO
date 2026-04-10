@@ -1,0 +1,95 @@
+.footer {
+  background-color: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: var(--spacing-lg) 0 var(--spacing-md);
+  margin-top: auto;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.brand {
+  grid-column: span 1;
+}
+
+@media (min-width: 992px) {
+  .brand {
+    grid-column: span 2;
+  }
+}
+
+.logo {
+  font-size: 1.5rem;
+  color: var(--accent);
+  margin-bottom: var(--spacing-sm);
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin-bottom: var(--spacing-md);
+  max-width: 400px;
+}
+
+.socials {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.socials a {
+  color: var(--text-secondary);
+  transition: color 0.3s ease;
+}
+
+.socials a:hover {
+  color: var(--accent);
+}
+
+.footer h4 {
+  font-size: 1.1rem;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
+}
+
+.footer ul {
+  list-style: none;
+}
+
+.footer ul li {
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer ul a {
+  transition: color 0.3s ease;
+}
+
+.footer ul a:hover {
+  color: var(--accent);
+}
+
+.bottom {
+  border-top: 1px solid var(--border);
+  padding-top: var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-sm);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .bottom {
+    flex-direction: row;
+  }
+}
