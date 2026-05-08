@@ -2,7 +2,9 @@ import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import AppNavbar from '../components/layout/AppNavbar'
 import AppFooter from '../components/layout/AppFooter'
-import { useInstructors } from '../hooks/useSanity'
+import BlockRenderer from '../components/blocks/BlockRenderer'
+import { useInstructors, usePageTexts } from '../hooks/useSanity'
+import { usePage } from '../hooks/usePage'
 import type { InstructorContent } from '../lib/fallbackContent'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
@@ -76,6 +78,20 @@ const Instructors = () => {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
   const team = useInstructors()
+  const pageTexts = usePageTexts()
+  const pageData = usePage('/instructors')
+
+  if (pageData) {
+    return (
+      <div className="min-h-screen overflow-x-hidden">
+        <AppNavbar />
+        <main className="pb-32">
+          <BlockRenderer blocks={pageData.blocks} />
+        </main>
+        <AppFooter />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -129,7 +145,7 @@ const Instructors = () => {
             transition={{ duration: 0.6, delay: 0.35, ease: EASING }}
             className="text-[#18102E]/50 text-base md:text-lg leading-relaxed max-w-xl"
           >
-            Une équipe de passionnés pour vous accompagner dans votre apprentissage, quel que soit votre niveau.
+            {pageTexts.instructorsSubtitle}
           </motion.p>
         </div>
 

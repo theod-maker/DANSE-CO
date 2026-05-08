@@ -9,7 +9,7 @@ export const scheduleEntryType = defineType({
       name: 'name',
       title: 'Nom du cours',
       type: 'string',
-      description: 'Ex: Rock & Roll, Salsa Cubaine',
+      description: "Ex: Rock & Roll, Salsa Cubaine, Danses de Salon",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -30,7 +30,7 @@ export const scheduleEntryType = defineType({
       name: 'time',
       title: 'Horaire',
       type: 'string',
-      description: 'Ex: 19:30 - 20:30',
+      description: "Ex: 19:30 - 20:30",
       validation: (Rule) => Rule.required(),
     }),
     defineField({
@@ -56,12 +56,14 @@ export const scheduleEntryType = defineType({
           { title: 'Tous niveaux', value: 'Tous niveaux' },
           { title: 'Workshop', value: 'Workshop' },
         ],
+        layout: 'radio',
       },
     }),
     defineField({
       name: 'order',
-      title: 'Ordre dans la journée',
+      title: "Position dans la journée",
       type: 'number',
+      description: "1 = premier cours de la journée, 2 = deuxième, etc.",
     }),
   ],
   orderings: [
@@ -75,9 +77,12 @@ export const scheduleEntryType = defineType({
     },
   ],
   preview: {
-    select: { title: 'name', subtitle: 'day' },
-    prepare({ title, subtitle }) {
-      return { title, subtitle }
+    select: { title: 'name', day: 'day', time: 'time', level: 'level' },
+    prepare({ title, day, time, level }) {
+      return {
+        title,
+        subtitle: [day, time, level].filter(Boolean).join(' · '),
+      }
     },
   },
 })

@@ -1,22 +1,38 @@
-import React, { useRef } from 'react';
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Music, Zap, Heart, Star } from 'lucide-react';
+import { Music, Zap, Heart, Star, type LucideProps } from 'lucide-react';
 import AppNavbar from '../components/layout/AppNavbar';
 import AppFooter from '../components/layout/AppFooter';
+import BlockRenderer from '../components/blocks/BlockRenderer';
+import { useDisciplines, usePageTexts } from '../hooks/useSanity';
+import { usePage } from '../hooks/usePage';
+import type { DisciplineContent } from '../lib/fallbackContent';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
-interface Discipline {
-  title: string;
-  icon: React.ReactNode;
-  description: string;
-  benefits: string[];
+type IconName = DisciplineContent['iconName']
+type IconComponent = React.ComponentType<LucideProps>
+
+const ICON_MAP: Record<IconName, IconComponent> = {
+  Zap,
+  Star,
+  Heart,
+  Music,
 }
 
-const DisciplineCard = ({ title, icon, description, benefits, index }: Discipline & { index: number }) => {
+const DISCIPLINE_FALLBACK_IMAGES: Record<number, string> = {
+  0: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=600&q=80',
+  1: 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=600&q=80',
+  2: 'https://images.unsplash.com/photo-1535525153316-d772a249b53a?w=600&q=80',
+  3: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&q=80',
+}
+
+const DisciplineCard = ({ title, iconName, description, benefits, imageUrl, index }: DisciplineContent & { index: number }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
   const fromLeft = index % 2 === 0;
+  const Icon = ICON_MAP[iconName]
+  const photo = imageUrl || DISCIPLINE_FALLBACK_IMAGES[index % 4]
 
   return (
     <motion.div
@@ -25,9 +41,17 @@ const DisciplineCard = ({ title, icon, description, benefits, index }: Disciplin
       animate={isInView ? { opacity: 1, x: 0, y: 0 } : {}}
       whileHover={{ y: -6, transition: { duration: 0.3 } }}
       transition={{ duration: 0.8, delay: index * 0.1, ease: EASING }}
-      className="group liquid-glass rounded-3xl p-8 flex flex-col gap-6 relative overflow-hidden"
+      className="group liquid-glass rounded-3xl overflow-hidden flex flex-col relative"
     >
-      {/* Grand numéro décoratif en fond */}
+      <div className="aspect-[16/9] overflow-hidden">
+        <img
+          src={photo}
+          alt={title}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        />
+      </div>
+
+      <div className="p-8 flex flex-col gap-6 relative">
       <span
         style={{ fontFamily: "'Instrument Serif', serif" }}
         className="absolute -right-3 -bottom-6 text-[140px] leading-none text-[#6C5CA8]/6 pointer-events-none select-none italic font-bold transition-all duration-500 group-hover:text-[#6C5CA8]/10 group-hover:scale-105 group-hover:-translate-y-2"
@@ -35,14 +59,13 @@ const DisciplineCard = ({ title, icon, description, benefits, index }: Disciplin
         {String(index + 1).padStart(2, '0')}
       </span>
 
-      {/* Shimmer */}
       <div className="card-shimmer-layer" />
 
       <motion.div
         className="text-[#6C5CA8]/50 transition-colors duration-300 group-hover:text-[#6C5CA8]"
         whileHover={{ rotate: [0, -10, 10, 0], transition: { duration: 0.4 } }}
       >
-        {icon}
+        <Icon size={32} />
       </motion.div>
 
       <div className="relative z-10">
@@ -70,6 +93,7 @@ const DisciplineCard = ({ title, icon, description, benefits, index }: Disciplin
           </motion.span>
         ))}
       </div>
+      </div>
     </motion.div>
   );
 };
@@ -77,33 +101,21 @@ const DisciplineCard = ({ title, icon, description, benefits, index }: Disciplin
 const Disciplines = () => {
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true });
+  const disciplines = useDisciplines()
+  const pageTexts = usePageTexts()
+  const pageData = usePage('/disciplines')
 
-  const disciplines: Discipline[] = [
-    {
-      title: "Rock & Roll",
-      icon: <Zap size={32} />,
-      description: "Le Rock est une danse dynamique et festive. Nous enseignons le pas de base en 6 temps, idéal pour s'amuser rapidement en soirée.",
-      benefits: ["Cardio", "Énergie", "Convivialité"]
-    },
-    {
-      title: "Danses de Salon",
-      icon: <Star size={32} />,
-      description: "Apprenez les classiques de l'élégance : Valse, Tango, Chachacha, Paso Doble et Rumba. Un voyage à travers les styles et les époques.",
-      benefits: ["Posture", "Élégance", "Coordination"]
-    },
-    {
-      title: "Salsa Cubaine",
-      icon: <Heart size={32} />,
-      description: "Plongez dans les rythmes ensoleillés de Cuba. Une danse de couple fluide, joyeuse et accessible à tous.",
-      benefits: ["Rythme", "Lâcher-prise", "Soleil"]
-    },
-    {
-      title: "West Coast Swing",
-      icon: <Music size={32} />,
-      description: "La version moderne et fluide du swing. Se danse sur une grande variété de musiques actuelles (Pop, RnB, Blues).",
-      benefits: ["Créativité", "Musicalité", "Modernité"]
-    }
-  ];
+  if (pageData) {
+    return (
+      <div className="min-h-screen overflow-x-hidden">
+        <AppNavbar />
+        <main className="pb-32">
+          <BlockRenderer blocks={pageData.blocks} />
+        </main>
+        <AppFooter />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -111,7 +123,6 @@ const Disciplines = () => {
 
       <main className="max-w-6xl mx-auto px-6 pt-40 pb-32 relative">
 
-        {/* Orbe de fond */}
         <div
           className="absolute pointer-events-none [animation:orb-drift_16s_ease-in-out_infinite]"
           style={{
@@ -157,13 +168,13 @@ const Disciplines = () => {
             transition={{ duration: 0.6, delay: 0.35, ease: EASING }}
             className="text-[#18102E]/50 text-base md:text-lg leading-relaxed max-w-xl"
           >
-            Explorez une grande variété de styles de danse, enseignés avec passion et expertise pour tous les niveaux.
+            {pageTexts.disciplinesSubtitle}
           </motion.p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 relative z-10">
           {disciplines.map((item, index) => (
-            <DisciplineCard key={index} {...item} index={index} />
+            <DisciplineCard key={item._id} {...item} index={index} />
           ))}
         </div>
       </main>

@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useSiteInfo } from '../../hooks/useSanity';
+
 const InstagramIcon = ({ size = 16 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
@@ -13,6 +15,8 @@ const FacebookIcon = ({ size = 16 }: { size?: number }) => (
 );
 
 const AppFooter: React.FC = () => {
+  const siteInfo = useSiteInfo();
+
   return (
     <footer className="bg-[#F5F0EA] border-t border-[#18102E]/8 px-6 py-12">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
@@ -25,7 +29,7 @@ const AppFooter: React.FC = () => {
               Danse&amp;CO
             </span>
           </Link>
-          <p className="text-[#18102E]/30 text-xs mt-2">Saint-Michel-Chef-Chef · Saison 2025–2026</p>
+          <p className="text-[#18102E]/30 text-xs mt-2">{siteInfo.footerTagline}</p>
         </div>
 
         <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-[#18102E]/40">
@@ -38,12 +42,16 @@ const AppFooter: React.FC = () => {
         </div>
 
         <div className="flex gap-3">
-          <a href="#" className="liquid-glass rounded-full p-2.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-colors">
-            <InstagramIcon size={16} />
-          </a>
-          <a href="#" className="liquid-glass rounded-full p-2.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-colors">
-            <FacebookIcon size={16} />
-          </a>
+          {siteInfo.instagramUrl && (
+            <a href={siteInfo.instagramUrl} target="_blank" rel="noopener noreferrer" className="liquid-glass rounded-full p-2.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-colors">
+              <InstagramIcon size={16} />
+            </a>
+          )}
+          {siteInfo.facebookUrl && (
+            <a href={siteInfo.facebookUrl} target="_blank" rel="noopener noreferrer" className="liquid-glass rounded-full p-2.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-colors">
+              <FacebookIcon size={16} />
+            </a>
+          )}
         </div>
       </div>
     </footer>

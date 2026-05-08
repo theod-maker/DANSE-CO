@@ -1,25 +1,28 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { AlertCircle, FileText, Camera } from 'lucide-react';
-
-interface InfoCard {
-  icon: React.ReactNode;
-  title: string;
-  content: React.ReactNode;
-}
+import { useRegistrationInfo, useSiteInfo } from '../../hooks/useSanity';
 
 const RegistrationInfo = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
+  const regInfo = useRegistrationInfo();
+  const siteInfo = useSiteInfo();
 
-  const cards: InfoCard[] = [
+  const cards = [
     {
       icon: <AlertCircle size={20} />,
       title: "Permanences",
       content: (
         <ul className="flex flex-col gap-1.5 text-[#18102E]/50 text-sm">
-          <li><span className="text-[#18102E]/70">Lundis & Mercredis :</span> 19h30 – 21h30 (Le Canopus)</li>
-          <li><span className="text-[#18102E]/70">Samedis :</span> 10h00 – 12h00 (Complexe de la Viauderie)</li>
+          <li>
+            <span className="text-[#18102E]/70">{regInfo.permanence1Days} :</span>{' '}
+            {regInfo.permanence1Hours} ({regInfo.permanence1Venue})
+          </li>
+          <li>
+            <span className="text-[#18102E]/70">{regInfo.permanence2Days} :</span>{' '}
+            {regInfo.permanence2Hours} ({regInfo.permanence2Venue})
+          </li>
         </ul>
       ),
     },
@@ -28,9 +31,9 @@ const RegistrationInfo = () => {
       title: "Dossier Requis",
       content: (
         <ul className="flex flex-col gap-1.5 text-[#18102E]/50 text-sm">
-          <li>La fiche d'inscription remplie</li>
-          <li>Un certificat médical (obligatoire)</li>
-          <li>Le règlement de la cotisation</li>
+          {regInfo.requiredDocuments.map((doc, i) => (
+            <li key={i}>{doc}</li>
+          ))}
         </ul>
       ),
     },
@@ -39,7 +42,7 @@ const RegistrationInfo = () => {
       title: "Photo d'identité",
       content: (
         <p className="text-[#18102E]/50 text-sm leading-relaxed">
-          Une photo d'identité est nécessaire pour votre carte d'adhérent (nouveaux membres uniquement).
+          {regInfo.photoNote}
         </p>
       ),
     },
@@ -85,8 +88,8 @@ const RegistrationInfo = () => {
         className="mt-8 text-center text-[#18102E]/40 text-sm"
       >
         Une question ? Appelez-nous au{' '}
-        <a href="tel:0617099349" className="text-[#6C5CA8] hover:text-[#524490] transition-colors">
-          06.17.09.93.49
+        <a href={`tel:${siteInfo.phone.replace(/\./g, '')}`} className="text-[#6C5CA8] hover:text-[#524490] transition-colors">
+          {siteInfo.phone}
         </a>
       </motion.div>
     </section>

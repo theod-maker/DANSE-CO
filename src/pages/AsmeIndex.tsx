@@ -19,7 +19,11 @@ import FeaturedVideoSection from '../components/asme/FeaturedVideoSection'
 import PhilosophySection from '../components/asme/PhilosophySection'
 import ServicesSection from '../components/asme/ServicesSection'
 import AppFooter from '../components/layout/AppFooter'
-import { useHomepage } from '../hooks/useSanity'
+import AppNavbar from '../components/layout/AppNavbar'
+import NewsSection from '../components/asme/NewsSection'
+import BlockRenderer from '../components/blocks/BlockRenderer'
+import { useHomepage, useSiteInfo, useNews } from '../hooks/useSanity'
+import { usePage } from '../hooks/usePage'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
@@ -83,6 +87,9 @@ const AsmeIndex: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const fadeDuration = 500
   const content = useHomepage()
+  const siteInfo = useSiteInfo()
+  const news = useNews()
+  const pageData = usePage('/')
 
   const handleCanPlay = () => {
     let start = performance.now()
@@ -113,6 +120,18 @@ const AsmeIndex: React.FC = () => {
       videoRef.current.play()
       handleCanPlay()
     }
+  }
+
+  if (pageData) {
+    return (
+      <div className="min-h-screen overflow-x-hidden">
+        <AppNavbar />
+        <main className="pb-32">
+          <BlockRenderer blocks={pageData.blocks} />
+        </main>
+        <AppFooter />
+      </div>
+    )
   }
 
   return (
@@ -257,17 +276,45 @@ const AsmeIndex: React.FC = () => {
 
         {/* Icônes sociales */}
         <div className="z-10 pb-8 flex items-center gap-3">
-          {[InstagramIcon, TwitterIcon, Globe].map((Icon, i) => (
-            <motion.button
-              key={i}
+          {siteInfo.instagramUrl && (
+            <motion.a
+              href={siteInfo.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.4 + i * 0.08 }}
+              transition={{ duration: 0.5, delay: 1.4 }}
               className="liquid-glass rounded-full p-3.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-all hover:scale-110"
             >
-              <Icon size={18} />
-            </motion.button>
-          ))}
+              <InstagramIcon size={18} />
+            </motion.a>
+          )}
+          {siteInfo.twitterUrl && (
+            <motion.a
+              href={siteInfo.twitterUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.48 }}
+              className="liquid-glass rounded-full p-3.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-all hover:scale-110"
+            >
+              <TwitterIcon size={18} />
+            </motion.a>
+          )}
+          {siteInfo.websiteUrl && (
+            <motion.a
+              href={siteInfo.websiteUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.56 }}
+              className="liquid-glass rounded-full p-3.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-all hover:scale-110"
+            >
+              <Globe size={18} />
+            </motion.a>
+          )}
         </div>
 
         {/* Scroll indicator */}
@@ -288,6 +335,7 @@ const AsmeIndex: React.FC = () => {
       <FeaturedVideoSection content={content} />
       <PhilosophySection content={content} />
       <ServicesSection content={content} />
+      <NewsSection news={news} />
       <AppFooter />
     </div>
   )

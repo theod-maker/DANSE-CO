@@ -94,7 +94,7 @@ const ServicesSection: React.FC<Props> = ({ content }) => {
 
   const services = [
     {
-      imageUrl: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=900&q=85',
+      imageUrl: content.servicesCard1ImageUrl || 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=900&q=85',
       imageAlt: 'Nos disciplines de danse',
       tag: 'DÉCOUVRIR',
       title: 'Nos Disciplines',
@@ -102,7 +102,7 @@ const ServicesSection: React.FC<Props> = ({ content }) => {
       href: '/disciplines',
     },
     {
-      imageUrl: 'https://images.unsplash.com/photo-1535525153316-d772a249b53a?w=900&q=85',
+      imageUrl: content.servicesCard2ImageUrl || 'https://images.unsplash.com/photo-1535525153316-d772a249b53a?w=900&q=85',
       imageAlt: 'Cours et stages de danse',
       tag: 'PLANNING',
       title: 'Cours & Stages',

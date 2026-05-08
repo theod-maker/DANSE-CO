@@ -71,7 +71,7 @@ const PhilosophySection: React.FC<Props> = ({ content }) => {
             className="rounded-3xl overflow-hidden aspect-[4/3]"
           >
             <img
-              src="https://images.unsplash.com/photo-1547153760-18fc86324498?w=900&q=85"
+              src={content.philosophyImageUrl || 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=900&q=85'}
               alt="Cours de danse"
               className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             />

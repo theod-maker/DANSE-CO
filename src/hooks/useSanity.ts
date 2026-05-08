@@ -5,16 +5,34 @@ import {
   instructorsQuery,
   scheduleQuery,
   pricingQuery,
+  siteInfoQuery,
+  disciplinesQuery,
+  venuesQuery,
+  registrationInfoQuery,
+  pageTextsQuery,
+  newsQuery,
 } from '../lib/sanityQueries'
 import {
   fallbackHomepage,
   fallbackInstructors,
   fallbackSchedule,
   fallbackPricing,
+  fallbackSiteInfo,
+  fallbackDisciplines,
+  fallbackVenues,
+  fallbackRegistrationInfo,
+  fallbackPageTexts,
+  fallbackNews,
   type HomepageContent,
   type InstructorContent,
   type ScheduleEntryContent,
   type PricingContent,
+  type SiteInfoContent,
+  type DisciplineContent,
+  type VenueContent,
+  type RegistrationInfoContent,
+  type PageTextsContent,
+  type NewsContent,
 } from '../lib/fallbackContent'
 
 function useSanityData<T>(query: string, fallback: T): T {
@@ -47,4 +65,28 @@ export function useSchedule(): ScheduleEntryContent[] {
 
 export function usePricing(): PricingContent {
   return useSanityData<PricingContent>(pricingQuery, fallbackPricing)
+}
+
+export function useSiteInfo(): SiteInfoContent {
+  return useSanityData<SiteInfoContent>(siteInfoQuery, fallbackSiteInfo)
+}
+
+export function useDisciplines(): DisciplineContent[] {
+  return useSanityData<DisciplineContent[]>(disciplinesQuery, fallbackDisciplines)
+}
+
+export function useVenues(): VenueContent[] {
+  return useSanityData<VenueContent[]>(venuesQuery, fallbackVenues)
+}
+
+export function useRegistrationInfo(): RegistrationInfoContent {
+  return useSanityData<RegistrationInfoContent>(registrationInfoQuery, fallbackRegistrationInfo)
+}
+
+export function usePageTexts(): PageTextsContent {
+  return useSanityData<PageTextsContent>(pageTextsQuery, fallbackPageTexts)
+}
+
+export function useNews(): NewsContent[] {
+  return useSanityData<NewsContent[]>(newsQuery, fallbackNews)
 }

@@ -4,12 +4,30 @@ import ScheduleGrid from '../components/planning/ScheduleGrid';
 import RegistrationInfo from '../components/planning/RegistrationInfo';
 import AppNavbar from '../components/layout/AppNavbar';
 import AppFooter from '../components/layout/AppFooter';
+import BlockRenderer from '../components/blocks/BlockRenderer';
+import { useSiteInfo, usePageTexts } from '../hooks/useSanity';
+import { usePage } from '../hooks/usePage';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
 const Planning = () => {
   const headerRef = useRef(null);
   const headerInView = useInView(headerRef, { once: true });
+  const siteInfo = useSiteInfo();
+  const pageTexts = usePageTexts();
+  const pageData = usePage('/planning')
+
+  if (pageData) {
+    return (
+      <div className="min-h-screen overflow-x-hidden">
+        <AppNavbar />
+        <main className="pb-32">
+          <BlockRenderer blocks={pageData.blocks} />
+        </main>
+        <AppFooter />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -38,7 +56,7 @@ const Planning = () => {
             transition={{ duration: 0.6 }}
             className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-6"
           >
-            SAISON 2025 – 2026
+            SAISON {siteInfo.season}
           </motion.p>
           <h1
             style={{ fontFamily: "'Instrument Serif', serif", perspective: '1200px' }}
@@ -63,7 +81,7 @@ const Planning = () => {
             transition={{ duration: 0.6, delay: 0.45, ease: EASING }}
             className="text-[#18102E]/50 text-base md:text-lg leading-relaxed max-w-xl"
           >
-            Retrouvez tous nos créneaux hebdomadaires. Les cours ont lieu au Canopus et à la Salle Caraïbes.
+            {pageTexts.planningSubtitle}
           </motion.p>
         </div>
 

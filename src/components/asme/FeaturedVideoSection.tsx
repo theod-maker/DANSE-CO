@@ -39,7 +39,7 @@ const FeaturedVideoSection: React.FC<Props> = ({ content }) => {
           className="relative rounded-3xl overflow-hidden aspect-video group"
         >
           <img
-            src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=1400&q=85"
+            src={content.featuredImageUrl || 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=1400&q=85'}
             alt="Danse de salon"
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />

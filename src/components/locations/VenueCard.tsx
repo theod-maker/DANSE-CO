@@ -11,10 +11,11 @@ interface VenueProps {
   amenities: string[];
   mapEmbedUrl: string;
   googleMapsUrl: string;
+  imageUrl?: string;
   index: number;
 }
 
-const VenueCard = ({ name, address, description, amenities, mapEmbedUrl, googleMapsUrl, index }: VenueProps) => {
+const VenueCard = ({ name, address, description, amenities, mapEmbedUrl, googleMapsUrl, imageUrl, index }: VenueProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-80px' });
   const fromLeft = index % 2 === 0;
@@ -31,16 +32,24 @@ const VenueCard = ({ name, address, description, amenities, mapEmbedUrl, googleM
       <div className="card-shimmer-layer" />
 
       <div className="aspect-[4/3] md:aspect-auto min-h-[280px] overflow-hidden">
-        <iframe
-          src={mapEmbedUrl}
-          width="100%"
-          height="100%"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          title={`Carte ${name}`}
-        />
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={name}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+        ) : (
+          <iframe
+            src={mapEmbedUrl}
+            width="100%"
+            height="100%"
+            style={{ border: 0 }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title={`Carte ${name}`}
+          />
+        )}
       </div>
 
       <div className="p-8 md:p-10 flex flex-col gap-6 justify-center relative z-10">

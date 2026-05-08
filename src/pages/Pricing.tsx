@@ -4,7 +4,9 @@ import { Check, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import AppNavbar from '../components/layout/AppNavbar';
 import AppFooter from '../components/layout/AppFooter';
-import { usePricing } from '../hooks/useSanity';
+import BlockRenderer from '../components/blocks/BlockRenderer';
+import { usePricing, usePageTexts } from '../hooks/useSanity';
+import { usePage } from '../hooks/usePage';
 import type { PricingRowContent } from '../lib/fallbackContent';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
@@ -64,6 +66,20 @@ const Pricing = () => {
   const infoRef = useRef(null);
   const infoInView = useInView(infoRef, { once: true, margin: "-60px" });
   const pricingData = usePricing();
+  const pageTexts = usePageTexts();
+  const pageData = usePage('/pricing')
+
+  if (pageData) {
+    return (
+      <div className="min-h-screen overflow-x-hidden">
+        <AppNavbar />
+        <main className="pb-32">
+          <BlockRenderer blocks={pageData.blocks} />
+        </main>
+        <AppFooter />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -117,7 +133,7 @@ const Pricing = () => {
             transition={{ duration: 0.6, delay: 0.35, ease: EASING }}
             className="text-[#18102E]/50 text-base md:text-lg leading-relaxed max-w-xl"
           >
-            Une tarification simple et transparente. Les tarifs sont annuels et incluent l'adhésion à l'association.
+            {pageTexts.pricingSubtitle}
           </motion.p>
         </div>
 

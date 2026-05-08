@@ -1,6 +1,12 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import ContactForm from '../components/contact/ContactForm';
+import AppNavbar from '../components/layout/AppNavbar';
+import AppFooter from '../components/layout/AppFooter';
+import BlockRenderer from '../components/blocks/BlockRenderer';
+import { useSiteInfo, usePageTexts } from '../hooks/useSanity';
+import { usePage } from '../hooks/usePage';
 
 const InstagramIcon = ({ size = 18 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -13,9 +19,6 @@ const FacebookIcon = ({ size = 18 }: { size?: number }) => (
     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
   </svg>
 );
-import ContactForm from '../components/contact/ContactForm';
-import AppNavbar from '../components/layout/AppNavbar';
-import AppFooter from '../components/layout/AppFooter';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -26,12 +29,27 @@ const Contact = () => {
   const formInView = useInView(formRef, { once: true, margin: '-60px' });
   const infoRef = useRef(null);
   const infoInView = useInView(infoRef, { once: true, margin: '-60px' });
+  const siteInfo = useSiteInfo();
+  const pageTexts = usePageTexts();
+  const pageData = usePage('/contact')
 
   const contactItems = [
-    { icon: <Phone size={18} />, label: 'Téléphone', value: '06.17.09.93.49', href: 'tel:0617099349' },
-    { icon: <Mail size={18} />, label: 'Email', value: 'DANSANDCO@OUTLOOK.FR', href: 'mailto:DANSANDCO@OUTLOOK.FR' },
-    { icon: <MapPin size={18} />, label: 'Adresse Courrier', value: '17 Rue du Chevecier, 44730 Saint-Michel-Chef-Chef', href: null },
+    { icon: <Phone size={18} />, label: 'Téléphone', value: siteInfo.phone, href: `tel:${siteInfo.phone.replace(/\./g, '')}` },
+    { icon: <Mail size={18} />, label: 'Email', value: siteInfo.email, href: `mailto:${siteInfo.email}` },
+    { icon: <MapPin size={18} />, label: 'Adresse Courrier', value: siteInfo.mailingAddress, href: null },
   ];
+
+  if (pageData) {
+    return (
+      <div className="min-h-screen overflow-x-hidden">
+        <AppNavbar />
+        <main className="pb-32">
+          <BlockRenderer blocks={pageData.blocks} />
+        </main>
+        <AppFooter />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -86,7 +104,7 @@ const Contact = () => {
             transition={{ duration: 0.6, delay: 0.35, ease: EASING }}
             className="text-[#18102E]/50 text-base md:text-lg leading-relaxed max-w-xl"
           >
-            Une question sur nos cours, les inscriptions ou un événement ? Nous sommes là pour vous répondre.
+            {pageTexts.contactSubtitle}
           </motion.p>
         </div>
 
@@ -148,17 +166,30 @@ const Contact = () => {
             <div className="relative z-10">
               <p className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-4">RÉSEAUX</p>
               <div className="flex gap-3">
-                {[InstagramIcon, FacebookIcon].map((Icon, i) => (
+                {siteInfo.instagramUrl && (
                   <motion.a
-                    key={i}
-                    href="#"
+                    href={siteInfo.instagramUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     whileTap={{ scale: 0.95 }}
                     className="bg-[#EDEAF6] rounded-full p-3 text-[#6C5CA8] hover:bg-[#6C5CA8] hover:text-white transition-colors"
                   >
-                    <Icon size={18} />
+                    <InstagramIcon size={18} />
                   </motion.a>
-                ))}
+                )}
+                {siteInfo.facebookUrl && (
+                  <motion.a
+                    href={siteInfo.facebookUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="bg-[#EDEAF6] rounded-full p-3 text-[#6C5CA8] hover:bg-[#6C5CA8] hover:text-white transition-colors"
+                  >
+                    <FacebookIcon size={18} />
+                  </motion.a>
+                )}
               </div>
             </div>
           </motion.div>
