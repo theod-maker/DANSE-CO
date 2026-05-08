@@ -46,12 +46,12 @@ const FeaturedVideoSection: React.FC<Props> = ({ content }) => {
 
           <div className="absolute inset-0 bg-gradient-to-t from-[#18102E]/65 via-transparent to-transparent" />
 
-          <div className="absolute bottom-0 inset-x-0 p-6 md:p-10 flex flex-col md:flex-row items-end justify-between gap-6">
+          <div className="absolute bottom-0 inset-x-0 p-4 md:p-6 lg:p-10 flex flex-col md:flex-row items-end justify-between gap-3 md:gap-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.4, ease: EASING }}
-              className="liquid-glass rounded-2xl p-6 md:p-8 max-w-md"
+              className="liquid-glass rounded-2xl p-4 md:p-6 lg:p-8 max-w-md"
             >
               <p className="text-[#18102E]/50 text-xs tracking-widest uppercase mb-3">
                 NOTRE APPROCHE

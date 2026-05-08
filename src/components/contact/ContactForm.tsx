@@ -4,7 +4,7 @@ import { motion, AnimatePresence, useInView } from 'framer-motion';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const;
 
-const INPUT_CLASS = "liquid-glass rounded-xl px-5 py-3.5 text-[#18102E] text-sm bg-transparent outline-none focus:ring-1 focus:ring-[#6C5CA8]/30 transition-all";
+const INPUT_CLASS = "liquid-glass rounded-xl px-3 py-2.5 md:px-5 md:py-3.5 text-[#18102E] text-sm bg-transparent outline-none focus:ring-1 focus:ring-[#6C5CA8]/30 transition-all";
 
 interface Field {
   id: string;
@@ -148,7 +148,7 @@ const ContactForm = () => {
             whileHover={{ scale: 1.02, y: -2 }}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="bg-[#6C5CA8] hover:bg-[#524490] text-white rounded-full px-8 py-3.5 text-sm font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-50 mt-2"
+            className="bg-[#6C5CA8] hover:bg-[#524490] text-white rounded-full px-6 py-3 md:px-8 md:py-3.5 text-sm font-medium flex items-center justify-center gap-2 transition-colors disabled:opacity-50 mt-2"
           >
             {status === 'sending' ? 'Envoi en cours...' : 'Envoyer'}
             <Send size={16} />

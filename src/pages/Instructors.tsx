@@ -21,7 +21,7 @@ const InstructorCard = ({ name, specialty, bio, experience, photoUrl, index }: I
       animate={isInView ? { opacity: 1, x: 0, y: 0 } : {}}
       whileHover={{ y: -6, transition: { duration: 0.3 } }}
       transition={{ duration: 0.8, delay: index * 0.12, ease: EASING }}
-      className="group liquid-glass rounded-3xl p-8 flex flex-col gap-6 relative overflow-hidden"
+      className="group liquid-glass rounded-3xl p-5 md:p-8 flex flex-col gap-6 relative overflow-hidden"
     >
       {/* Initiale décorative en fond */}
       <span
@@ -44,7 +44,7 @@ const InstructorCard = ({ name, specialty, bio, experience, photoUrl, index }: I
         <div>
           <h3
             style={{ fontFamily: "'Instrument Serif', serif" }}
-            className="text-[#18102E] text-3xl tracking-tight mb-1"
+            className="text-[#18102E] text-2xl md:text-3xl tracking-tight mb-1"
           >
             {name}
           </h3>
@@ -124,7 +124,7 @@ const Instructors = () => {
           </motion.p>
           <h1
             style={{ fontFamily: "'Instrument Serif', serif", perspective: '1200px' }}
-            className="text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05] max-w-3xl text-[#18102E] mb-8"
+            className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05] max-w-3xl text-[#18102E] mb-8"
           >
             {['Vos', 'Professeurs'].map((word, i) => (
               <motion.span

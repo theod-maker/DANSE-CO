@@ -47,7 +47,7 @@ const PhilosophySection: React.FC<Props> = ({ content }) => {
 
       <div className="max-w-6xl mx-auto relative z-10">
         <h2
-          className="text-5xl md:text-7xl lg:text-8xl text-[#18102E] tracking-tight mb-16 md:mb-24"
+          className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-[#18102E] tracking-tight mb-16 md:mb-24"
           style={{ fontFamily: "'Instrument Serif', serif", perspective: '1200px' }}
         >
           {titleWords.map((word, i) => (
@@ -63,7 +63,7 @@ const PhilosophySection: React.FC<Props> = ({ content }) => {
           ))}
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-5 md:gap-8 lg:gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50, scale: 0.97 }}
             animate={isInView ? { opacity: 1, x: 0, scale: 1 } : {}}

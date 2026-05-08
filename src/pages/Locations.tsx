@@ -59,7 +59,7 @@ const Locations = () => {
 
           <h1
             style={{ fontFamily: "'Instrument Serif', serif", perspective: '1200px' }}
-            className="text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05] max-w-3xl text-[#18102E] mb-8"
+            className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05] max-w-3xl text-[#18102E] mb-8"
           >
             {['Nos', 'Salles'].map((word, i) => (
               <motion.span

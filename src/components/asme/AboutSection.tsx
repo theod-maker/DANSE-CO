@@ -52,7 +52,7 @@ const AboutSection: React.FC<Props> = ({ content }) => {
         </motion.p>
 
         <h2
-          className="text-[#18102E] text-4xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight max-w-5xl"
+          className="text-[#18102E] text-2xl sm:text-4xl md:text-6xl lg:text-7xl leading-[1.1] tracking-tight max-w-5xl"
           style={{ fontFamily: "'Instrument Serif', serif", perspective: '1200px' }}
         >
           {words.map((word, i) => (

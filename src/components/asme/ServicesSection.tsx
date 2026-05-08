@@ -51,7 +51,7 @@ const ServiceCard = ({
         <div className="card-shimmer-layer" />
       </div>
 
-      <div className="p-6 md:p-8 flex flex-col flex-1">
+      <div className="p-4 md:p-6 lg:p-8 flex flex-col flex-1">
         <div className="flex items-center justify-between mb-4">
           <p className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui">
             {tag}
@@ -138,7 +138,7 @@ const ServicesSection: React.FC<Props> = ({ content }) => {
         >
           <h2
             style={{ fontFamily: "'Instrument Serif', serif", perspective: '1200px' }}
-            className="text-3xl md:text-5xl text-[#18102E] tracking-tight"
+            className="text-2xl sm:text-3xl md:text-5xl text-[#18102E] tracking-tight"
           >
             {titleWords.map((word, i) => (
               <motion.span

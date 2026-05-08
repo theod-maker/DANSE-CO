@@ -19,7 +19,7 @@ const AppFooter: React.FC = () => {
 
   return (
     <footer className="bg-[#F5F0EA] border-t border-[#18102E]/8 px-6 py-12">
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-5 md:gap-8">
         <div>
           <Link to="/">
             <span
@@ -32,7 +32,7 @@ const AppFooter: React.FC = () => {
           <p className="text-[#18102E]/30 text-xs mt-2">{siteInfo.footerTagline}</p>
         </div>
 
-        <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-[#18102E]/40">
+        <div className="flex flex-wrap gap-x-4 gap-y-3 md:gap-x-8 text-sm text-[#18102E]/40">
           <Link to="/planning" className="hover:text-[#6C5CA8] transition-colors">Planning</Link>
           <Link to="/disciplines" className="hover:text-[#6C5CA8] transition-colors">Disciplines</Link>
           <Link to="/instructors" className="hover:text-[#6C5CA8] transition-colors">Professeurs</Link>

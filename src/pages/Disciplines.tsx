@@ -51,7 +51,7 @@ const DisciplineCard = ({ title, iconName, description, benefits, imageUrl, inde
         />
       </div>
 
-      <div className="p-8 flex flex-col gap-6 relative">
+      <div className="p-5 md:p-8 flex flex-col gap-6 relative">
       <span
         style={{ fontFamily: "'Instrument Serif', serif" }}
         className="absolute -right-3 -bottom-6 text-[140px] leading-none text-[#6C5CA8]/6 pointer-events-none select-none italic font-bold transition-all duration-500 group-hover:text-[#6C5CA8]/10 group-hover:scale-105 group-hover:-translate-y-2"
@@ -147,7 +147,7 @@ const Disciplines = () => {
           </motion.p>
           <h1
             style={{ fontFamily: "'Instrument Serif', serif", perspective: '1200px' }}
-            className="text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05] max-w-3xl text-[#18102E] mb-8"
+            className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05] max-w-3xl text-[#18102E] mb-8"
           >
             {['Nos', 'Disciplines'].map((word, i) => (
               <motion.span

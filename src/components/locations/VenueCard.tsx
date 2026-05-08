@@ -52,12 +52,12 @@ const VenueCard = ({ name, address, description, amenities, mapEmbedUrl, googleM
         )}
       </div>
 
-      <div className="p-8 md:p-10 flex flex-col gap-6 justify-center relative z-10">
+      <div className="p-5 md:p-8 lg:p-10 flex flex-col gap-6 justify-center relative z-10">
         <div>
           <p className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-3">SALLE</p>
           <h2
             style={{ fontFamily: "'Instrument Serif', serif" }}
-            className="text-[#18102E] text-3xl md:text-4xl tracking-tight mb-3"
+            className="text-[#18102E] text-2xl md:text-3xl lg:text-4xl tracking-tight mb-3"
           >
             {name}
           </h2>

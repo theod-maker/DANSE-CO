@@ -23,7 +23,7 @@ const ScheduleGrid = () => {
             transition={{ duration: 0.4, delay: i * 0.08 }}
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
-            className={`rounded-full px-5 py-2 text-sm font-medium transition-all ${
+            className={`rounded-full px-3 py-1.5 md:px-5 md:py-2 text-sm font-medium transition-all ${
               selectedDay === day
                 ? 'bg-[#6C5CA8] text-white shadow-[0_4px_16px_rgba(124,58,237,0.35)]'
                 : 'liquid-glass text-[#18102E]/50 hover:text-[#18102E]'
@@ -49,7 +49,7 @@ const ScheduleGrid = () => {
               initial={{ opacity: 0, x: i % 2 === 0 ? -30 : 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: i * 0.08, ease: EASING }}
-              className="group liquid-glass rounded-2xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 relative overflow-hidden"
+              className="group liquid-glass rounded-2xl p-4 md:p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 relative overflow-hidden"
             >
               {/* Shimmer */}
               <div className="card-shimmer-layer" />
@@ -58,7 +58,7 @@ const ScheduleGrid = () => {
                 <div className="flex items-center gap-3 mb-2">
                   <h3
                     style={{ fontFamily: "'Instrument Serif', serif" }}
-                    className="text-[#18102E] text-lg"
+                    className="text-[#18102E] text-base md:text-lg"
                   >
                     {cls.name}
                   </h3>
@@ -71,7 +71,7 @@ const ScheduleGrid = () => {
                     {cls.level}
                   </motion.span>
                 </div>
-                <div className="flex items-center gap-4 text-[#18102E]/40 text-sm">
+                <div className="flex items-center gap-2 md:gap-4 text-[#18102E]/40 text-sm">
                   <span className="flex items-center gap-1.5">
                     <Clock size={13} />
                     {cls.time}

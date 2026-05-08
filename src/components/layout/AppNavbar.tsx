@@ -74,13 +74,13 @@ const AppNavbar: React.FC = () => {
             transition={{ duration: 0.2 }}
             className="fixed inset-x-0 top-[88px] z-40 px-6"
           >
-            <div className="liquid-glass rounded-3xl p-6 flex flex-col gap-4">
+            <div className="liquid-glass rounded-3xl p-4 md:p-6 flex flex-col gap-4 max-h-[calc(100vh-100px)] overflow-y-auto">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className={`text-base transition-colors ${
+                  className={`text-sm md:text-base transition-colors ${
                     location.pathname === link.href
                       ? 'text-[#6C5CA8] font-medium'
                       : 'text-[#18102E]/60'

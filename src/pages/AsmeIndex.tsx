@@ -218,7 +218,7 @@ const AsmeIndex: React.FC = () => {
           </div>
         </nav>
 
-        <div className="z-10 flex-1 flex flex-col items-center justify-center -translate-y-[20%] text-center px-6">
+        <div className="z-10 flex-1 flex flex-col items-center justify-center md:-translate-y-[20%] text-center px-6">
           <motion.p
             initial={{ opacity: 0, letterSpacing: '0.4em' }}
             animate={{ opacity: 0.4, letterSpacing: '0.3em' }}
@@ -230,7 +230,7 @@ const AsmeIndex: React.FC = () => {
 
           <h1
             style={{ fontFamily: "'Instrument Serif', serif" }}
-            className="text-5xl md:text-6xl lg:text-7xl tracking-tight leading-tight mb-8 text-[#18102E]"
+            className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight leading-tight mb-8 text-[#18102E]"
           >
             <AnimatedWords text={content.heroTitle} delayStart={0.3} />
           </h1>
@@ -239,7 +239,7 @@ const AsmeIndex: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.9, ease: EASING }}
-            className="liquid-glass rounded-full pl-6 pr-2 py-2 flex items-center w-full max-w-md mb-6"
+            className="liquid-glass rounded-full pl-6 pr-2 py-2 flex items-center w-full max-w-[calc(100vw-3rem)] md:max-w-md mb-6"
           >
             <input
               type="email"
