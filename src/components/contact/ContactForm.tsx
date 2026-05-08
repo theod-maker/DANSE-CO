@@ -13,11 +13,12 @@ interface Field {
   placeholder?: string;
   options?: { value: string; label: string }[];
   rows?: number;
+  maxLength?: number;
 }
 
 const fields: Field[] = [
-  { id: 'name', label: 'Nom', type: 'text', placeholder: 'Votre nom' },
-  { id: 'email', label: 'Email', type: 'email', placeholder: 'votre@email.com' },
+  { id: 'name', label: 'Nom', type: 'text', placeholder: 'Votre nom', maxLength: 100 },
+  { id: 'email', label: 'Email', type: 'email', placeholder: 'votre@email.com', maxLength: 254 },
   {
     id: 'subject',
     label: 'Objet',
@@ -29,7 +30,7 @@ const fields: Field[] = [
       { value: 'autre', label: 'Autre' },
     ],
   },
-  { id: 'message', label: 'Message', type: 'textarea', placeholder: 'Votre message...', rows: 5 },
+  { id: 'message', label: 'Message', type: 'textarea', placeholder: 'Votre message...', rows: 5, maxLength: 2000 },
 ];
 
 function renderField(field: Field) {
@@ -37,8 +38,10 @@ function renderField(field: Field) {
     return (
       <motion.textarea
         id={field.id}
+        name={field.id}
         required
         rows={field.rows}
+        maxLength={field.maxLength}
         placeholder={field.placeholder}
         whileFocus={{ scale: 1.01 }}
         className={`${INPUT_CLASS} placeholder:text-[#18102E]/25 resize-none`}
@@ -50,6 +53,7 @@ function renderField(field: Field) {
     return (
       <select
         id={field.id}
+        name={field.id}
         required
         className={`${INPUT_CLASS} appearance-none`}
       >
@@ -65,7 +69,9 @@ function renderField(field: Field) {
     <motion.input
       type={field.type}
       id={field.id}
+      name={field.id}
       required
+      maxLength={field.maxLength}
       placeholder={field.placeholder}
       whileFocus={{ scale: 1.01 }}
       className={`${INPUT_CLASS} placeholder:text-[#18102E]/25`}
@@ -73,15 +79,25 @@ function renderField(field: Field) {
   );
 }
 
-const ContactForm = () => {
-  const [status, setStatus] = useState<'idle' | 'sending' | 'success'>('idle');
-  const ref = useRef(null);
+function ContactForm() {
+  const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const ref = useRef<HTMLFormElement>(null);
   const isInView = useInView(ref, { once: false, margin: '-60px' });
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
     setStatus('sending');
-    setTimeout(() => setStatus('success'), 1500);
+    try {
+      const response = await fetch(import.meta.env.VITE_FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' },
+      });
+      setStatus(response.ok ? 'success' : 'error');
+    } catch {
+      setStatus('error');
+    }
   };
 
   return (
@@ -153,10 +169,16 @@ const ContactForm = () => {
             {status === 'sending' ? 'Envoi en cours...' : 'Envoyer'}
             <Send size={16} />
           </motion.button>
+
+          {status === 'error' && (
+            <p className="text-sm text-red-500 text-center mt-2">
+              Erreur d'envoi, réessayez.
+            </p>
+          )}
         </motion.form>
       )}
     </AnimatePresence>
   );
-};
+}
 
-export default ContactForm;
+export { ContactForm };

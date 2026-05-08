@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Phone, Mail, MapPin } from 'lucide-react';
-import ContactForm from '../components/contact/ContactForm';
+import { ContactForm } from '../components/contact/ContactForm';
 import AppNavbar from '../components/layout/AppNavbar';
 import AppFooter from '../components/layout/AppFooter';
 import BlockRenderer from '../components/blocks/BlockRenderer';
