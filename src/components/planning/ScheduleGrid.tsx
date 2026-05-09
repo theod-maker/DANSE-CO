@@ -1,15 +1,30 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, MapPin } from 'lucide-react';
 import { useSchedule } from '../../hooks/useSanity';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
-const days = ['Lundi', 'Mercredi', 'Samedi (Stages)'];
 
-const ScheduleGrid = () => {
+const DAY_ORDER = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche', 'Samedi (Stages)']
+
+function ScheduleGrid() {
   const scheduleData = useSchedule();
-  const [selectedDay, setSelectedDay] = useState('Lundi');
-  const filteredClasses = scheduleData.filter(cls => cls.day === selectedDay);
+  const days = useMemo(
+    () => [...new Set(scheduleData.map(c => c.day))].sort(
+      (a, b) => DAY_ORDER.indexOf(a) - DAY_ORDER.indexOf(b)
+    ),
+    [scheduleData]
+  );
+  const [selectedDay, setSelectedDay] = useState('');
+
+  useEffect(() => {
+    if (selectedDay && !days.includes(selectedDay)) {
+      setSelectedDay('');
+    }
+  }, [days, selectedDay]);
+
+  const activeDay = selectedDay || days[0] || '';
+  const filteredClasses = scheduleData.filter(cls => cls.day === activeDay);
 
   return (
     <div className="flex flex-col gap-8">
@@ -24,7 +39,7 @@ const ScheduleGrid = () => {
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.97 }}
             className={`rounded-full px-3 py-1.5 md:px-5 md:py-2 text-sm font-medium transition-all ${
-              selectedDay === day
+              activeDay === day
                 ? 'bg-[#6C5CA8] text-white shadow-[0_4px_16px_rgba(124,58,237,0.35)]'
                 : 'liquid-glass text-[#18102E]/50 hover:text-[#18102E]'
             }`}
@@ -36,7 +51,7 @@ const ScheduleGrid = () => {
 
       <AnimatePresence mode="wait">
         <motion.div
-          key={selectedDay}
+          key={activeDay}
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -16 }}
@@ -76,10 +91,12 @@ const ScheduleGrid = () => {
                     <Clock size={13} />
                     {cls.time}
                   </span>
-                  <span className="flex items-center gap-1.5">
-                    <MapPin size={13} />
-                    {cls.venue}
-                  </span>
+                  {cls.venue && (
+                    <span className="flex items-center gap-1.5">
+                      <MapPin size={13} />
+                      {cls.venue}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -91,6 +108,6 @@ const ScheduleGrid = () => {
       </AnimatePresence>
     </div>
   );
-};
+}
 
-export default ScheduleGrid;
+export { ScheduleGrid };

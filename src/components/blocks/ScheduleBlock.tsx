@@ -1,5 +1,5 @@
 import React from 'react'
-import ScheduleGrid from '../planning/ScheduleGrid'
+import { ScheduleGrid } from '../planning/ScheduleGrid'
 import RegistrationInfo from '../planning/RegistrationInfo'
 
 const ScheduleBlock: React.FC = () => (

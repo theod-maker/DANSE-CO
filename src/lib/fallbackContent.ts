@@ -35,7 +35,7 @@ export interface ScheduleEntryContent {
   name: string
   day: string
   time: string
-  venue: string
+  venue?: string
   level: string
 }
 

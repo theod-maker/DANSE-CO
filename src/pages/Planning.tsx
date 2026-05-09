@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import ScheduleGrid from '../components/planning/ScheduleGrid';
+import { ScheduleGrid } from '../components/planning/ScheduleGrid';
 import RegistrationInfo from '../components/planning/RegistrationInfo';
 import AppNavbar from '../components/layout/AppNavbar';
 import AppFooter from '../components/layout/AppFooter';

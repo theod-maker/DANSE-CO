@@ -37,7 +37,7 @@ export const scheduleQuery = groq`*[_type == "scheduleEntry"] | order(order asc)
   name,
   day,
   time,
-  venue,
+  "venue": venue->name,
   level,
 }`
 

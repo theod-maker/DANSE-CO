@@ -19,7 +19,12 @@ export const scheduleEntryType = defineType({
       options: {
         list: [
           { title: 'Lundi', value: 'Lundi' },
+          { title: 'Mardi', value: 'Mardi' },
           { title: 'Mercredi', value: 'Mercredi' },
+          { title: 'Jeudi', value: 'Jeudi' },
+          { title: 'Vendredi', value: 'Vendredi' },
+          { title: 'Samedi', value: 'Samedi' },
+          { title: 'Dimanche', value: 'Dimanche' },
           { title: 'Samedi (Stages)', value: 'Samedi (Stages)' },
         ],
         layout: 'radio',
@@ -36,14 +41,9 @@ export const scheduleEntryType = defineType({
     defineField({
       name: 'venue',
       title: 'Salle',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Le Canopus', value: 'Le Canopus' },
-          { title: 'Salle Caraïbes', value: 'Salle Caraïbes' },
-        ],
-        layout: 'radio',
-      },
+      type: 'reference',
+      to: [{ type: 'venue' }],
+      description: "Salle où se déroule ce cours. Créez d'abord les salles dans 'Nos Salles'.",
     }),
     defineField({
       name: 'level',

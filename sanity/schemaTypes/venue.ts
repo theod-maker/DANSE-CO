@@ -51,6 +51,7 @@ export const venueType = defineType({
       title: "Lien d'intégration de la carte",
       type: 'url',
       description: "Pour afficher la carte dans la page. Sur Google Maps → Partager → Intégrer une carte → copiez le lien src=\" … \"",
+      validation: (Rule) => Rule.uri({ scheme: ['https'] }),
     }),
     defineField({
       name: 'order',

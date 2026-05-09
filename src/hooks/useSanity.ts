@@ -43,9 +43,9 @@ function useSanityData<T>(query: string, fallback: T): T {
     sanityClient
       .fetch<T>(query)
       .then((result) => {
-        if (result) setData(result)
+        if (result && (!Array.isArray(result) || result.length > 0)) setData(result)
       })
-      .catch(() => {})
+      .catch((err) => { if (import.meta.env.DEV) console.warn('[useSanity]', err) })
   }, [query])
 
   return data
