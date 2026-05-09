@@ -1,5 +1,11 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import config from '../sanity.config';
+
+const SanityStudio = lazy(() =>
+  import('sanity').then(m => ({ default: m.Studio }))
+);
 import AsmeIndex from './pages/AsmeIndex';
 import Disciplines from './pages/Disciplines';
 import Instructors from './pages/Instructors';
@@ -22,6 +28,11 @@ function App() {
           <Route path="/planning" element={<Planning />} />
           <Route path="/locations" element={<Locations />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/studio/*" element={
+            <Suspense fallback={<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh' }}>Chargement...</div>}>
+              <SanityStudio config={config} />
+            </Suspense>
+          } />
         </Routes>
       </AnimatePresence>
     </Router>
