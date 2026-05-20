@@ -9,6 +9,55 @@ import type { InstructorContent } from '../lib/fallbackContent'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
+const CompetitionSection = () => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-80px' })
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, ease: EASING }}
+      className="mt-20 relative z-10"
+    >
+      <p className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-4">
+        Compétition
+      </p>
+      <h2
+        style={{ fontFamily: "'Instrument Serif', serif" }}
+        className="text-3xl md:text-4xl tracking-tight text-[#18102E] mb-4"
+      >
+        Section Compétition
+      </h2>
+      <p className="text-[#18102E]/60 text-sm leading-relaxed max-w-2xl mb-6">
+        Chez Dans' and Co, notre section compétition rassemble des couples de danseurs passionnés
+        qui représentent fièrement le club dans toute la France. Nos danseurs s'entraînent
+        quotidiennement avec rigueur et enthousiasme pour exceller dans différents styles de danse,
+        en alliant technique, créativité et énergie.
+      </p>
+      <div className="liquid-glass rounded-2xl p-6 grid sm:grid-cols-2 gap-8 max-w-2xl">
+        <div>
+          <p className="text-[#6C5CA8] text-xs uppercase tracking-widest font-medium mb-3">
+            Danses latines
+          </p>
+          <p className="text-[#18102E]/70 text-sm">
+            Samba · Chachacha · Rumba · Paso doble · Jive
+          </p>
+        </div>
+        <div>
+          <p className="text-[#6C5CA8] text-xs uppercase tracking-widest font-medium mb-3">
+            Danses standard
+          </p>
+          <p className="text-[#18102E]/70 text-sm">
+            Valse lente · Tango · Valse viennoise · Slowfoxtrot · Quickstep
+          </p>
+        </div>
+      </div>
+    </motion.div>
+  )
+}
+
 const InstructorCard = ({ name, specialty, bio, experience, photoUrl, index }: InstructorContent & { index: number }) => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
@@ -158,6 +207,8 @@ const Instructors = () => {
             <InstructorCard key={prof._id} {...prof} index={index} />
           ))}
         </div>
+
+        <CompetitionSection />
       </main>
 
       <AppFooter />
