@@ -68,7 +68,7 @@ export interface SiteInfoContent {
 export interface DisciplineContent {
   _id: string
   title: string
-  iconName: 'Zap' | 'Star' | 'Heart' | 'Music'
+  iconName: 'Zap' | 'Star' | 'Heart' | 'Music' | 'Users'
   description: string
   benefits: string[]
   imageUrl?: string
@@ -132,28 +132,20 @@ export const fallbackHomepage: HomepageContent = {
 
 export const fallbackInstructors: InstructorContent[] = [
   {
-    _id: 'dominique',
-    name: 'Dominique',
-    specialty: 'Danse Sportive & Salon',
-    bio: 'Passionné par la technique et l\'élégance des danses de salon, Dominique enseigne avec précision et pédagogie depuis de nombreuses années.',
-    experience: '25 ans de pratique',
-    photoUrl: 'https://images.unsplash.com/photo-1607346256330-dee7af15f7c5?w=600&q=85',
+    _id: 'adrien-mullot',
+    name: 'Adrien Mullot',
+    specialty: '',
+    bio: 'Passionné de danse depuis l\'âge de 16 ans, j\'ai construit mon parcours entre compétition et transmission. Ces expériences m\'ont appris une chose essentielle : la danse est avant tout un moment de partage, de plaisir et de dépassement de soi. Aujourd\'hui j\'accompagne mes élèves avec énergie et bienveillance pour leur faire découvrir le plaisir de danser et progresser à leur rythme. Que ce soit pour apprendre, se perfectionner ou préparer une compétition ou une ouverture de bal, chaque cours est pensé pour allier technique, convivialité et passion. Mon objectif est de vous faire vivre la danse avec passion et vous donner envie de revenir à chaque cours.',
+    experience: '',
+    photoUrl: '',
   },
   {
-    _id: 'sylvie',
-    name: 'Sylvie',
-    specialty: 'Salsa & Bachata',
-    bio: 'Sylvie apporte l\'énergie et la chaleur des danses latines. Ses cours sont réputés pour leur ambiance conviviale et rythmée.',
-    experience: '15 ans d\'enseignement',
-    photoUrl: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=85',
-  },
-  {
-    _id: 'jean-pierre',
-    name: 'Jean-Pierre',
-    specialty: 'Rock & Roll',
-    bio: 'Le roi du swing ! Jean-Pierre vous fera vibrer sur les rythmes du Rock\'n\'Roll avec dynamisme et bonne humeur.',
-    experience: '20 ans de passion',
-    photoUrl: 'https://images.unsplash.com/photo-1545959570-a94084071b5d?w=600&q=85',
+    _id: 'sarah-babin',
+    name: 'Sarah Babin',
+    specialty: '',
+    bio: '',
+    experience: '',
+    photoUrl: '',
   },
 ]
 
@@ -207,6 +199,34 @@ export const fallbackDisciplines: DisciplineContent[] = [
     iconName: 'Music',
     description: 'La version moderne et fluide du swing. Se danse sur une grande variété de musiques actuelles (Pop, RnB, Blues).',
     benefits: ['Créativité', 'Musicalité', 'Modernité'],
+  },
+  {
+    _id: 'lindy-hop',
+    title: 'Lindy Hop',
+    iconName: 'Zap',
+    description: "Danse swing née dans les années 1920 à New York. Se danse à deux, caractérisée par son énergie, son improvisation et ses mouvements dynamiques. L'une des danses swing les plus pratiquées dans le monde.",
+    benefits: ['Énergie', 'Improvisation', 'Convivialité'],
+  },
+  {
+    _id: 'multidanses',
+    title: 'Multidanses',
+    iconName: 'Music',
+    description: "Explorez plusieurs styles de danse : chachacha, tango, rock'n roll, salsa. Chaque rythme a sa magie et permet de découvrir de nouvelles techniques tout en s'amusant.",
+    benefits: ['Variété', 'Découverte', 'Technique'],
+  },
+  {
+    _id: 'danse-en-ligne',
+    title: 'Danse en ligne',
+    iconName: 'Users',
+    description: "Danse collective où tout le monde suit une même chorégraphie. Facile à apprendre et très conviviale, se danse sur tous les styles de musique : rumba, shim sham, chachacha, salsa.",
+    benefits: ['Collectif', 'Accessible', 'Convivialité'],
+  },
+  {
+    _id: 'cours-enfants',
+    title: 'Cours enfants',
+    iconName: 'Star',
+    description: "Nos petits danseurs découvrent le rythme, la coordination et la créativité à travers les danses latines : samba, chachacha, rumba, paso doble, jive. Une façon ludique de bouger, s'amuser et prendre confiance dès le plus jeune âge.",
+    benefits: ['Rythme', 'Créativité', 'Confiance en soi'],
   },
 ]
 
@@ -273,15 +293,15 @@ export const fallbackNews: NewsContent[] = [
 export const fallbackPricing: PricingContent = {
   season: '2025 - 2026',
   rows: [
-    { label: 'Individuel', price: '165 €', detail: 'Accès à 1 cours par semaine + stages' },
-    { label: 'Couple', price: '310 €', detail: 'Tarif pour deux personnes (même foyer)', highlight: true },
-    { label: 'Étudiant / -18 ans', price: '130 €', detail: 'Sur présentation d\'un justificatif' },
-    { label: 'Cours Supplémentaire', price: '+ 80 €', detail: 'Pour une deuxième discipline' },
+    { label: '1h de cours — Solo', price: '220 €', detail: '' },
+    { label: '1h de cours — Couple', price: '330 €', detail: '' },
+    { label: '2h de cours — Solo', price: '370 €', detail: '' },
+    { label: '2h de cours — Couple', price: '630 €', detail: '', highlight: true },
+    { label: 'Full Pass — Solo', price: '460 €', detail: '' },
+    { label: 'Full Pass — Couple', price: '740 €', detail: '' },
+    { label: 'Cours enfants', price: '190 €', detail: '' },
+    { label: 'Solo Samedi', price: '190 €', detail: '' },
   ],
-  infoItems: [
-    'L\'adhésion annuelle à l\'association de 15 € est déjà incluse dans les tarifs ci-dessus.',
-    'Le règlement peut s\'effectuer en 3 fois par chèques (encaissés en octobre, janvier et avril).',
-    'Nous acceptons les chèques vacances ANCV.',
-  ],
-  membershipFee: '15',
+  infoItems: [],
+  membershipFee: '',
 }

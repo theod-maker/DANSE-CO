@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Phone, Mail, MapPin } from 'lucide-react'
-import ContactForm from '../contact/ContactForm'
+import { ContactForm } from '../contact/ContactForm'
 import { useSiteInfo } from '../../hooks/useSanity'
 
 const InstagramIcon = ({ size = 18 }: { size?: number }) => (

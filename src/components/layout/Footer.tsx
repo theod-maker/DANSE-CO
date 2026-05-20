@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin } from 'lucide-react';
+import { useSiteInfo } from '../../hooks/useSanity';
 
 const InstagramIcon = ({ size = 20 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -15,6 +16,8 @@ const FacebookIcon = ({ size = 20 }: { size?: number }) => (
 import styles from './Footer.module.css';
 
 const Footer = () => {
+  const { instagramUrl, facebookUrl } = useSiteInfo();
+
   return (
     <footer className={styles.footer}>
       <div className={`${styles.container} container`}>
@@ -24,10 +27,20 @@ const Footer = () => {
             <p className={styles.description}>
               L'école de danse sportive à Saint-Michel-Chef-Chef. Rejoignez-nous pour apprendre la danse dans une ambiance conviviale et professionnelle.
             </p>
-            <div className={styles.socials}>
-              <a href="#" aria-label="Instagram"><InstagramIcon size={20} /></a>
-              <a href="#" aria-label="Facebook"><FacebookIcon size={20} /></a>
-            </div>
+            {(instagramUrl || facebookUrl) && (
+              <div className={styles.socials}>
+                {instagramUrl && (
+                  <a href={instagramUrl} aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+                    <InstagramIcon size={20} />
+                  </a>
+                )}
+                {facebookUrl && (
+                  <a href={facebookUrl} aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+                    <FacebookIcon size={20} />
+                  </a>
+                )}
+              </div>
+            )}
           </div>
 
           <div className={styles.links}>
@@ -35,8 +48,11 @@ const Footer = () => {
             <ul>
               <li><Link to="/">Accueil</Link></li>
               <li><Link to="/planning">Planning</Link></li>
-              <li><Link to="/profs">Les Professeurs</Link></li>
-              <li><Link to="/tarifs">Tarifs</Link></li>
+              <li><Link to="/disciplines">Les danses</Link></li>
+              <li><Link to="/instructors">Les membres</Link></li>
+              <li><Link to="/pricing">Tarifs</Link></li>
+              <li><Link to="/histoire">L'histoire</Link></li>
+              <li><Link to="/actualites">Actualités</Link></li>
               <li><Link to="/contact">Contact</Link></li>
             </ul>
           </div>

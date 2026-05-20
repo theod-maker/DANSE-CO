@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Music, Zap, Heart, Star, type LucideProps } from 'lucide-react'
+import { Music, Zap, Heart, Star, Users, type LucideProps } from 'lucide-react'
 import { useDisciplines } from '../../hooks/useSanity'
 import type { DisciplineContent } from '../../lib/fallbackContent'
 
@@ -9,7 +9,7 @@ const EASING = [0.25, 0.46, 0.45, 0.94] as const
 type IconName = DisciplineContent['iconName']
 type IconComponent = React.ComponentType<LucideProps>
 
-const ICON_MAP: Record<IconName, IconComponent> = { Zap, Star, Heart, Music }
+const ICON_MAP: Record<IconName, IconComponent> = { Zap, Star, Heart, Music, Users }
 
 const DISCIPLINE_FALLBACK_IMAGES: Record<number, string> = {
   0: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=600&q=80',

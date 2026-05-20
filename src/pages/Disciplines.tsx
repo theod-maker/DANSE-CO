@@ -1,6 +1,6 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Music, Zap, Heart, Star, type LucideProps } from 'lucide-react';
+import { Music, Zap, Heart, Star, Users, type LucideProps } from 'lucide-react';
 import AppNavbar from '../components/layout/AppNavbar';
 import AppFooter from '../components/layout/AppFooter';
 import BlockRenderer from '../components/blocks/BlockRenderer';
@@ -18,6 +18,7 @@ const ICON_MAP: Record<IconName, IconComponent> = {
   Star,
   Heart,
   Music,
+  Users,
 }
 
 const DISCIPLINE_FALLBACK_IMAGES: Record<number, string> = {

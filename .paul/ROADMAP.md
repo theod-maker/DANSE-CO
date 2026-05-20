@@ -80,5 +80,21 @@ Phases: 0 of 3 complete
 - [ ] 04-02: Data layer (queries, types, hooks, fallbacks)
 - [ ] 04-03: Branchement composants et pages
 
+### Phase 7: Contenu manquant PDF
+
+**Goal:** Intégrer tout le contenu du PDF client absent du site.
+**Depends on:** Nothing (indépendant)
+**Research:** No
+
+**Scope:**
+- 4 disciplines manquantes dans fallbackDisciplines (Lindy Hop, Multidanses, Danse en ligne, Cours enfants)
+- Réseaux sociaux conditionnels dans Footer (affichage si URL renseignée)
+- Section compétition sur page Instructeurs
+- Page /histoire placeholder
+
+**Plans:**
+- [ ] 07-01: Disciplines manquantes + réseaux sociaux conditionnels
+- [ ] 07-02: Section compétition (Instructors) + page Histoire
+
 ---
-*Roadmap created: 2026-04-05*
+*Roadmap created: 2026-04-05 — Updated: 2026-05-20*

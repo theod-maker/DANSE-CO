@@ -34,10 +34,11 @@ const AppFooter: React.FC = () => {
 
         <div className="flex flex-wrap gap-x-4 gap-y-3 md:gap-x-8 text-sm text-[#18102E]/40">
           <Link to="/planning" className="hover:text-[#6C5CA8] transition-colors">Planning</Link>
-          <Link to="/disciplines" className="hover:text-[#6C5CA8] transition-colors">Disciplines</Link>
-          <Link to="/instructors" className="hover:text-[#6C5CA8] transition-colors">Professeurs</Link>
+          <Link to="/disciplines" className="hover:text-[#6C5CA8] transition-colors">Les danses</Link>
+          <Link to="/instructors" className="hover:text-[#6C5CA8] transition-colors">Les membres</Link>
           <Link to="/pricing" className="hover:text-[#6C5CA8] transition-colors">Tarifs</Link>
-          <Link to="/locations" className="hover:text-[#6C5CA8] transition-colors">Nos Salles</Link>
+          <Link to="/histoire" className="hover:text-[#6C5CA8] transition-colors">L'histoire</Link>
+          <Link to="/actualites" className="hover:text-[#6C5CA8] transition-colors">Actualités</Link>
           <Link to="/contact" className="hover:text-[#6C5CA8] transition-colors">Contact</Link>
         </div>
 

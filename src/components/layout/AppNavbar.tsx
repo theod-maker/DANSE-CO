@@ -5,10 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
   { label: 'Planning', href: '/planning' },
-  { label: 'Disciplines', href: '/disciplines' },
-  { label: 'Professeurs', href: '/instructors' },
+  { label: 'Les danses', href: '/disciplines' },
+  { label: 'Les membres', href: '/instructors' },
   { label: 'Tarifs', href: '/pricing' },
-  { label: 'Nos Salles', href: '/locations' },
+  { label: "L'histoire", href: '/histoire' },
+  { label: 'Actualités', href: '/actualites' },
 ];
 
 const AppNavbar: React.FC = () => {

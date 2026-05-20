@@ -10,10 +10,10 @@ See: .paul/PROJECT.md (updated 2026-04-05)
 ## Current Position
 
 Milestone: v1.0 Livraison Client
-Phase: 4 (Full CMS) — Complete (plan 04/04)
-Plan: 04-04 exécuté et unifié
-Status: UNIFY complete
-Last activity: 2026-05-09 — CMS planning amélioré, workflow autopilot complet (simplify + QA + sécu)
+Phase: 7 (Contenu manquant PDF) — Planning
+Plan: 07-01 et 07-02 créés, en attente d'approbation
+Status: PLAN créé, prêt pour APPLY
+Last activity: 2026-05-20 — Phase 07 planifiée : disciplines manquantes, section compétition, page histoire, réseaux sociaux
 
 Progress:
 - Milestone: [█████████░] 90%
@@ -22,12 +22,13 @@ Progress:
 - Phase 4: [██████████] 100%
 - Phase 5: [██████████] 100%
 - Phase 6: [██████████] 100%
+- Phase 7: [░░░░░░░░░░] 0%
 
 ## Loop Position
 
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [Loop complete - ready for next PLAN]
+  ✓        ○        ○     [Plans créés, en attente d'approbation]
 ```
 
 ## Accumulated Context
@@ -48,7 +49,7 @@ PLAN ──▶ APPLY ──▶ UNIFY
 
 | Issue | Origin | Effort | Revisit |
 |-------|--------|--------|---------|
-| Liens réseaux sociaux non configurés | Pre-PAUL | S | Phase 3 / Sanity |
+| Liens réseaux sociaux non configurés | Pre-PAUL | S | Phase 7 plan 07-01 |
 | Timeout fetch formulaire | Phase 2 | S | Post-livraison |
 | SEO meta par page | Post-PAUL | M | Post-livraison |
 | Bundle Sanity gros (5MB) | Post-PAUL | M | Post-livraison |
@@ -60,10 +61,10 @@ Aucun.
 
 ## Session Continuity
 
-Last session: 2026-05-09
-Stopped at: Phase 4 plan 04 complète — CMS planning amélioré + workflow autopilot complet
-Next action: `/paul:plan` Phase 3 Déploiement Vercel
-Resume file: `.paul/phases/04-full-cms/04-04-SUMMARY.md`
+Last session: 2026-05-20
+Stopped at: Phase 7 plans créés (07-01 + 07-02) — contenu manquant PDF
+Next action: Approuver les plans puis `/paul:apply .paul/phases/07-contenu-pdf/07-01-PLAN.md`
+Resume file: `.paul/phases/07-contenu-pdf/07-01-PLAN.md`
 
 ---
 *STATE.md — Updated: 2026-05-09*
