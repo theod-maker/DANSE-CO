@@ -93,8 +93,8 @@ Phases: 0 of 3 complete
 - Page /histoire placeholder
 
 **Plans:**
-- [ ] 07-01: Disciplines manquantes + réseaux sociaux conditionnels
-- [ ] 07-02: Section compétition (Instructors) + page Histoire
+- [x] 07-01: Disciplines manquantes + réseaux sociaux conditionnels
+- [x] 07-02: Section compétition (Instructors) + page Histoire
 
 ---
 *Roadmap created: 2026-04-05 — Updated: 2026-05-20*
