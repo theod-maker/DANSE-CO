@@ -164,7 +164,7 @@ export const fallbackSiteInfo: SiteInfoContent = {
   email: 'DANSANDCO@OUTLOOK.FR',
   mailingAddress: '17 Rue du Chevecier, 44730 Saint-Michel-Chef-Chef',
   instagramUrl: '',
-  facebookUrl: '',
+  facebookUrl: 'https://www.facebook.com/dansandco/',
   twitterUrl: '',
   websiteUrl: '',
   season: '2025–2026',
