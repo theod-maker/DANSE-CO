@@ -48,18 +48,22 @@ const InstructorCard = ({ name, specialty, bio, experience, photoUrl, index }: I
           >
             {name}
           </h3>
-          <p className="text-[#6C5CA8] text-xs tracking-widest uppercase font-medium">
-            {specialty}
-          </p>
+          {specialty && (
+            <p className="text-[#6C5CA8] text-xs tracking-widest uppercase font-medium">
+              {specialty}
+            </p>
+          )}
         </div>
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ duration: 0.5, delay: 0.25 + index * 0.12 }}
-          className="bg-[#EDEAF6] rounded-full px-4 py-1.5"
-        >
-          <span className="text-[#6C5CA8] text-xs font-medium">{experience}</span>
-        </motion.div>
+        {experience && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.5, delay: 0.25 + index * 0.12 }}
+            className="bg-[#EDEAF6] rounded-full px-4 py-1.5"
+          >
+            <span className="text-[#6C5CA8] text-xs font-medium">{experience}</span>
+          </motion.div>
+        )}
       </div>
 
       <motion.div

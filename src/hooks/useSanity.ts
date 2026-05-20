@@ -35,6 +35,16 @@ import {
   type NewsContent,
 } from '../lib/fallbackContent'
 
+function sanitizeUrl(url: string): string {
+  if (!url) return ''
+  try {
+    const { protocol } = new URL(url)
+    return ['https:', 'http:'].includes(protocol) ? url : ''
+  } catch {
+    return ''
+  }
+}
+
 function useSanityData<T>(query: string, fallback: T): T {
   const [data, setData] = useState<T>(fallback)
 
@@ -68,7 +78,14 @@ export function usePricing(): PricingContent {
 }
 
 export function useSiteInfo(): SiteInfoContent {
-  return useSanityData<SiteInfoContent>(siteInfoQuery, fallbackSiteInfo)
+  const data = useSanityData<SiteInfoContent>(siteInfoQuery, fallbackSiteInfo)
+  return {
+    ...data,
+    instagramUrl: sanitizeUrl(data.instagramUrl),
+    facebookUrl: sanitizeUrl(data.facebookUrl),
+    twitterUrl: sanitizeUrl(data.twitterUrl),
+    websiteUrl: sanitizeUrl(data.websiteUrl),
+  }
 }
 
 export function useDisciplines(): DisciplineContent[] {
