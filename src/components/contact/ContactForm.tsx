@@ -18,6 +18,7 @@ interface Field {
 
 const fields: Field[] = [
   { id: 'name', label: 'Nom', type: 'text', placeholder: 'Votre nom', maxLength: 100 },
+  { id: 'firstname', label: 'Prénom', type: 'text', placeholder: 'Votre prénom', maxLength: 100 },
   { id: 'email', label: 'Email', type: 'email', placeholder: 'votre@email.com', maxLength: 254 },
   {
     id: 'subject',
