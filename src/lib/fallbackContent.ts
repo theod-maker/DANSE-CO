@@ -180,13 +180,6 @@ export const fallbackDisciplines: DisciplineContent[] = [
     benefits: ['Cardio', 'Énergie', 'Convivialité'],
   },
   {
-    _id: 'danses-salon',
-    title: 'Danses de Salon',
-    iconName: 'Star',
-    description: "Apprenez les classiques de l'élégance : Valse, Tango, Chachacha, Paso Doble et Rumba. Un voyage à travers les styles et les époques.",
-    benefits: ['Posture', 'Élégance', 'Coordination'],
-  },
-  {
     _id: 'salsa-cubaine',
     title: 'Salsa Cubaine',
     iconName: 'Heart',
