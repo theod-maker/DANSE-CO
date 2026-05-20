@@ -10,6 +10,7 @@ const navLinks = [
   { label: 'Actualités', href: '/actualites' },
   { label: 'Les danses', href: '/disciplines' },
   { label: "L'histoire", href: '/histoire' },
+  { label: 'Nos Salles', href: '/locations' },
 ];
 
 const AppNavbar: React.FC = () => {
