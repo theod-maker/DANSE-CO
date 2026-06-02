@@ -10,10 +10,10 @@ See: .paul/PROJECT.md (updated 2026-04-05)
 ## Current Position
 
 Milestone: v1.0 Livraison Client
-Phase: 8 (Next.js Foundation) — Complete
-Plan: 08-01 + 08-02 complétés
-Status: APPLY done, UNIFY done
-Last activity: 2026-06-02 — 9 pages migrées, Studio accessible, Vite supprimé, build ✓
+Phase: 9 (Data Layer) — In Progress
+Plan: 09-01 complété, 09-02 pending
+Status: APPLY 09-01 done
+Last activity: 2026-06-02 — sanityFetch + API routes (revalidate, draft enable/disable)
 
 Progress:
 - Milestone: [█████████░] 95%
