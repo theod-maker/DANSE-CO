@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { SanityLive } from '@/sanity/lib/live'
 import DynamicWrapper from '@/src/components/layout/DynamicWrapper'
 import './globals.css'
 
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="fr">
       <body>
         <DynamicWrapper>{children}</DynamicWrapper>
+        <SanityLive />
       </body>
     </html>
   )
