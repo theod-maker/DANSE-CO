@@ -10,10 +10,10 @@ See: .paul/PROJECT.md (updated 2026-04-05)
 ## Current Position
 
 Milestone: v1.0 Livraison Client
-Phase: 11 (Déploiement Vercel) — Planning
-Plan: 10-01 complété, 11-01 pending
-Status: APPLY 10-01 done (visual editing code), 11-01 à exécuter
-Last activity: 2026-06-02 — Visual editing configuré, Presentation Tool prêt
+Phase: 12 (Livraison Client) — Planning
+Plan: 12-01 créé, awaiting action
+Status: Site déployé sur danse-co.vercel.app — en attente domaine + contenu client
+Last activity: 2026-06-02 — Déployé Vercel, SEO ajouté, phase 12 planifiée
 
 Progress:
 - Milestone: [█████████░] 95%
