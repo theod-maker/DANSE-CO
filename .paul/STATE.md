@@ -10,10 +10,10 @@ See: .paul/PROJECT.md (updated 2026-04-05)
 ## Current Position
 
 Milestone: v1.0 Livraison Client
-Phase: 8 (Next.js Foundation) — Planning
-Plan: 08-01 créé, awaiting approval
-Status: PLAN créé, ready for APPLY
-Last activity: 2026-06-02 — Migration Next.js planifiée (phases 08-11), plan 08-01 créé
+Phase: 8 (Next.js Foundation) — In Progress
+Plan: 08-01 complété, 08-02 pending
+Status: APPLY 08-01 done, UNIFY pending
+Last activity: 2026-06-02 — Next.js 15 installé, build ✓, dev sur :5247
 
 Progress:
 - Milestone: [█████████░] 95%
