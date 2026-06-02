@@ -1,3 +1,8 @@
+import type { Metadata } from 'next'
+export const metadata: Metadata = {
+  title: 'Nos Salles',
+  description: 'Retrouvez Danse&CO au Canopus et à la salle Caraïbes à Saint-Michel-Chef-Chef. Adresses, cartes et accès.',
+}
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { venuesQuery, pageTextsQuery, pageQuery } from '@/sanity/lib/queries'
 import { fallbackVenues, fallbackPageTexts, type VenueContent, type PageTextsContent } from '@/src/lib/fallbackContent'

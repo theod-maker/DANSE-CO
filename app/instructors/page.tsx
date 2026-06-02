@@ -1,3 +1,8 @@
+import type { Metadata } from 'next'
+export const metadata: Metadata = {
+  title: 'Nos Professeurs',
+  description: "Rencontrez l'équipe de Danse&CO. Des professeurs passionnés pour vous accompagner dans votre apprentissage de la danse à Saint-Michel-Chef-Chef.",
+}
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { instructorsQuery, pageTextsQuery, pageQuery } from '@/sanity/lib/queries'
 import { fallbackInstructors, fallbackPageTexts, type InstructorContent, type PageTextsContent } from '@/src/lib/fallbackContent'

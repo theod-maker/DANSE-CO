@@ -1,3 +1,8 @@
+import type { Metadata } from 'next'
+export const metadata: Metadata = {
+  title: 'Nos Disciplines',
+  description: 'Découvrez nos disciplines : Lindy Hop, West Coast Swing, Multidanses, Danse en ligne, cours enfants. Tous niveaux à Saint-Michel-Chef-Chef.',
+}
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { disciplinesQuery, pageTextsQuery, pageQuery } from '@/sanity/lib/queries'
 import { fallbackDisciplines, fallbackPageTexts, type DisciplineContent, type PageTextsContent } from '@/src/lib/fallbackContent'

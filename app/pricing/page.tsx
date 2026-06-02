@@ -1,3 +1,8 @@
+import type { Metadata } from 'next'
+export const metadata: Metadata = {
+  title: 'Tarifs',
+  description: 'Tarifs des cours de danse Danse&CO. Formules solo et couple, cotisation, stages ponctuels. Saison 2026-2027.',
+}
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { pricingQuery, pageTextsQuery, pageQuery } from '@/sanity/lib/queries'
 import { fallbackPricing, fallbackPageTexts, type PricingContent, type PageTextsContent } from '@/src/lib/fallbackContent'

@@ -1,3 +1,8 @@
+import type { Metadata } from 'next'
+export const metadata: Metadata = {
+  title: 'Planning des Cours',
+  description: 'Consultez le planning des cours de danse Danse&CO. Horaires, jours et salles pour tous les niveaux à Saint-Michel-Chef-Chef.',
+}
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { siteInfoQuery, pageTextsQuery, pageQuery } from '@/sanity/lib/queries'
 import { fallbackSiteInfo, fallbackPageTexts, type SiteInfoContent, type PageTextsContent } from '@/src/lib/fallbackContent'

@@ -1,3 +1,8 @@
+import type { Metadata } from 'next'
+export const metadata: Metadata = {
+  title: 'Contact',
+  description: 'Contactez Danse&CO. Téléphone, email, adresse courrier. Nous répondons rapidement à toutes vos questions sur les cours de danse.',
+}
 import { sanityFetch } from '@/sanity/lib/fetch'
 import { siteInfoQuery, pageTextsQuery, venuesQuery, pageQuery } from '@/sanity/lib/queries'
 import {
