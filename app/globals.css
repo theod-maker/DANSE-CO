@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Cormorant Garamond", Georgia, serif;
+  --font-instrument: "Instrument Serif", serif;
+  --font-ui: "Inter", system-ui, sans-serif;
+}
+
+:root {
+  --ivory: #FDFBF7;
+  --ivory-soft: #F5F0EA;
+  --plum: #18102E;
+  --violet: #524490;
+  --violet-mid: #6C5CA8;
+  --violet-light: #EDEAF6;
+  --violet-mist: rgba(108, 92, 168, 0.05);
+  --muted: rgba(24, 16, 46, 0.45);
+  --divider: rgba(24, 16, 46, 0.07);
+}
+
+@layer base {
+  body {
+    background-color: var(--ivory);
+    color: var(--plum);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Grain cinématographique — donne de la chaleur et de la profondeur */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    opacity: 0.028;
+    pointer-events: none;
+    z-index: 9998;
+  }
+}
+
+/* ── Floating orbs ── */
+@keyframes orb-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25%       { transform: translate(18px, -28px) scale(1.06); }
+  50%       { transform: translate(-12px, -16px) scale(0.96); }
+  75%       { transform: translate(22px, 12px) scale(1.04); }
+}
+
+@keyframes orb-drift-alt {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(-22px, 22px) scale(1.05); }
+  66%       { transform: translate(14px, -20px) scale(0.95); }
+}
+
+@keyframes orb-drift-slow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(10px, -30px) scale(1.07); }
+  80%       { transform: translate(-15px, 8px) scale(0.94); }
+}
+
+/* ── Scroll indicator bounce ── */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50%       { transform: translateY(8px); opacity: 1; }
+}
+
+/* ── Line draw ── */
+@keyframes line-draw {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+/* ── Pulse glow ── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(108, 92, 168, 0); }
+  50%       { box-shadow: 0 0 20px 4px rgba(108, 92, 168, 0.15); }
+}
+
+@layer components {
+  /* UI font — labels, tags, small uppercase text */
+  .font-ui {
+    font-family: "Inter", system-ui, sans-serif;
+    letter-spacing: 0.08em;
+  }
+
+  /* Light glass — used on ivory pages */
+  .liquid-glass {
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.95) inset,
+      0 2px 16px rgba(108, 92, 168, 0.05),
+      0 8px 32px rgba(24, 16, 46, 0.04);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      160deg,
+      rgba(180, 140, 255, 0.35) 0%,
+      rgba(180, 140, 255, 0.1) 30%,
+      rgba(255, 255, 255, 0) 55%,
+      rgba(180, 140, 255, 0.08) 80%,
+      rgba(180, 140, 255, 0.25) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Dark glass — used inside the hero video section */
+  .liquid-glass-dark {
+    background: rgba(255, 255, 255, 0.01);
+    background-blend-mode: luminosity;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .liquid-glass-dark::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.4px;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.45) 0%,
+      rgba(255, 255, 255, 0.15) 20%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.15) 80%,
+      rgba(255, 255, 255, 0.45) 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Card shimmer — inclure un div.card-shimmer-layer à l'intérieur du card */
+  .card-shimmer-layer {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgba(180, 140, 255, 0.13) 50%,
+      transparent 70%
+    );
+    transform: translateX(-100%) skewX(-12deg);
+    transition: transform 0s;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .group:hover .card-shimmer-layer {
+    transform: translateX(200%) skewX(-12deg);
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    animation: scroll-bounce 2s ease-in-out infinite;
+  }
+
+  /* Animated line */
+  .animated-line {
+    transform-origin: left center;
+    animation: line-draw 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  }
+
+  /* CTA pulse */
+  .cta-pulse {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+}

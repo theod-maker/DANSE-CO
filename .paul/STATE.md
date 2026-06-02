@@ -10,10 +10,10 @@ See: .paul/PROJECT.md (updated 2026-04-05)
 ## Current Position
 
 Milestone: v1.0 Livraison Client
-Phase: 7 (Contenu manquant PDF) — Complete
-Plan: 07-01 + 07-02 exécutés et unifiés
-Status: UNIFY complete
-Last activity: 2026-05-20 — Phase 07 complète : contenu PDF intégré, nav alignée, pages histoire/actualités
+Phase: 8 (Next.js Foundation) — Planning
+Plan: 08-01 créé, awaiting approval
+Status: PLAN créé, ready for APPLY
+Last activity: 2026-06-02 — Migration Next.js planifiée (phases 08-11), plan 08-01 créé
 
 Progress:
 - Milestone: [█████████░] 95%
@@ -23,12 +23,13 @@ Progress:
 - Phase 5: [██████████] 100%
 - Phase 6: [██████████] 100%
 - Phase 7: [██████████] 100%
+- Phase 8: [░░░░░░░░░░] 0%
 
 ## Loop Position
 
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ✓        ✓        ✓     [Loop complete - ready for next PLAN]
+  ✓        ○        ○     [Plan créé, awaiting approval]
 ```
 
 ## Accumulated Context

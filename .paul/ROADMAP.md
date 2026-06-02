@@ -80,6 +80,69 @@ Phases: 0 of 3 complete
 - [ ] 04-02: Data layer (queries, types, hooks, fallbacks)
 - [ ] 04-03: Branchement composants et pages
 
+### Phase 8: Next.js Foundation
+
+**Goal:** Remplacer Vite par Next.js 15 App Router — base technique pour le live preview Sanity.
+**Depends on:** Nothing (migration structurelle indépendante)
+**Research:** No
+
+**Scope:**
+- Installation Next.js 15, suppression Vite
+- Configuration next.config.ts, tsconfig, postcss
+- Layout racine (app/layout.tsx) avec fonts + CSS global
+- Migration des 9 pages src/pages → app/*/page.tsx (structure, hooks conservés temporairement)
+- Route Studio Sanity app/studio/[[...tool]]/page.tsx
+
+**Plans:**
+- [ ] 08-01: Install Next.js + config (package.json, next.config.ts, tsconfig, layout, globals.css)
+- [ ] 08-02: Migration 9 pages + route Studio
+
+### Phase 9: Data Layer Next.js
+
+**Goal:** Remplacer les hooks useSanity par sanityFetch server-side + API routes pour ISR et draft mode.
+**Depends on:** Phase 8
+**Research:** No
+
+**Scope:**
+- sanity/lib/fetch.ts avec support draft mode
+- sanity/lib/live.ts pour live queries
+- Routes API : /api/revalidate, /api/draft/enable, /api/draft/disable
+- Conversion des 9 pages en Server Components (suppression hooks useSanity)
+
+**Plans:**
+- [ ] 09-01: sanityFetch + queries + API routes
+- [ ] 09-02: Conversion 9 pages en Server Components
+
+### Phase 10: Visual Editing
+
+**Goal:** Presentation Tool dans le Studio + overlays click-to-edit sur le site.
+**Depends on:** Phase 9
+**Research:** No
+
+**Scope:**
+- @sanity/presentation plugin dans sanity.config.ts
+- @sanity/visual-editing dans le layout Next.js
+- Encodage stega sur sanityFetch
+- Test click-to-edit sur chaque type de contenu
+
+**Plans:**
+- [ ] 10-01: Presentation Tool + visual editing overlays
+
+### Phase 11: Déploiement Vercel
+
+**Goal:** Site en ligne sur Vercel avec ISR, webhook Sanity, et guide client.
+**Depends on:** Phase 10
+**Research:** No
+
+**Scope:**
+- Variables d'env Vercel (SANITY_API_READ_TOKEN, SANITY_REVALIDATE_SECRET)
+- Webhook Sanity → URL Vercel prod
+- Test ISR en production
+- Guide client pour utiliser le preview dans le Studio
+
+**Plans:**
+- [ ] 11-01: Déploiement Vercel + webhook + guide client
+
 ### Phase 7: Contenu manquant PDF
 
 **Goal:** Intégrer tout le contenu du PDF client absent du site.
