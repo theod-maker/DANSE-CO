@@ -10,7 +10,6 @@ const navLinks = [
   { label: 'Actualités', href: '/actualites' },
   { label: 'Les danses', href: '/disciplines' },
   { label: "L'histoire", href: '/histoire' },
-  { label: 'Nos Salles', href: '/locations' },
 ];
 
 const AppNavbar: React.FC = () => {
@@ -30,7 +29,7 @@ const AppNavbar: React.FC = () => {
             </span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-4">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -49,7 +48,7 @@ const AppNavbar: React.FC = () => {
           <div className="flex items-center gap-3">
             <Link
               to="/contact"
-              className={`hidden md:block liquid-glass rounded-full px-5 py-2 text-sm font-medium transition-colors ${
+              className={`hidden lg:block liquid-glass rounded-full px-5 py-2 text-sm font-medium transition-colors ${
                 location.pathname === '/contact'
                   ? 'text-[#6C5CA8]'
                   : 'text-[#18102E] hover:text-[#6C5CA8]'
@@ -59,7 +58,7 @@ const AppNavbar: React.FC = () => {
             </Link>
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden liquid-glass rounded-full p-2 text-[#18102E]"
+              className="lg:hidden liquid-glass rounded-full p-2 text-[#18102E]"
             >
               {menuOpen ? <X size={18} /> : <Menu size={18} />}
             </button>

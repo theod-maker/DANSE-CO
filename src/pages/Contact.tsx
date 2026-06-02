@@ -5,7 +5,7 @@ import { ContactForm } from '../components/contact/ContactForm';
 import AppNavbar from '../components/layout/AppNavbar';
 import AppFooter from '../components/layout/AppFooter';
 import BlockRenderer from '../components/blocks/BlockRenderer';
-import { useSiteInfo, usePageTexts } from '../hooks/useSanity';
+import { useSiteInfo, usePageTexts, useVenues } from '../hooks/useSanity';
 import { usePage } from '../hooks/usePage';
 
 const InstagramIcon = ({ size = 18 }: { size?: number }) => (
@@ -31,6 +31,7 @@ const Contact = () => {
   const infoInView = useInView(infoRef, { once: true, margin: '-60px' });
   const siteInfo = useSiteInfo();
   const pageTexts = usePageTexts();
+  const venues = useVenues();
   const pageData = usePage('/contact')
 
   const contactItems = [
@@ -194,6 +195,42 @@ const Contact = () => {
             </div>
           </motion.div>
         </div>
+
+        {venues.length > 0 && (
+          <div className="mt-16 relative z-10">
+            <p className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-6">NOS SALLES</p>
+            <div className="grid md:grid-cols-2 gap-6">
+              {venues.map((venue) => (
+                <div key={venue._id} className="liquid-glass rounded-3xl overflow-hidden">
+                  <iframe
+                    src={venue.mapEmbedUrl}
+                    width="100%"
+                    height="220"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={venue.name}
+                  />
+                  <div className="px-5 py-4">
+                    <p className="text-[#18102E] text-sm font-medium">{venue.name}</p>
+                    <p className="text-[#18102E]/50 text-xs mt-1">{venue.address}</p>
+                    {venue.googleMapsUrl && (
+                      <a
+                        href={venue.googleMapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#6C5CA8] text-xs hover:underline mt-2 inline-block"
+                      >
+                        Ouvrir dans Google Maps →
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </main>
 
       <AppFooter />

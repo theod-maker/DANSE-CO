@@ -14,7 +14,7 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          <span className={styles.tagline}>Saison 2025 - 2026</span>
+          <span className={styles.tagline}>Saison 2026 - 2027</span>
           <h1 className={styles.title}>
             Faites le premier pas avec <span>Danse & CO</span>
           </h1>

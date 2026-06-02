@@ -39,7 +39,6 @@ const AppFooter: React.FC = () => {
           <Link to="/actualites" className="hover:text-[#6C5CA8] transition-colors">Actualités</Link>
           <Link to="/disciplines" className="hover:text-[#6C5CA8] transition-colors">Les danses</Link>
           <Link to="/histoire" className="hover:text-[#6C5CA8] transition-colors">L'histoire</Link>
-          <Link to="/locations" className="hover:text-[#6C5CA8] transition-colors">Nos Salles</Link>
           <Link to="/contact" className="hover:text-[#6C5CA8] transition-colors">Contact</Link>
         </div>
 

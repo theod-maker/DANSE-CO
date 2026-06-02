@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Phone, Mail, MapPin } from 'lucide-react'
 import { ContactForm } from '../contact/ContactForm'
-import { useSiteInfo } from '../../hooks/useSanity'
+import { useSiteInfo, useVenues } from '../../hooks/useSanity'
 
 const InstagramIcon = ({ size = 18 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -24,6 +24,7 @@ const ContactBlock: React.FC = () => {
   const infoRef = useRef(null)
   const infoInView = useInView(infoRef, { once: true, margin: '-60px' })
   const siteInfo = useSiteInfo()
+  const venues = useVenues()
 
   const contactItems = [
     { icon: <Phone size={18} />, label: 'Téléphone', value: siteInfo.phone, href: `tel:${siteInfo.phone.replace(/\./g, '')}` },
@@ -120,6 +121,47 @@ const ContactBlock: React.FC = () => {
             </div>
           </motion.div>
         </div>
+
+        {venues.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={infoInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, delay: 0.4, ease: EASING }}
+            className="mt-8"
+          >
+            <p className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-5">NOS SALLES</p>
+            <div className="grid md:grid-cols-2 gap-6">
+              {venues.map((venue) => (
+                <div key={venue._id} className="liquid-glass rounded-3xl overflow-hidden">
+                  <iframe
+                    src={venue.mapEmbedUrl}
+                    width="100%"
+                    height="220"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={venue.name}
+                  />
+                  <div className="px-5 py-4">
+                    <p className="text-[#18102E] text-sm font-medium">{venue.name}</p>
+                    <p className="text-[#18102E]/50 text-xs mt-1">{venue.address}</p>
+                    {venue.googleMapsUrl && (
+                      <a
+                        href={venue.googleMapsUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#6C5CA8] text-xs hover:underline mt-2 inline-block"
+                      >
+                        Ouvrir dans Google Maps →
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   )

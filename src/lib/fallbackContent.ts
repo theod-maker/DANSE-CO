@@ -167,8 +167,8 @@ export const fallbackSiteInfo: SiteInfoContent = {
   facebookUrl: 'https://www.facebook.com/dansandco/',
   twitterUrl: '',
   websiteUrl: '',
-  season: '2025–2026',
-  footerTagline: 'Saint-Michel-Chef-Chef · Saison 2025–2026',
+  season: '2026–2027',
+  footerTagline: 'Saint-Michel-Chef-Chef · Saison 2026–2027',
 }
 
 export const fallbackDisciplines: DisciplineContent[] = [
@@ -197,21 +197,21 @@ export const fallbackDisciplines: DisciplineContent[] = [
     _id: 'lindy-hop',
     title: 'Lindy Hop',
     iconName: 'Zap',
-    description: "Danse swing née dans les années 1920 à New York. Se danse à deux, caractérisée par son énergie, son improvisation et ses mouvements dynamiques. L'une des danses swing les plus pratiquées dans le monde.",
+    description: "Danse swing née dans les années 1920 à New York. Elle se danse à deux et se caractérise par son énergie, son improvisation et ses mouvements dynamiques. Elle est aujourd'hui l'une des danses swing les plus pratiquées dans le monde.",
     benefits: ['Énergie', 'Improvisation', 'Convivialité'],
   },
   {
     _id: 'multidanses',
     title: 'Multidanses',
     iconName: 'Music',
-    description: "Explorez plusieurs styles de danse : chachacha, tango, rock'n roll, salsa. Chaque rythme a sa magie et permet de découvrir de nouvelles techniques tout en s'amusant.",
+    description: "Explorez plusieurs styles de danse comme le chachacha, le tango, le rock'n roll ou encore la salsa. Chaque rythme a sa magie et permet de découvrir de nouvelles techniques tout en s'amusant.",
     benefits: ['Variété', 'Découverte', 'Technique'],
   },
   {
     _id: 'danse-en-ligne',
     title: 'Danse en ligne',
     iconName: 'Users',
-    description: "Danse collective où tout le monde suit une même chorégraphie. Facile à apprendre et très conviviale, se danse sur tous les styles de musique : rumba, shim sham, chachacha, salsa.",
+    description: "Danse collective où l'on peut venir seul, tout le monde suit une même chorégraphie. Facile à apprendre et très conviviale, elle se danse sur tous les styles de musique : rumba, shim sham, chachacha, salsa.",
     benefits: ['Collectif', 'Accessible', 'Convivialité'],
   },
   {
@@ -231,7 +231,7 @@ export const fallbackVenues: VenueContent[] = [
     description: "Située en bord de mer, cette salle spacieuse offre un cadre exceptionnel pour la pratique de la danse. C'est le lieu principal de nos cours du lundi soir.",
     amenities: ['Grand Parquet', 'Vue Mer', 'Parking Facile', 'Vestiaires'],
     mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2714.7371191076226!2d-2.146603023249033!3d47.11364507114945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x480572b9a76d8b9b%3A0x6b4843f54802890!2sLe%20Canopus!5e0!3m2!1sfr!2sfr!4v1712250000000!5m2!1sfr!2sfr',
-    googleMapsUrl: 'https://maps.app.goo.gl/uX7GfVzP7mZzR5wU9',
+    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Le+Canopus+129+Boulevard+de+l%27Océan+44730+Saint-Michel-Chef-Chef',
   },
   {
     _id: 'caraibes',
@@ -240,7 +240,7 @@ export const fallbackVenues: VenueContent[] = [
     description: 'Au sein du complexe sportif, cette salle est parfaitement équipée pour les cours de salon et les stages du samedi. Une ambiance conviviale et sportive garantie.',
     amenities: ['Espace Sportif', 'Miroirs', 'Accessibilité PMR', 'Équipement Son'],
     mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2714.800000000000!2d-2.138!3d47.11!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDfCsDA2JzM2LjAiTiAywrAwOCcxNi44Ilc!5e0!3m2!1sfr!2sfr!4v1712251000000!5m2!1sfr!2sfr',
-    googleMapsUrl: 'https://maps.app.goo.gl/uX7GfVzP7mZzR5wU9',
+    googleMapsUrl: 'https://www.google.com/maps/search/?api=1&query=Complexe+sportif+de+la+Viauderie+44730+Saint-Michel-Chef-Chef',
   },
 ]
 
@@ -284,7 +284,7 @@ export const fallbackNews: NewsContent[] = [
 ]
 
 export const fallbackPricing: PricingContent = {
-  season: '2025 - 2026',
+  season: '2026 - 2027',
   rows: [
     { label: '1h de cours — Solo', price: '220 €', detail: '' },
     { label: '1h de cours — Couple', price: '330 €', detail: '' },
