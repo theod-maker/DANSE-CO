@@ -1,6 +1,7 @@
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
+import { presentationTool } from 'sanity/presentation'
 import { schemaTypes } from './sanity/schemaTypes'
 
 const projectId = 'z0uyxhwg'
@@ -78,6 +79,17 @@ export default defineConfig({
           ]),
     }),
     visionTool(),
+    presentationTool({
+      previewUrl: {
+        origin: process.env.NODE_ENV === 'production'
+          ? 'https://danse-co.vercel.app'
+          : 'http://localhost:5247',
+        preview: '/',
+        draftMode: {
+          enable: '/api/draft/enable',
+        },
+      },
+    }),
   ],
   schema: {
     types: schemaTypes,
