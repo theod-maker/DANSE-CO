@@ -4,11 +4,15 @@ import path from 'path'
 const config: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
   transpilePackages: ['sanity', '@sanity/vision'],
-  webpack: (webpackConfig) => {
-    webpackConfig.resolve.alias = {
-      ...webpackConfig.resolve.alias,
-      react: path.resolve('./node_modules/react'),
-      'react-dom': path.resolve('./node_modules/react-dom'),
+  webpack: (webpackConfig, { isServer }) => {
+    if (!isServer) {
+      webpackConfig.resolve.alias = {
+        ...webpackConfig.resolve.alias,
+        react: path.resolve('./node_modules/react'),
+        'react-dom': path.resolve('./node_modules/react-dom'),
+        'react/jsx-runtime': path.resolve('./node_modules/react/jsx-runtime'),
+        'react/jsx-dev-runtime': path.resolve('./node_modules/react/jsx-dev-runtime'),
+      }
     }
     return webpackConfig
   },

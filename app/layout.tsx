@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { SanityLive } from '@/sanity/lib/live'
-import DynamicWrapper from '@/src/components/layout/DynamicWrapper'
 import VisualEditingWrapper from '@/src/components/layout/VisualEditingWrapper'
 import './globals.css'
 
@@ -20,7 +19,7 @@ export default async function RootLayout({
   return (
     <html lang="fr">
       <body>
-        <DynamicWrapper>{children}</DynamicWrapper>
+        {children}
         <SanityLive />
         {isDraftMode && <VisualEditingWrapper />}
       </body>
