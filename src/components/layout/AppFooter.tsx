@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+'use client'
+import Link from 'next/link';
 import { useSiteInfo } from '../../hooks/useSanity';
 
 const InstagramIcon = ({ size = 16 }: { size?: number }) => (
@@ -21,7 +21,7 @@ const AppFooter: React.FC = () => {
     <footer className="bg-[#F5F0EA] border-t border-[#18102E]/8 px-6 py-12">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-5 md:gap-8">
         <div>
-          <Link to="/">
+          <Link href="/">
             <span
               style={{ fontFamily: "'Instrument Serif', serif" }}
               className="text-[#18102E] text-xl tracking-tight"
@@ -33,13 +33,13 @@ const AppFooter: React.FC = () => {
         </div>
 
         <div className="flex flex-wrap gap-x-4 gap-y-3 md:gap-x-8 text-sm text-[#18102E]/40">
-          <Link to="/planning" className="hover:text-[#6C5CA8] transition-colors">Planning</Link>
-          <Link to="/pricing" className="hover:text-[#6C5CA8] transition-colors">Tarifs</Link>
-          <Link to="/instructors" className="hover:text-[#6C5CA8] transition-colors">Les membres</Link>
-          <Link to="/actualites" className="hover:text-[#6C5CA8] transition-colors">Actualités</Link>
-          <Link to="/disciplines" className="hover:text-[#6C5CA8] transition-colors">Les danses</Link>
-          <Link to="/histoire" className="hover:text-[#6C5CA8] transition-colors">L'histoire</Link>
-          <Link to="/contact" className="hover:text-[#6C5CA8] transition-colors">Contact</Link>
+          <Link href="/planning" className="hover:text-[#6C5CA8] transition-colors">Planning</Link>
+          <Link href="/pricing" className="hover:text-[#6C5CA8] transition-colors">Tarifs</Link>
+          <Link href="/instructors" className="hover:text-[#6C5CA8] transition-colors">Les membres</Link>
+          <Link href="/actualites" className="hover:text-[#6C5CA8] transition-colors">Actualités</Link>
+          <Link href="/disciplines" className="hover:text-[#6C5CA8] transition-colors">Les danses</Link>
+          <Link href="/histoire" className="hover:text-[#6C5CA8] transition-colors">L'histoire</Link>
+          <Link href="/contact" className="hover:text-[#6C5CA8] transition-colors">Contact</Link>
         </div>
 
         <div className="flex gap-3">

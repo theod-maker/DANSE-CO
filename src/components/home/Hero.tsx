@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import styles from './Hero.module.css';
 
@@ -22,10 +22,10 @@ const Hero = () => {
             Découvrez l'élégance de la Danse Sportive et le plaisir de bouger à Saint-Michel-Chef-Chef. Tous niveaux, tous âges, une seule passion.
           </p>
           <div className={styles.actions}>
-            <Link to="/planning" className={styles.primaryBtn}>
+            <Link href="/planning" className={styles.primaryBtn}>
               Voir le Planning <ArrowRight size={20} />
             </Link>
-            <Link to="/disciplines" className={styles.secondaryBtn}>
+            <Link href="/disciplines" className={styles.secondaryBtn}>
               Nos Disciplines
             </Link>
           </div>

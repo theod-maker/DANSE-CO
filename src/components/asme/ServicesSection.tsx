@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { ArrowUpRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import type { HomepageContent } from '../../lib/fallbackContent'
 
 interface Props {
@@ -57,7 +57,7 @@ const ServiceCard = ({
             {tag}
           </p>
           <Link
-            to={href}
+            href={href}
             className="liquid-glass rounded-full p-2 text-[#6C5CA8]/60 transition-all group-hover:text-[#6C5CA8] group-hover:scale-110 group-hover:rotate-12"
           >
             <ArrowUpRight size={16} />

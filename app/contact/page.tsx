@@ -1,12 +1,14 @@
+'use client'
+export const dynamic = 'force-dynamic'
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Phone, Mail, MapPin } from 'lucide-react';
-import { ContactForm } from '../components/contact/ContactForm';
-import AppNavbar from '../components/layout/AppNavbar';
-import AppFooter from '../components/layout/AppFooter';
-import BlockRenderer from '../components/blocks/BlockRenderer';
-import { useSiteInfo, usePageTexts, useVenues } from '../hooks/useSanity';
-import { usePage } from '../hooks/usePage';
+import { ContactForm } from '@/src/components/contact/ContactForm';
+import AppNavbar from '@/src/components/layout/AppNavbar';
+import AppFooter from '@/src/components/layout/AppFooter';
+import BlockRenderer from '@/src/components/blocks/BlockRenderer';
+import { useSiteInfo, usePageTexts, useVenues } from '@/src/hooks/useSanity';
+import { usePage } from '@/src/hooks/usePage';
 
 const InstagramIcon = ({ size = 18 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

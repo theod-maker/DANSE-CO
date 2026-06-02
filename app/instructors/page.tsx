@@ -1,11 +1,13 @@
-import React, { useRef } from 'react'
+'use client'
+export const dynamic = 'force-dynamic'
+import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import AppNavbar from '../components/layout/AppNavbar'
-import AppFooter from '../components/layout/AppFooter'
-import BlockRenderer from '../components/blocks/BlockRenderer'
-import { useInstructors, usePageTexts } from '../hooks/useSanity'
-import { usePage } from '../hooks/usePage'
-import type { InstructorContent } from '../lib/fallbackContent'
+import AppNavbar from '@/src/components/layout/AppNavbar'
+import AppFooter from '@/src/components/layout/AppFooter'
+import BlockRenderer from '@/src/components/blocks/BlockRenderer'
+import { useInstructors, usePageTexts } from '@/src/hooks/useSanity'
+import { usePage } from '@/src/hooks/usePage'
+import type { InstructorContent } from '@/src/lib/fallbackContent'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
@@ -72,7 +74,6 @@ const InstructorCard = ({ name, specialty, bio, experience, photoUrl, index }: I
       transition={{ duration: 0.8, delay: index * 0.12, ease: EASING }}
       className="group liquid-glass rounded-3xl p-5 md:p-8 flex flex-col gap-6 relative overflow-hidden"
     >
-      {/* Initiale décorative en fond */}
       <span
         style={{ fontFamily: "'Instrument Serif', serif" }}
         className="absolute -right-2 -bottom-4 text-[120px] leading-none text-[#6C5CA8]/5 pointer-events-none select-none italic transition-all duration-500 group-hover:text-[#6C5CA8]/10"
@@ -80,7 +81,6 @@ const InstructorCard = ({ name, specialty, bio, experience, photoUrl, index }: I
         {name.charAt(0)}
       </span>
 
-      {/* Shimmer */}
       <div className="card-shimmer-layer" />
 
       {photoUrl && (
@@ -152,7 +152,6 @@ const Instructors = () => {
 
       <main className="max-w-6xl mx-auto px-6 pt-40 pb-32 relative">
 
-        {/* Orbe décoratif */}
         <div
           className="absolute pointer-events-none [animation:orb-drift-alt_14s_ease-in-out_infinite]"
           style={{

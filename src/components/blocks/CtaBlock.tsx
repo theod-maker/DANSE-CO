@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import type { CtaBlockType } from '../../lib/pageBuilderTypes'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
@@ -31,7 +31,7 @@ const CtaBlock: React.FC<CtaBlockType> = ({ title, description, buttonLabel, but
           </p>
         )}
         <Link
-          to={buttonLink}
+          href={buttonLink}
           className="inline-block bg-[#6C5CA8] rounded-full px-8 py-3 text-sm font-medium text-white hover:bg-[#524490] transition-colors"
         >
           {buttonLabel}

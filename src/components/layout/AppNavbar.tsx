@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+'use client'
+import { useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -14,13 +16,13 @@ const navLinks = [
 
 const AppNavbar: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const location = useLocation();
+  const pathname = usePathname();
 
   return (
     <>
       <nav className="fixed top-0 inset-x-0 z-50 flex justify-center px-6 pt-6">
         <div className="liquid-glass rounded-full px-6 py-3 flex items-center justify-between w-full max-w-5xl">
-          <Link to="/">
+          <Link href="/">
             <span
               style={{ fontFamily: "'Instrument Serif', serif" }}
               className="text-[#18102E] text-xl tracking-tight"
@@ -33,9 +35,9 @@ const AppNavbar: React.FC = () => {
             {navLinks.map((link) => (
               <Link
                 key={link.href}
-                to={link.href}
+                href={link.href}
                 className={`text-sm transition-colors ${
-                  location.pathname === link.href
+                  pathname === link.href
                     ? 'text-[#6C5CA8] font-medium'
                     : 'text-[#18102E]/55 hover:text-[#18102E]'
                 }`}
@@ -47,9 +49,9 @@ const AppNavbar: React.FC = () => {
 
           <div className="flex items-center gap-3">
             <Link
-              to="/contact"
+              href="/contact"
               className={`hidden lg:block liquid-glass rounded-full px-5 py-2 text-sm font-medium transition-colors ${
-                location.pathname === '/contact'
+                pathname === '/contact'
                   ? 'text-[#6C5CA8]'
                   : 'text-[#18102E] hover:text-[#6C5CA8]'
               }`}
@@ -79,10 +81,10 @@ const AppNavbar: React.FC = () => {
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
-                  to={link.href}
+                  href={link.href}
                   onClick={() => setMenuOpen(false)}
                   className={`text-sm md:text-base transition-colors ${
-                    location.pathname === link.href
+                    pathname === link.href
                       ? 'text-[#6C5CA8] font-medium'
                       : 'text-[#18102E]/60'
                   }`}
@@ -91,7 +93,7 @@ const AppNavbar: React.FC = () => {
                 </Link>
               ))}
               <Link
-                to="/contact"
+                href="/contact"
                 onClick={() => setMenuOpen(false)}
                 className="text-base text-[#18102E]/60"
               >

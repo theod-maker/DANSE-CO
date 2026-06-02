@@ -1,11 +1,13 @@
+'use client'
+export const dynamic = 'force-dynamic'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import AppNavbar from '../components/layout/AppNavbar'
-import AppFooter from '../components/layout/AppFooter'
+import AppNavbar from '@/src/components/layout/AppNavbar'
+import AppFooter from '@/src/components/layout/AppFooter'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
-const Actualites = () => {
+const Histoire = () => {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
 
@@ -34,13 +36,13 @@ const Actualites = () => {
             transition={{ duration: 0.6 }}
             className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-6"
           >
-            Actualités
+            L'Histoire
           </motion.p>
           <h1
             style={{ fontFamily: "'Instrument Serif', serif", perspective: '1200px' }}
             className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05] max-w-3xl text-[#18102E] mb-8"
           >
-            {['Nos', 'Actualités'].map((word, i) => (
+            {['Notre', 'Histoire'].map((word, i) => (
               <motion.span
                 key={i}
                 style={{ display: 'inline-block', marginRight: '0.3em' }}
@@ -59,7 +61,7 @@ const Actualites = () => {
             transition={{ duration: 0.6, delay: 0.35, ease: EASING }}
             className="text-[#18102E]/50 text-base md:text-lg leading-relaxed max-w-xl"
           >
-            Les prochaines dates de stages et actualités du club seront affichées ici.
+            Cette page est en cours de rédaction. Revenez bientôt pour découvrir l'histoire de Danse&nbsp;&amp;&nbsp;CO.
           </motion.p>
         </div>
       </main>
@@ -69,4 +71,4 @@ const Actualites = () => {
   )
 }
 
-export default Actualites
+export default Histoire

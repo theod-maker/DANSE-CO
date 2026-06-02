@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import type { HomepageContent } from '../../lib/fallbackContent'
 
@@ -67,7 +67,7 @@ const FeaturedVideoSection: React.FC<Props> = ({ content }) => {
               transition={{ duration: 0.6, delay: 0.55, ease: EASING }}
             >
               <Link
-                to="/disciplines"
+                href="/disciplines"
                 className="group/btn liquid-glass rounded-full px-8 py-3 text-[#18102E] text-sm font-medium flex items-center gap-2 hover:gap-3 transition-all"
               >
                 Explorer

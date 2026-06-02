@@ -90,7 +90,7 @@ function ContactForm() {
     const form = e.currentTarget;
     setStatus('sending');
     try {
-      const response = await fetch(import.meta.env.VITE_FORMSPREE_ENDPOINT, {
+      const response = await fetch(process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT!, {
         method: 'POST',
         body: new FormData(form),
         headers: { Accept: 'application/json' },

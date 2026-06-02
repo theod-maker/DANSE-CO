@@ -55,7 +55,7 @@ function useSanityData<T>(query: string, fallback: T): T {
       .then((result) => {
         if (result && (!Array.isArray(result) || result.length > 0)) setData(result)
       })
-      .catch((err) => { if (import.meta.env.DEV) console.warn('[useSanity]', err) })
+      .catch((err) => { if (process.env.NODE_ENV === 'development') console.warn('[useSanity]', err) })
   }, [query])
 
   return data

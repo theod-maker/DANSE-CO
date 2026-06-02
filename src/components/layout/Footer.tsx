@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Phone, Mail, MapPin } from 'lucide-react';
 import { useSiteInfo } from '../../hooks/useSanity';
 
@@ -46,14 +46,14 @@ const Footer = () => {
           <div className={styles.links}>
             <h4>Navigation</h4>
             <ul>
-              <li><Link to="/">Accueil</Link></li>
-              <li><Link to="/planning">Planning</Link></li>
-              <li><Link to="/pricing">Tarifs</Link></li>
-              <li><Link to="/instructors">Les membres</Link></li>
-              <li><Link to="/actualites">Actualités</Link></li>
-              <li><Link to="/disciplines">Les danses</Link></li>
-              <li><Link to="/histoire">L'histoire</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
+              <li><Link href="/">Accueil</Link></li>
+              <li><Link href="/planning">Planning</Link></li>
+              <li><Link href="/pricing">Tarifs</Link></li>
+              <li><Link href="/instructors">Les membres</Link></li>
+              <li><Link href="/actualites">Actualités</Link></li>
+              <li><Link href="/disciplines">Les danses</Link></li>
+              <li><Link href="/histoire">L'histoire</Link></li>
+              <li><Link href="/contact">Contact</Link></li>
             </ul>
           </div>
 

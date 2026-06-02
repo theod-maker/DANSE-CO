@@ -1,13 +1,15 @@
-import React, { useRef } from 'react';
+'use client'
+export const dynamic = 'force-dynamic'
+import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Check, Info } from 'lucide-react';
-import { Link } from 'react-router-dom';
-import AppNavbar from '../components/layout/AppNavbar';
-import AppFooter from '../components/layout/AppFooter';
-import BlockRenderer from '../components/blocks/BlockRenderer';
-import { usePricing, usePageTexts } from '../hooks/useSanity';
-import { usePage } from '../hooks/usePage';
-import type { PricingRowContent } from '../lib/fallbackContent';
+import Link from 'next/link';
+import AppNavbar from '@/src/components/layout/AppNavbar';
+import AppFooter from '@/src/components/layout/AppFooter';
+import BlockRenderer from '@/src/components/blocks/BlockRenderer';
+import { usePricing, usePageTexts } from '@/src/hooks/useSanity';
+import { usePage } from '@/src/hooks/usePage';
+import type { PricingRowContent } from '@/src/lib/fallbackContent';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
@@ -26,10 +28,8 @@ const PricingCard = ({ label, price, detail, highlight, index }: PricingRowConte
         highlight ? 'ring-1 ring-[#6C5CA8]/25' : ''
       }`}
     >
-      {/* Shimmer */}
       <div className="card-shimmer-layer" />
 
-      {/* Barre accent gauche */}
       {highlight && (
         <div className="absolute left-0 inset-y-0 w-1 bg-gradient-to-b from-[#6C5CA8]/40 via-[#6C5CA8]/70 to-[#6C5CA8]/40 rounded-full" />
       )}
@@ -87,7 +87,6 @@ const Pricing = () => {
 
       <main className="max-w-6xl mx-auto px-6 pt-40 pb-32 relative">
 
-        {/* Orbe décoratif */}
         <div
           className="absolute pointer-events-none [animation:orb-drift-slow_18s_ease-in-out_infinite]"
           style={{
@@ -171,7 +170,7 @@ const Pricing = () => {
             </ul>
             <div className="pt-2">
               <Link
-                to="/contact"
+                href="/contact"
                 className="text-[#6C5CA8]/60 text-sm hover:text-[#6C5CA8] transition-colors underline underline-offset-4"
               >
                 Une question ? Contactez-nous →

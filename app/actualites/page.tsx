@@ -1,49 +1,31 @@
-import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-import VenueCard from '../components/locations/VenueCard';
-import AppNavbar from '../components/layout/AppNavbar';
-import AppFooter from '../components/layout/AppFooter';
-import BlockRenderer from '../components/blocks/BlockRenderer';
-import { useVenues, usePageTexts } from '../hooks/useSanity';
-import { usePage } from '../hooks/usePage';
+'use client'
+export const dynamic = 'force-dynamic'
+import { useRef } from 'react'
+import { motion, useInView } from 'framer-motion'
+import AppNavbar from '@/src/components/layout/AppNavbar'
+import AppFooter from '@/src/components/layout/AppFooter'
 
-const EASING = [0.25, 0.46, 0.45, 0.94] as const;
+const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
-const Locations = () => {
-  const headerRef = useRef(null);
-  const headerInView = useInView(headerRef, { once: true });
-  const venues = useVenues()
-  const pageTexts = usePageTexts()
-  const pageData = usePage('/locations')
-
-  if (pageData) {
-    return (
-      <div className="min-h-screen overflow-x-hidden">
-        <AppNavbar />
-        <main className="pb-32">
-          <BlockRenderer blocks={pageData.blocks} />
-        </main>
-        <AppFooter />
-      </div>
-    )
-  }
+const Actualites = () => {
+  const headerRef = useRef(null)
+  const headerInView = useInView(headerRef, { once: true })
 
   return (
     <div className="min-h-screen overflow-x-hidden">
       <AppNavbar />
 
       <main className="max-w-6xl mx-auto px-6 pt-40 pb-32 relative">
-
         <div
-          className="absolute pointer-events-none [animation:orb-drift_16s_ease-in-out_infinite]"
+          className="absolute pointer-events-none [animation:orb-drift-alt_14s_ease-in-out_infinite]"
           style={{
-            width: 500,
-            height: 500,
-            top: '-50px',
-            right: '-150px',
+            width: 450,
+            height: 450,
+            top: '0',
+            left: '-120px',
             borderRadius: '50%',
             background: 'radial-gradient(circle, rgba(107,33,168,0.05) 0%, transparent 70%)',
-            filter: 'blur(60px)',
+            filter: 'blur(55px)',
           }}
         />
 
@@ -54,14 +36,13 @@ const Locations = () => {
             transition={{ duration: 0.6 }}
             className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-6"
           >
-            OÙ NOUS TROUVER
+            Actualités
           </motion.p>
-
           <h1
             style={{ fontFamily: "'Instrument Serif', serif", perspective: '1200px' }}
             className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05] max-w-3xl text-[#18102E] mb-8"
           >
-            {['Nos', 'Salles'].map((word, i) => (
+            {['Nos', 'Actualités'].map((word, i) => (
               <motion.span
                 key={i}
                 style={{ display: 'inline-block', marginRight: '0.3em' }}
@@ -74,27 +55,20 @@ const Locations = () => {
               </motion.span>
             ))}
           </h1>
-
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.35, ease: EASING }}
             className="text-[#18102E]/50 text-base md:text-lg leading-relaxed max-w-xl"
           >
-            {pageTexts.locationsSubtitle}
+            Les prochaines dates de stages et actualités du club seront affichées ici.
           </motion.p>
-        </div>
-
-        <div className="relative z-10">
-          {venues.map((venue, index) => (
-            <VenueCard key={venue._id} {...venue} index={index} />
-          ))}
         </div>
       </main>
 
       <AppFooter />
     </div>
-  );
-};
+  )
+}
 
-export default Locations;
+export default Actualites

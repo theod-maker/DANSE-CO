@@ -1,12 +1,14 @@
+'use client'
+export const dynamic = 'force-dynamic'
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { Music, Zap, Heart, Star, Users, type LucideProps } from 'lucide-react';
-import AppNavbar from '../components/layout/AppNavbar';
-import AppFooter from '../components/layout/AppFooter';
-import BlockRenderer from '../components/blocks/BlockRenderer';
-import { useDisciplines, usePageTexts } from '../hooks/useSanity';
-import { usePage } from '../hooks/usePage';
-import type { DisciplineContent } from '../lib/fallbackContent';
+import AppNavbar from '@/src/components/layout/AppNavbar';
+import AppFooter from '@/src/components/layout/AppFooter';
+import BlockRenderer from '@/src/components/blocks/BlockRenderer';
+import { useDisciplines, usePageTexts } from '@/src/hooks/useSanity';
+import { usePage } from '@/src/hooks/usePage';
+import type { DisciplineContent } from '@/src/lib/fallbackContent';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import type { HeroBlockType } from '../../lib/pageBuilderTypes'
 
@@ -94,7 +94,7 @@ const HeroBlock: React.FC<HeroBlockType> = ({ tagline, title, description, image
             onChange={(e) => setEmailValue(e.target.value)}
             className="bg-transparent border-none outline-none flex-1 text-[#18102E] placeholder:text-[#18102E]/40 text-sm"
           />
-          <Link to="/contact" className="bg-[#6C5CA8] rounded-full p-2 text-white hover:bg-[#524490] transition-colors">
+          <Link href="/contact" className="bg-[#6C5CA8] rounded-full p-2 text-white hover:bg-[#524490] transition-colors">
             <ArrowRight size={20} />
           </Link>
         </motion.div>
@@ -117,7 +117,7 @@ const HeroBlock: React.FC<HeroBlockType> = ({ tagline, title, description, image
             transition={{ duration: 0.6, delay: 1.2, ease: EASING }}
           >
             <Link
-              to={ctaLink}
+              href={ctaLink}
               className="cta-pulse bg-[#18102E] rounded-full px-8 py-3 text-sm font-medium text-white hover:bg-[#18102E]/80 transition-colors"
             >
               {ctaLabel}

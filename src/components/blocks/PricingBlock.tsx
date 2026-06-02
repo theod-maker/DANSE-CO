@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Check, Info } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import Link from 'next/link'
 import { usePricing } from '../../hooks/useSanity'
 import type { PricingRowContent } from '../../lib/fallbackContent'
 
@@ -94,7 +94,7 @@ const PricingBlock: React.FC = () => {
               ))}
             </ul>
             <div className="pt-2">
-              <Link to="/contact" className="text-[#6C5CA8]/60 text-sm hover:text-[#6C5CA8] transition-colors underline underline-offset-4">
+              <Link href="/contact" className="text-[#6C5CA8]/60 text-sm hover:text-[#6C5CA8] transition-colors underline underline-offset-4">
                 Une question ? Contactez-nous →
               </Link>
             </div>
