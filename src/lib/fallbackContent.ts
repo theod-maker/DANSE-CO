@@ -271,15 +271,46 @@ export const fallbackPageTexts: PageTextsContent = {
 export const fallbackNews: NewsContent[] = [
   {
     _id: 'news-1',
-    title: 'Reprise des cours — Saison 2025-2026',
-    date: '2025-09-01',
-    excerpt: 'La nouvelle saison démarre en septembre ! Inscriptions ouvertes lors des permanences du lundi, mercredi et samedi.',
+    title: 'Reprise des cours — Saison 2026-2027',
+    date: '2026-09-01',
+    imageUrl: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800&q=80',
+    excerpt: 'La nouvelle saison démarre en septembre ! Inscriptions ouvertes lors des permanences du lundi, mercredi et samedi. Venez nombreux.',
   },
   {
     _id: 'news-2',
-    title: 'Stage Rock & Roll — Novembre',
-    date: '2025-11-15',
-    excerpt: 'Un week-end intensif pour progresser en Rock. Places limitées, inscrivez-vous rapidement lors des permanences.',
+    title: 'Stage Rock & Roll — Week-end intensif',
+    date: '2026-11-15',
+    imageUrl: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80',
+    excerpt: 'Un week-end intensif pour progresser en Rock. Tous niveaux bienvenus. Places limitées — inscrivez-vous rapidement lors des permanences.',
+    link: 'https://dansandco.wixsite.com/dansandco',
+  },
+  {
+    _id: 'news-3',
+    title: 'Compétition régionale — Nos danseurs au top',
+    date: '2026-10-20',
+    imageUrl: 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=800&q=80',
+    excerpt: 'Nos couples de compétition ont brillé lors du championnat régional. Bravo à tous pour cette belle représentation du club !',
+  },
+  {
+    _id: 'news-4',
+    title: 'Initiation gratuite — Portes ouvertes',
+    date: '2026-09-14',
+    imageUrl: 'https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=800&q=80',
+    excerpt: 'Venez essayer la danse gratuitement lors de notre journée portes ouvertes. Salsa, Rock, Valse — une initiation pour chaque style.',
+  },
+  {
+    _id: 'news-5',
+    title: 'Bal de fin de saison — Juin 2026',
+    date: '2026-06-07',
+    imageUrl: 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&q=80',
+    excerpt: 'La saison se termine en beauté avec notre bal annuel. Venez danser et fêter ensemble une année riche en émotions et en progrès.',
+  },
+  {
+    _id: 'news-6',
+    title: 'Nouveauté — Cours Lindy Hop débutants',
+    date: '2026-10-01',
+    imageUrl: 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&q=80',
+    excerpt: 'Nouveau créneau Lindy Hop pour les débutants le mercredi soir. Le swing américain des années 30 s\'invite à Saint-Michel-Chef-Chef !',
   },
 ]
 
