@@ -1,7 +1,7 @@
 'use client'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { ArrowRight, ChevronDown } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
 import NewsSection from '@/src/components/asme/NewsSection'
@@ -119,17 +119,6 @@ export default function HomeContent({ homepage, news, pageData }: Props) {
           </motion.div>
         </div>
 
-        <motion.div
-          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-        >
-          <span className="text-[#18102E]/30 text-[10px] tracking-widest uppercase">Découvrir</span>
-          <div className="scroll-indicator text-[#18102E]/40">
-            <ChevronDown size={16} />
-          </div>
-        </motion.div>
       </section>
 
       <NewsSection news={news} />
