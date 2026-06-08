@@ -4,7 +4,32 @@ import { SanityLive } from '@/sanity/lib/live'
 import VisualEditingWrapper from '@/src/components/layout/VisualEditingWrapper'
 import './globals.css'
 
-const siteUrl = 'https://danse-co.vercel.app'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://danse-co.vercel.app'
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SportsActivityLocation',
+  name: 'Danse&CO',
+  description: 'École de danse sportive à Saint-Michel-Chef-Chef. Cours de Lindy Hop, West Coast Swing, danses de salon et plus.',
+  url: siteUrl,
+  telephone: '',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Canopus',
+    addressLocality: 'Saint-Michel-Chef-Chef',
+    postalCode: '44730',
+    addressCountry: 'FR',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 47.1697,
+    longitude: -2.1467,
+  },
+  sport: ['Danse', 'Lindy Hop', 'West Coast Swing', 'Danses de salon'],
+  priceRange: '€',
+  openingHoursSpecification: [],
+  sameAs: [],
+}
 
 export const metadata: Metadata = {
   title: {
@@ -19,6 +44,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'fr_FR',
     url: siteUrl,
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Danse&CO — École de danse à Saint-Michel-Chef-Chef' }],
     siteName: 'Danse&CO',
     title: 'Danse&CO — École de danse à Saint-Michel-Chef-Chef',
     description: 'École de danse sportive à Saint-Michel-Chef-Chef. Cours de Lindy Hop, West Coast Swing, danses de salon et plus.',
@@ -38,6 +64,12 @@ export default async function RootLayout({
 
   return (
     <html lang="fr">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>
         {children}
         <SanityLive />
