@@ -10,10 +10,10 @@ See: .paul/PROJECT.md (updated 2026-04-05)
 ## Current Position
 
 Milestone: v1.0 Livraison Client
-Phase: 12 (Livraison Client) — Planning
-Plan: 12-01 créé, awaiting action
-Status: Site déployé sur danse-co.vercel.app — en attente domaine + contenu client
-Last activity: 2026-06-02 — Déployé Vercel, SEO ajouté, phase 12 planifiée
+Phase: 12 (Livraison Client) — En attente actions humaines
+Plan: 12-01 en cours (checkpoints humains bloquants)
+Status: Site propre et déployé — en attente domaine + contenu + email Formspree client
+Last activity: 2026-06-09 — SEO complet, actualités, nettoyage Vite, vars Vercel configurées
 
 Progress:
 - Milestone: [█████████░] 95%
@@ -58,14 +58,15 @@ PLAN ──▶ APPLY ──▶ UNIFY
 
 ### Blockers/Concerns
 
-Aucun.
+- Email client dansandco@outlook.fr refusé par Formspree — à résoudre avant livraison
+- Domaine non acheté — bloque DNS, NEXT_PUBLIC_SITE_URL, Search Console
 
 ## Session Continuity
 
-Last session: 2026-05-20
-Stopped at: Phase 7 complète — contenu PDF intégré, nav alignée, sécurité URLs sociales
-Next action: `/paul:plan` Phase 3 — Déploiement Vercel
-Resume file: `.paul/phases/07-contenu-pdf/07-02-SUMMARY.md`
+Last session: 2026-06-09
+Stopped at: Phase 12 en attente — dev terminé, checkpoints humains bloquants
+Next action: Acheter domaine → connecter Vercel → remplir fallbackContent.ts pendant RDV mercredi
+Resume file: `.paul/phases/12-livraison-client/12-01-SUMMARY.md`
 
 ---
 *STATE.md — Updated: 2026-05-09*
