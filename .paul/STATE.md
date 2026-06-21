@@ -58,7 +58,7 @@ PLAN ──▶ APPLY ──▶ UNIFY
 
 ### Blockers/Concerns
 
-- Email client dansandco@outlook.fr refusé par Formspree — à résoudre avant livraison
+- Formspree : ID client configuré (`mzdqlrje`), mis à jour dans `.env.local`. **Reste à faire : mettre à jour `NEXT_PUBLIC_FORMSPREE_ENDPOINT` dans Vercel Dashboard → Settings → Environment Variables → valeur : `https://formspree.io/f/mzdqlrje`**
 - Domaine non acheté — bloque DNS, NEXT_PUBLIC_SITE_URL, Search Console
 
 ## Session Continuity

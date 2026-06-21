@@ -25,7 +25,7 @@ const Footer = () => {
           <div className={styles.brand}>
             <h3 className={styles.logo}>Danse & CO</h3>
             <p className={styles.description}>
-              L'école de danse sportive à Saint-Michel-Chef-Chef. Rejoignez-nous pour apprendre la danse dans une ambiance conviviale et professionnelle.
+              Le studio de danse sportif à Saint-Michel-Chef-Chef. Rejoignez-nous pour apprendre la danse dans une ambiance conviviale et professionnelle.
             </p>
             {(instagramUrl || facebookUrl) && (
               <div className={styles.socials}>

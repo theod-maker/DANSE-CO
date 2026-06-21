@@ -76,7 +76,7 @@ export default function HomeContent({ homepage, news, pageData }: Props) {
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-xs uppercase text-[#18102E] mb-8 tracking-[0.3em]"
           >
-            École de Danse · Saint-Michel-Chef-Chef
+            Studio de Danse · Saint-Michel-Chef-Chef
           </motion.p>
 
           <motion.h1

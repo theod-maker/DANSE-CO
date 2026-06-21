@@ -132,7 +132,7 @@ export default function ActualitesContent({ news }: ActualitesContentProps) {
             transition={{ duration: 0.6, delay: 0.35, ease: EASING }}
             className="text-[#18102E]/50 text-base md:text-lg leading-relaxed max-w-xl"
           >
-            Stages, compétitions et événements de votre école de danse.
+            Stages, compétitions et événements de votre studio de danse.
           </motion.p>
         </div>
 

@@ -17,7 +17,7 @@ const CompetitionSection = () => {
       <p className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-4">Compétition</p>
       <h2 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-3xl md:text-4xl tracking-tight text-[#18102E] mb-4">Section Compétition</h2>
       <p className="text-[#18102E]/60 text-sm leading-relaxed max-w-2xl mb-6">
-        Chez Dans' and Co, notre section compétition rassemble des couples de danseurs passionnés qui représentent fièrement le club dans toute la France. Nos danseurs s'entraînent quotidiennement avec rigueur et enthousiasme pour exceller dans différents styles de danse, en alliant technique, créativité et énergie.
+        Chez Dans&CO, notre section compétition rassemble des couples de danseurs passionnés qui représentent fièrement le club dans toute la France. Nos danseurs s'entraînent quotidiennement avec rigueur et enthousiasme pour exceller dans différents styles de danse, en alliant technique, créativité et énergie.
       </p>
       <div className="liquid-glass rounded-2xl p-6 grid sm:grid-cols-2 gap-8 max-w-2xl">
         <div>
@@ -90,7 +90,7 @@ export default function InstructorsContent({ team, pageTexts, pageData }: Props)
         <div ref={headerRef} className="mb-20 relative z-10">
           <motion.p initial={{ opacity: 0, y: 20 }} animate={headerInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-6">L'ÉQUIPE</motion.p>
           <h1 style={{ fontFamily: "'Instrument Serif', serif", perspective: '1200px' }} className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[1.05] max-w-3xl text-[#18102E] mb-8">
-            {['Vos', 'Professeurs'].map((word, i) => (
+            {['Votre', 'Professeur'].map((word, i) => (
               <motion.span key={i} style={{ display: 'inline-block', marginRight: '0.3em' }} initial={{ opacity: 0, y: 36, rotateX: 14 }} animate={headerInView ? { opacity: 1, y: 0, rotateX: 0 } : {}} transition={{ duration: 0.8, delay: 0.1 + i * 0.1, ease: EASING }} className={i === 1 ? 'text-[#6C5CA8] italic' : ''}>{word}</motion.span>
             ))}
           </h1>
@@ -98,7 +98,7 @@ export default function InstructorsContent({ team, pageTexts, pageData }: Props)
             {pageTexts.instructorsSubtitle}
           </motion.p>
         </div>
-        <div className="grid md:grid-cols-3 gap-6 relative z-10">
+        <div className={`grid gap-6 relative z-10 ${team.length === 1 ? 'max-w-lg' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
           {team.map((prof, index) => <InstructorCard key={prof._id} {...prof} index={index} />)}
         </div>
         <CompetitionSection />

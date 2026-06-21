@@ -115,15 +115,15 @@ export interface PageTextsContent {
 }
 
 export const fallbackHomepage: HomepageContent = {
-  heroTitle: 'La danse, une passion à partager.',
-  heroDescription: 'Rejoignez Danse&CO à Saint-Michel-Chef-Chef et explorez le monde de la danse en couple ou en solo, quel que soit votre niveau.',
-  aboutTitle: 'Une école de danse où chaque cours devient une invitation à se dépasser, à rencontrer et à vibrer ensemble.',
+  heroTitle: 'Danser est une passion, à Saint-Michel c\'est encore mieux.',
+  heroDescription: 'Rejoignez Dans&CO à Saint-Michel-Chef-Chef et explorez le monde de la danse en couple ou en solo, quel que soit votre niveau.',
+  aboutTitle: 'Un studio de danse où chaque cours devient une invitation à se dépasser, à rencontrer et à vibrer ensemble.',
   philosophyTitle: 'La danse comme art de vivre.',
   philosophyBlock1Label: 'NOTRE HISTOIRE',
-  philosophyBlock1Text: 'Fondée en 2008 par des passionnés du bal, Danse&CO est née de l\'envie de créer un espace ouvert à tous — débutants curieux ou danseurs confirmés. Au fil des années, l\'association s\'est imposée comme un lieu de vie autant que d\'apprentissage, où la technique s\'enseigne dans la bonne humeur.',
+  philosophyBlock1Text: 'Fondée en 2008 par des passionnés du bal, Dans&CO est née de l\'envie de créer un espace ouvert à tous — débutants curieux ou danseurs confirmés. Au fil des années, l\'association s\'est imposée comme un lieu de vie autant que d\'apprentissage, où la technique s\'enseigne dans la bonne humeur.',
   philosophyBlock2Label: 'NOTRE ENGAGEMENT',
   philosophyBlock2Text: 'Nous croyons que la danse est accessible à chacun. Nos enseignants diplômés adaptent leur pédagogie à chaque niveau et chaque personnalité. Ici, on apprend à son rythme, on progresse ensemble, et on célèbre chaque étape — de votre premier pas à votre première compétition.',
-  featuredVideoDescription: 'Chez Danse&CO, la progression technique va de pair avec le plaisir. Nos cours sont conçus pour que vous repartiez chaque semaine avec de nouvelles clés, une plus grande aisance, et l\'envie de revenir.',
+  featuredVideoDescription: 'Chez Dans&CO, la progression technique va de pair avec le plaisir. Nos cours sont conçus pour que vous repartiez chaque semaine avec de nouvelles clés, une plus grande aisance, et l\'envie de revenir.',
   servicesSectionTitle: 'Ce que nous proposons',
   servicesSectionSubtitle: 'Cours hebdomadaires & stages ponctuels',
   servicesCard1Description: 'Salsa, Bachata, Rock\'n\'Roll, Danses de salon, West Coast Swing, Tango... Découvrez l\'ensemble de nos disciplines et trouvez celle qui vous correspond.',
@@ -134,16 +134,8 @@ export const fallbackInstructors: InstructorContent[] = [
   {
     _id: 'adrien-mullot',
     name: 'Adrien Mullot',
-    specialty: '',
+    specialty: 'Professeur',
     bio: 'Passionné de danse depuis l\'âge de 16 ans, j\'ai construit mon parcours entre compétition et transmission. Ces expériences m\'ont appris une chose essentielle : la danse est avant tout un moment de partage, de plaisir et de dépassement de soi. Aujourd\'hui j\'accompagne mes élèves avec énergie et bienveillance pour leur faire découvrir le plaisir de danser et progresser à leur rythme. Que ce soit pour apprendre, se perfectionner ou préparer une compétition ou une ouverture de bal, chaque cours est pensé pour allier technique, convivialité et passion. Mon objectif est de vous faire vivre la danse avec passion et vous donner envie de revenir à chaque cours.',
-    experience: '',
-    photoUrl: '',
-  },
-  {
-    _id: 'sarah-babin',
-    name: 'Sarah Babin',
-    specialty: '',
-    bio: '',
     experience: '',
     photoUrl: '',
   },
@@ -152,18 +144,18 @@ export const fallbackInstructors: InstructorContent[] = [
 export const fallbackSchedule: ScheduleEntryContent[] = [
   { _id: 'mon-1', day: 'Lundi', name: 'Rock & Roll', level: 'Débutant', time: '19:30 - 20:30', venue: 'Le Canopus' },
   { _id: 'mon-2', day: 'Lundi', name: 'Salsa Cubaine', level: 'Intermédiaire', time: '20:30 - 21:30', venue: 'Le Canopus' },
-  { _id: 'wed-1', day: 'Mercredi', name: 'Danses de Salon', level: 'Tous niveaux', time: '19:30 - 20:30', venue: 'Salle Caraïbes' },
-  { _id: 'wed-2', day: 'Mercredi', name: 'West Coast Swing', level: 'Débutant', time: '20:30 - 21:30', venue: 'Salle Caraïbes' },
-  { _id: 'sat-1', day: 'Samedi (Stages)', name: 'Stage Salsa', level: 'Workshop', time: '10:00 - 12:00', venue: 'Salle Caraïbes' },
-  { _id: 'sat-2', day: 'Samedi (Stages)', name: 'Stage Tango / Chachacha', level: 'Workshop', time: '10:00 - 12:00', venue: 'Salle Caraïbes' },
-  { _id: 'sat-3', day: 'Samedi (Stages)', name: 'Stage West Coast Swing', level: 'Workshop', time: '10:00 - 12:00', venue: 'Salle Caraïbes' },
+  { _id: 'wed-1', day: 'Mercredi', name: 'Swing / Multidanses', level: 'Tous niveaux', time: '19:30 - 20:30', venue: 'Salle Caraïbes' },
+  { _id: 'wed-2', day: 'Mercredi', name: 'Salsa 1', level: 'Débutant', time: '20:30 - 21:30', venue: 'Salle Caraïbes' },
+  { _id: 'wed-3', day: 'Mercredi', name: 'Salsa 2', level: 'Intermédiaire', time: '21:30 - 22:30', venue: 'Salle Caraïbes' },
+  { _id: 'sat-1', day: 'Samedi', name: 'Danse en ligne débutants', level: 'Adultes débutants', time: '10:00 - 11:00', venue: 'Salle Caraïbes' },
+  { _id: 'sat-2', day: 'Samedi', name: 'Cours enfants', level: 'À partir de 8 ans', time: '11:00 - 12:00', venue: 'Salle Caraïbes' },
 ]
 
 export const fallbackSiteInfo: SiteInfoContent = {
   phone: '06.17.09.93.49',
   email: 'DANSANDCO@OUTLOOK.FR',
   mailingAddress: '17 Rue du Chevecier, 44730 Saint-Michel-Chef-Chef',
-  instagramUrl: '',
+  instagramUrl: 'https://www.instagram.com/dansandcosaintmichel/',
   facebookUrl: 'https://www.facebook.com/dansandco/',
   twitterUrl: '',
   websiteUrl: '',
@@ -213,6 +205,13 @@ export const fallbackDisciplines: DisciplineContent[] = [
     iconName: 'Users',
     description: "Danse collective où l'on peut venir seul, tout le monde suit une même chorégraphie. Facile à apprendre et très conviviale, elle se danse sur tous les styles de musique : rumba, shim sham, chachacha, salsa.",
     benefits: ['Collectif', 'Accessible', 'Convivialité'],
+  },
+  {
+    _id: 'danses-de-salon',
+    title: 'Danses de salon',
+    iconName: 'Star',
+    description: "Valse, tango, foxtrot, quickstep... Les danses de salon rassemblent les grandes danses de couple issues de la tradition européenne. Élégantes et accessibles, elles s'apprennent en duo et s'adaptent à tous les niveaux.",
+    benefits: ['Élégance', 'Technique', 'Complicité'],
   },
   {
     _id: 'cours-enfants',
@@ -318,7 +317,7 @@ export const fallbackPricing: PricingContent = {
   season: '2026 - 2027',
   rows: [
     { label: '1h de cours — Solo', price: '220 €', detail: '' },
-    { label: '1h de cours — Couple', price: '330 €', detail: '' },
+    { label: '1h de cours — Couple', price: '380 €', detail: '' },
     { label: '2h de cours — Solo', price: '370 €', detail: '' },
     { label: '2h de cours — Couple', price: '630 €', detail: '', highlight: true },
     { label: 'Full Pass — Solo', price: '460 €', detail: '' },

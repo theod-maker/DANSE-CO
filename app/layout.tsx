@@ -9,8 +9,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://danse-co.vercel.app
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SportsActivityLocation',
-  name: 'Danse&CO',
-  description: 'École de danse sportive à Saint-Michel-Chef-Chef. Cours de Lindy Hop, West Coast Swing, danses de salon et plus.',
+  name: 'Dans&CO',
+  description: 'Studio de danse sportif à Saint-Michel-Chef-Chef. Cours de Lindy Hop, West Coast Swing, danses de salon et plus.',
   url: siteUrl,
   telephone: '',
   address: {
@@ -33,21 +33,21 @@ const jsonLd = {
 
 export const metadata: Metadata = {
   title: {
-    default: 'Danse&CO — École de danse à Saint-Michel-Chef-Chef',
-    template: '%s | Danse&CO',
+    default: 'Dans&CO — Studio de danse à Saint-Michel-Chef-Chef',
+    template: '%s | Dans&CO',
   },
-  description: 'École de danse sportive à Saint-Michel-Chef-Chef. Cours de Lindy Hop, West Coast Swing, danses de salon et plus. Inscriptions ouvertes.',
+  description: 'Studio de danse sportif à Saint-Michel-Chef-Chef. Cours de Lindy Hop, West Coast Swing, danses de salon et plus. Inscriptions ouvertes.',
   keywords: ['danse', 'cours de danse', 'Saint-Michel-Chef-Chef', 'Lindy Hop', 'West Coast Swing', 'danse sportive', 'Loire-Atlantique'],
-  authors: [{ name: 'Danse&CO' }],
+  authors: [{ name: 'Dans&CO' }],
   metadataBase: new URL(siteUrl),
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
     url: siteUrl,
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Danse&CO — École de danse à Saint-Michel-Chef-Chef' }],
-    siteName: 'Danse&CO',
-    title: 'Danse&CO — École de danse à Saint-Michel-Chef-Chef',
-    description: 'École de danse sportive à Saint-Michel-Chef-Chef. Cours de Lindy Hop, West Coast Swing, danses de salon et plus.',
+    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Dans&CO — Studio de danse à Saint-Michel-Chef-Chef' }],
+    siteName: 'Dans&CO',
+    title: 'Dans&CO — Studio de danse à Saint-Michel-Chef-Chef',
+    description: 'Studio de danse sportif à Saint-Michel-Chef-Chef. Cours de Lindy Hop, West Coast Swing, danses de salon et plus.',
   },
   robots: {
     index: true,

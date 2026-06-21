@@ -17,7 +17,7 @@ key-files:
 key-decisions:
   - "Contenu via fallbackContent.ts plutôt que Sanity pour la livraison — CMS formé au client plus tard"
   - "Photos via /public/images/ pour éviter dépendance Sanity"
-  - "Formspree garde delporte.to@gmail.com en attendant résolution email outlook.fr client"
+  - "Formspree actuellement sur delporte.to@gmail.com — client doit créer son propre compte Formspree et fournir l'ID"
 
 duration: ~2h
 completed: 2026-06-09
@@ -65,7 +65,8 @@ completed: 2026-06-09
 | Ajouter NEXT_PUBLIC_SITE_URL sur Vercel | Theo |
 | Mettre à jour sanity.config.ts avec vrai domaine | Theo |
 | Remplir fallbackContent.ts + photos /public/images/ | Theo (pendant RDV) |
-| Régler email Formspree (outlook.fr non accepté) | À résoudre |
+| Créer compte Formspree avec email pro + fournir ID formulaire | Client |
+| Mettre à jour NEXT_PUBLIC_FORMSPREE_ENDPOINT (.env.local + Vercel) | Theo |
 | Google Search Console | Après domaine |
 
 ## Next Phase Readiness
@@ -78,7 +79,7 @@ completed: 2026-06-09
 
 **Bloquants :**
 - Domaine non acheté
-- Email Formspree client non résolu (outlook.fr refusé)
+- Formspree : client doit créer son compte et fournir l'ID formulaire
 
 ---
 *Phase: 12-livraison-client, Plan: 01*
