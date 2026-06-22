@@ -22,7 +22,7 @@ const events = [
   {
     year: '2020',
     label: 'Une pause',
-    text: "La crise du Covid frappe de plein fouet. Les salles ferment, les cours s'arrêtent. Mais la passion, elle, ne s'arrête jamais.",
+    text: "Le Covid passe par là, apportant son lot de péripéties. L'activité cesse quelque temps, mais la passion, elle, ne s'arrête jamais.",
     images: ['/images/histoire/histoire-4.avif'],
   },
   {

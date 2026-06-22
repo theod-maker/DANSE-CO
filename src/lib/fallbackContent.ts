@@ -182,7 +182,7 @@ export const fallbackDisciplines: DisciplineContent[] = [
     _id: 'west-coast-swing',
     title: 'West Coast Swing',
     iconName: 'Music',
-    description: "Il s'agit d'une danse qui permet de danser sur des musiques swing, modernes, lentes, rapides. Née aux États-Unis dans les années 1940-1950, elle se distingue par ses mouvements fluides, un style élégant et une grande liberté d'improvisation.",
+    description: "Il s'agit d'une danse qui permet de danser sur des musiques swings, modernes, lentes, rapides... Ce qui représente beaucoup de musiques passant à la radio !",
     benefits: ['Créativité', 'Musicalité', 'Élégance'],
   },
   {
@@ -280,7 +280,7 @@ export const fallbackNews: NewsContent[] = [
     title: 'Forum des associations — 6 septembre',
     date: '2026-09-06',
     imageUrl: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80',
-    excerpt: 'Retrouvez-nous au Forum des associations le 6 septembre de 10h à 13h au complexe sportif de la Viauderie. Venez nous rencontrer et découvrir nos cours !',
+    excerpt: 'Forum des associations le 6 septembre de 10h à 13h. Initiations et démonstrations prévues au complexe sportif de la Viauderie à Saint-Michel-Chef-Chef.',
   },
   {
     _id: 'news-3',
