@@ -37,27 +37,29 @@ const InstructorCard = ({ name, specialty, bio, experience, photoUrl, index }: I
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, x: index % 2 === 0 ? -40 : 40, y: 20 }} animate={isInView ? { opacity: 1, x: 0, y: 0 } : {}} whileHover={{ y: -6, transition: { duration: 0.3 } }} transition={{ duration: 0.8, delay: index * 0.12, ease: EASING }} className="group liquid-glass rounded-3xl p-5 md:p-8 flex flex-col gap-6 relative overflow-hidden">
-      <span style={{ fontFamily: "'Instrument Serif', serif" }} className="absolute -right-2 -bottom-4 text-[120px] leading-none text-[#6C5CA8]/5 pointer-events-none select-none italic transition-all duration-500 group-hover:text-[#6C5CA8]/10">{name.charAt(0)}</span>
+    <motion.div ref={ref} initial={{ opacity: 0, y: 24 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, delay: index * 0.12, ease: EASING }} className="group liquid-glass rounded-3xl overflow-hidden flex flex-col md:flex-row relative">
       <div className="card-shimmer-layer" />
+      <span style={{ fontFamily: "'Instrument Serif', serif" }} className="absolute -right-2 -bottom-4 text-[120px] leading-none text-[#6C5CA8]/5 pointer-events-none select-none italic transition-all duration-500 group-hover:text-[#6C5CA8]/10">{name.charAt(0)}</span>
       {photoUrl && (
-        <div className="w-16 h-16 rounded-2xl overflow-hidden shrink-0 relative z-10">
-          <img src={photoUrl} alt={name} className="w-full h-full object-cover" />
-        </div>
+        <motion.div initial={{ opacity: 0, x: -20 }} animate={isInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.15, ease: EASING }} className="md:w-64 shrink-0 overflow-hidden">
+          <img src={photoUrl} alt={name} className="w-full h-56 md:h-full object-cover" />
+        </motion.div>
       )}
-      <div className="flex items-start justify-between relative z-10">
-        <div>
-          <h3 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[#18102E] text-2xl md:text-3xl tracking-tight mb-1">{name}</h3>
-          {specialty && <p className="text-[#6C5CA8] text-xs tracking-widest uppercase font-medium">{specialty}</p>}
+      <div className="p-6 md:p-8 flex flex-col gap-5 flex-1 relative z-10">
+        <div className="flex items-start justify-between">
+          <div>
+            <h3 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[#18102E] text-2xl md:text-3xl tracking-tight mb-1">{name}</h3>
+            {specialty && <p className="text-[#6C5CA8] text-xs tracking-widest uppercase font-medium">{specialty}</p>}
+          </div>
+          {experience && (
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={isInView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.5, delay: 0.25 }} className="bg-[#EDEAF6] rounded-full px-4 py-1.5">
+              <span className="text-[#6C5CA8] text-xs font-medium">{experience}</span>
+            </motion.div>
+          )}
         </div>
-        {experience && (
-          <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={isInView ? { opacity: 1, scale: 1 } : {}} transition={{ duration: 0.5, delay: 0.25 + index * 0.12 }} className="bg-[#EDEAF6] rounded-full px-4 py-1.5">
-            <span className="text-[#6C5CA8] text-xs font-medium">{experience}</span>
-          </motion.div>
-        )}
+        <motion.div initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}} transition={{ duration: 0.7, delay: 0.3, ease: EASING }} className="w-full h-px bg-[#18102E]/8 origin-left" />
+        <p className="text-[#18102E]/60 text-sm leading-relaxed">{bio}</p>
       </div>
-      <motion.div initial={{ scaleX: 0 }} animate={isInView ? { scaleX: 1 } : {}} transition={{ duration: 0.7, delay: 0.3 + index * 0.12, ease: EASING }} className="w-full h-px bg-[#18102E]/8 origin-left" />
-      <p className="text-[#18102E]/60 text-sm leading-relaxed flex-1 relative z-10">{bio}</p>
     </motion.div>
   )
 }
@@ -98,7 +100,7 @@ export default function InstructorsContent({ team, pageTexts, pageData }: Props)
             {pageTexts.instructorsSubtitle}
           </motion.p>
         </div>
-        <div className={`grid gap-6 relative z-10 ${team.length === 1 ? 'max-w-lg' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
+        <div className={`grid gap-6 relative z-10 ${team.length === 1 ? 'max-w-3xl' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
           {team.map((prof, index) => <InstructorCard key={prof._id} {...prof} index={index} />)}
         </div>
         <CompetitionSection />

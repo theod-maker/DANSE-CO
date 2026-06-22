@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Check, Info } from 'lucide-react'
 import Link from 'next/link'
-import { usePricing } from '../../hooks/useSanity'
+import { fallbackDisciplines, fallbackVenues, fallbackSiteInfo, fallbackNews, fallbackInstructors, fallbackPricing } from '../../lib/fallbackContent'
 import type { PricingRowContent } from '../../lib/fallbackContent'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
@@ -56,7 +56,7 @@ const PricingCard = ({ label, price, detail, highlight, index }: PricingRowConte
 const PricingBlock: React.FC = () => {
   const infoRef = useRef(null)
   const infoInView = useInView(infoRef, { once: true, margin: '-60px' })
-  const pricingData = usePricing()
+  const pricingData = fallbackPricing
 
   return (
     <section className="py-20 md:py-28 px-6">

@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Music, Zap, Heart, Star, Users, type LucideProps } from 'lucide-react'
-import { useDisciplines } from '../../hooks/useSanity'
+import { fallbackDisciplines, fallbackVenues, fallbackSiteInfo, fallbackNews, fallbackInstructors, fallbackPricing } from '../../lib/fallbackContent'
 import type { DisciplineContent } from '../../lib/fallbackContent'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
@@ -81,7 +81,7 @@ const DisciplineCard = ({ title, iconName, description, benefits, imageUrl, inde
 }
 
 const DisciplinesGridBlock: React.FC = () => {
-  const disciplines = useDisciplines()
+  const disciplines = fallbackDisciplines
 
   return (
     <section className="py-20 md:py-28 px-6">

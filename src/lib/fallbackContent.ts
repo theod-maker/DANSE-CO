@@ -137,12 +137,12 @@ export const fallbackInstructors: InstructorContent[] = [
     specialty: 'Professeur',
     bio: 'Passionné de danse depuis l\'âge de 16 ans, j\'ai construit mon parcours entre compétition et transmission. Ces expériences m\'ont appris une chose essentielle : la danse est avant tout un moment de partage, de plaisir et de dépassement de soi. Aujourd\'hui j\'accompagne mes élèves avec énergie et bienveillance pour leur faire découvrir le plaisir de danser et progresser à leur rythme. Que ce soit pour apprendre, se perfectionner ou préparer une compétition ou une ouverture de bal, chaque cours est pensé pour allier technique, convivialité et passion. Mon objectif est de vous faire vivre la danse avec passion et vous donner envie de revenir à chaque cours.',
     experience: '',
-    photoUrl: '',
+    photoUrl: '/images/histoire/histoire-2.avif',
   },
 ]
 
 export const fallbackSchedule: ScheduleEntryContent[] = [
-  { _id: 'mon-1', day: 'Lundi', name: 'Rock & Roll', level: 'Débutant', time: '19:30 - 20:30', venue: 'Le Canopus' },
+  { _id: 'mon-1', day: 'Lundi', name: 'Rock & Swing', level: 'Débutant', time: '19:30 - 20:30', venue: 'Le Canopus' },
   { _id: 'mon-2', day: 'Lundi', name: 'Salsa Cubaine', level: 'Intermédiaire', time: '20:30 - 21:30', venue: 'Le Canopus' },
   { _id: 'wed-1', day: 'Mercredi', name: 'Swing / Multidanses', level: 'Tous niveaux', time: '19:30 - 20:30', venue: 'Salle Caraïbes' },
   { _id: 'wed-2', day: 'Mercredi', name: 'Salsa 1', level: 'Débutant', time: '20:30 - 21:30', venue: 'Salle Caraïbes' },

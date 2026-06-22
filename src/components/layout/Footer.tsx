@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Phone, Mail, MapPin } from 'lucide-react';
-import { useSiteInfo } from '../../hooks/useSanity';
+import { fallbackSiteInfo } from '../../lib/fallbackContent';
 
 const InstagramIcon = ({ size = 20 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -16,7 +16,7 @@ const FacebookIcon = ({ size = 20 }: { size?: number }) => (
 import styles from './Footer.module.css';
 
 const Footer = () => {
-  const { instagramUrl, facebookUrl } = useSiteInfo();
+  const { instagramUrl, facebookUrl } = fallbackSiteInfo;
 
   return (
     <footer className={styles.footer}>

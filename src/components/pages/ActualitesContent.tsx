@@ -6,8 +6,9 @@ import AppFooter from '@/src/components/layout/AppFooter'
 import type { NewsContent } from '@/src/lib/fallbackContent'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
-
 const UNSPLASH_FALLBACK = 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&q=80'
+
+const ROTATIONS = [-1.8, 1.2, -0.7, 2.1, -1.4, 0.9, -2.0, 1.6]
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('fr-FR', {
@@ -17,47 +18,62 @@ function formatDate(dateStr: string) {
   })
 }
 
-function NewsCard({ item, index }: { item: NewsContent; index: number }) {
+function Pin() {
+  return (
+    <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-20">
+      <div className="w-5 h-5 rounded-full bg-[#6C5CA8] shadow-md shadow-[#6C5CA8]/40 ring-2 ring-white/60 flex items-center justify-center">
+        <div className="w-2 h-2 rounded-full bg-white/40" />
+      </div>
+    </div>
+  )
+}
+
+function PinnedCard({ item, index }: { item: NewsContent; index: number }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-60px' })
+  const isInView = useInView(ref, { once: true, margin: '-40px' })
+  const rotation = ROTATIONS[index % ROTATIONS.length]
 
   return (
     <motion.article
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay: index * 0.1, ease: EASING }}
-      className="liquid-glass rounded-3xl overflow-hidden flex flex-col group"
+      initial={{ opacity: 0, y: 40, rotate: rotation * 2 }}
+      animate={isInView ? { opacity: 1, y: 0, rotate: rotation } : {}}
+      whileHover={{ rotate: 0, y: -6, scale: 1.02, transition: { duration: 0.25, ease: 'easeOut' } }}
+      transition={{ duration: 0.6, delay: index * 0.08, ease: EASING }}
+      className="relative mb-6 break-inside-avoid cursor-default"
+      style={{ transformOrigin: 'top center' }}
     >
-      <div className="relative h-48 overflow-hidden">
-        <img
-          src={item.imageUrl ?? UNSPLASH_FALLBACK}
-          alt={item.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-      </div>
-      <div className="p-6 flex flex-col flex-1 gap-3">
-        <p className="text-[#6C5CA8] text-xs tracking-widest uppercase font-ui">
-          {formatDate(item.date)}
-        </p>
-        <h2
-          style={{ fontFamily: "'Instrument Serif', serif" }}
-          className="text-[#18102E] text-xl md:text-2xl tracking-tight leading-snug"
-        >
-          {item.title}
-        </h2>
-        <p className="text-[#18102E]/60 text-sm leading-relaxed flex-1">{item.excerpt}</p>
-        {item.link && (
-          <a
-            href={item.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-2 self-start text-xs text-[#6C5CA8] border border-[#6C5CA8]/30 rounded-full px-4 py-2 hover:bg-[#6C5CA8]/10 transition-colors"
-          >
-            En savoir plus
-          </a>
+      <Pin />
+      <div className="bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(24,16,46,0.12)] border border-white/60">
+        {item.imageUrl && (
+          <div className="relative h-44 overflow-hidden">
+            <img
+              src={item.imageUrl ?? UNSPLASH_FALLBACK}
+              alt={item.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
         )}
+        <div className="p-5 flex flex-col gap-2">
+          <p className="text-[#6C5CA8] text-xs tracking-widest uppercase font-ui">{formatDate(item.date)}</p>
+          <h2
+            style={{ fontFamily: "'Instrument Serif', serif" }}
+            className="text-[#18102E] text-lg md:text-xl tracking-tight leading-snug"
+          >
+            {item.title}
+          </h2>
+          <p className="text-[#18102E]/55 text-sm leading-relaxed">{item.excerpt}</p>
+          {item.link && (
+            <a
+              href={item.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-2 self-start text-xs text-[#6C5CA8] border border-[#6C5CA8]/30 rounded-full px-4 py-1.5 hover:bg-[#6C5CA8]/10 transition-colors"
+            >
+              En savoir plus
+            </a>
+          )}
+        </div>
       </div>
     </motion.article>
   )
@@ -69,17 +85,12 @@ function EmptyState() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: EASING }}
-      className="liquid-glass rounded-3xl p-12 text-center col-span-full"
+      className="liquid-glass rounded-3xl p-12 text-center"
     >
-      <p
-        style={{ fontFamily: "'Instrument Serif', serif" }}
-        className="text-[#18102E]/40 text-2xl italic mb-3"
-      >
+      <p style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[#18102E]/40 text-2xl italic mb-3">
         Les prochaines actualités arrivent bientôt
       </p>
-      <p className="text-[#18102E]/30 text-sm">
-        Stages, compétitions et événements du club seront affichés ici.
-      </p>
+      <p className="text-[#18102E]/30 text-sm">Stages, compétitions et événements du club seront affichés ici.</p>
     </motion.div>
   )
 }
@@ -100,7 +111,8 @@ export default function ActualitesContent({ news }: ActualitesContentProps) {
           className="absolute pointer-events-none [animation:orb-drift-alt_14s_ease-in-out_infinite]"
           style={{ width: 450, height: 450, top: '0', left: '-120px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(107,33,168,0.05) 0%, transparent 70%)', filter: 'blur(55px)' }}
         />
-        <div ref={headerRef} className="mb-20 relative z-10">
+
+        <div ref={headerRef} className="mb-16 relative z-10">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={headerInView ? { opacity: 1, y: 0 } : {}}
@@ -136,11 +148,15 @@ export default function ActualitesContent({ news }: ActualitesContentProps) {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+        <div className="relative z-10 rounded-3xl p-8 md:p-12" style={{ background: 'rgba(107,92,168,0.04)', border: '1px solid rgba(107,92,168,0.08)' }}>
           {news.length === 0 ? (
             <EmptyState />
           ) : (
-            news.map((item, i) => <NewsCard key={item._id} item={item} index={i} />)
+            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6">
+              {news.map((item, i) => (
+                <PinnedCard key={item._id} item={item} index={i} />
+              ))}
+            </div>
           )}
         </div>
       </main>

@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Phone, Mail, MapPin } from 'lucide-react'
 import { ContactForm } from '../contact/ContactForm'
-import { useSiteInfo, useVenues } from '../../hooks/useSanity'
+import { fallbackSiteInfo, fallbackVenues } from '../../lib/fallbackContent'
 
 const InstagramIcon = ({ size = 18 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -23,8 +23,8 @@ const ContactBlock: React.FC = () => {
   const formInView = useInView(formRef, { once: true, margin: '-60px' })
   const infoRef = useRef(null)
   const infoInView = useInView(infoRef, { once: true, margin: '-60px' })
-  const siteInfo = useSiteInfo()
-  const venues = useVenues()
+  const siteInfo = fallbackSiteInfo
+  const venues = fallbackVenues
 
   const contactItems = [
     { icon: <Phone size={18} />, label: 'Téléphone', value: siteInfo.phone, href: `tel:${siteInfo.phone.replace(/\./g, '')}` },

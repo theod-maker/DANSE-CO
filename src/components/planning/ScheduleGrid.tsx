@@ -1,14 +1,14 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, MapPin } from 'lucide-react';
-import { useSchedule } from '../../hooks/useSanity';
+import { fallbackSchedule } from '../../lib/fallbackContent';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
 const DAY_ORDER = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche', 'Samedi (Stages)']
 
 function ScheduleGrid() {
-  const scheduleData = useSchedule();
+  const scheduleData = fallbackSchedule;
   const days = useMemo(
     () => [...new Set(scheduleData.map(c => c.day))].sort(
       (a, b) => DAY_ORDER.indexOf(a) - DAY_ORDER.indexOf(b)
@@ -16,12 +16,6 @@ function ScheduleGrid() {
     [scheduleData]
   );
   const [selectedDay, setSelectedDay] = useState('');
-
-  useEffect(() => {
-    if (selectedDay && !days.includes(selectedDay)) {
-      setSelectedDay('');
-    }
-  }, [days, selectedDay]);
 
   const activeDay = selectedDay || days[0] || '';
   const filteredClasses = scheduleData.filter(cls => cls.day === activeDay);

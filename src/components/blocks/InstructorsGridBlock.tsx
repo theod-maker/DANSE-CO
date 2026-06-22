@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { useInstructors } from '../../hooks/useSanity'
+import { fallbackDisciplines, fallbackVenues, fallbackSiteInfo, fallbackNews, fallbackInstructors, fallbackPricing } from '../../lib/fallbackContent'
 import type { InstructorContent } from '../../lib/fallbackContent'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
@@ -64,7 +64,7 @@ const InstructorCard = ({ name, specialty, bio, experience, photoUrl, index }: I
 }
 
 const InstructorsGridBlock: React.FC = () => {
-  const team = useInstructors()
+  const team = fallbackInstructors
 
   return (
     <section className="py-20 md:py-28 px-6">

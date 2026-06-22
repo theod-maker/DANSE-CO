@@ -1,13 +1,13 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { AlertCircle, FileText, Camera } from 'lucide-react';
-import { useRegistrationInfo, useSiteInfo } from '../../hooks/useSanity';
+import { fallbackRegistrationInfo, fallbackSiteInfo } from '../../lib/fallbackContent';
 
 const RegistrationInfo = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const regInfo = useRegistrationInfo();
-  const siteInfo = useSiteInfo();
+  const regInfo = fallbackRegistrationInfo;
+  const siteInfo = fallbackSiteInfo;
 
   const cards = [
     {

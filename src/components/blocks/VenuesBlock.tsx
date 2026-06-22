@@ -1,9 +1,9 @@
 import React from 'react'
 import VenueCard from '../locations/VenueCard'
-import { useVenues } from '../../hooks/useSanity'
+import { fallbackDisciplines, fallbackVenues, fallbackSiteInfo, fallbackNews, fallbackInstructors, fallbackPricing } from '../../lib/fallbackContent'
 
 const VenuesBlock: React.FC = () => {
-  const venues = useVenues()
+  const venues = fallbackVenues
 
   return (
     <section className="py-20 md:py-28 px-6">
