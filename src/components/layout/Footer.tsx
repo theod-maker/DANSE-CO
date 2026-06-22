@@ -23,7 +23,7 @@ const Footer = () => {
       <div className={`${styles.container} container`}>
         <div className={styles.top}>
           <div className={styles.brand}>
-            <h3 className={styles.logo}>Danse & CO</h3>
+            <h3 className={styles.logo}>Dans'&amp;Co</h3>
             <p className={styles.description}>
               Le studio de danse sportif à Saint-Michel-Chef-Chef. Rejoignez-nous pour apprendre la danse dans une ambiance conviviale et professionnelle.
             </p>
@@ -76,7 +76,7 @@ const Footer = () => {
         </div>
 
         <div className={styles.bottom}>
-          <p>&copy; {new Date().getFullYear()} Danse & CO. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} Dans'&amp;Co. Tous droits réservés.</p>
           <p>Conçu pour une expérience utilisateur exceptionnelle.</p>
         </div>
       </div>

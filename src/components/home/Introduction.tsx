@@ -13,7 +13,7 @@ const Introduction = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className={styles.title}>L'Esprit <span>Danse & CO</span></h2>
+            <h2 className={styles.title}>L'Esprit <span>Dans'&amp;Co</span></h2>
             <p className={styles.highlight}>
               Depuis de nombreuses années, nous partageons notre passion pour la danse dans le cadre enchanteur de Saint-Michel-Chef-Chef.
             </p>

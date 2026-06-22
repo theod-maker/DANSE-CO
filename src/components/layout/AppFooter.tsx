@@ -26,7 +26,7 @@ const AppFooter: React.FC = () => {
               style={{ fontFamily: "'Instrument Serif', serif" }}
               className="text-[#18102E] text-xl tracking-tight"
             >
-              Dans&amp;CO
+              Dans'&amp;Co
             </span>
           </Link>
           <p className="text-[#18102E]/30 text-xs mt-2">{siteInfo.footerTagline}</p>

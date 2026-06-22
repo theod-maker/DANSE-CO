@@ -10,7 +10,7 @@ const events = [
   {
     year: '2016',
     label: 'Les débuts',
-    text: "Créé par des amis passionnés par la danse, Dans&CO ouvre ses portes à Besné. Un lieu d'apprentissage de la danse à deux, chaleureux et ouvert à tous.",
+    text: "Créé par des amis passionnés par la danse, Dans'&Co ouvre ses portes à Besné. Un lieu d'apprentissage de la danse à deux, chaleureux et ouvert à tous.",
     images: ['/images/histoire/histoire-1.avif'],
   },
   {
@@ -22,11 +22,11 @@ const events = [
   {
     year: '2020',
     label: 'Une pause',
-    text: "Après de nombreuses péripéties, le club traverse une période difficile. Mais la passion, elle, ne s'arrête jamais.",
+    text: "La crise du Covid frappe de plein fouet. Les salles ferment, les cours s'arrêtent. Mais la passion, elle, ne s'arrête jamais.",
     images: ['/images/histoire/histoire-4.avif'],
   },
   {
-    year: '2024',
+    year: '2023',
     label: 'Un nouveau départ',
     text: "Le choix est fait de déplacer le club à Saint-Michel-Chef-Chef. Repartir de zéro, entamer le même périple, proche de l'océan.",
     images: ['/images/histoire/histoire-5.avif'],
@@ -74,7 +74,7 @@ const TimelineEvent = ({ year, label, text, images, index }: Event) => {
           transition={{ duration: 0.7, delay: 0.25 + i * 0.1, ease: EASING }}
           className="rounded-2xl overflow-hidden liquid-glass aspect-[4/3]"
         >
-          <img src={src} alt="Archive Dans&CO" className="w-full h-full object-cover" />
+          <img src={src} alt="Archive Dans'&Co" className="w-full h-full object-cover" />
         </motion.div>
       ))}
     </div>

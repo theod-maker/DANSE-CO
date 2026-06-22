@@ -16,7 +16,7 @@ const Hero = () => {
         >
           <span className={styles.tagline}>Saison 2026 - 2027</span>
           <h1 className={styles.title}>
-            Faites le premier pas avec <span>Danse & CO</span>
+            Faites le premier pas avec <span>Dans'&amp;Co</span>
           </h1>
           <p className={styles.description}>
             Découvrez l'élégance de la Danse Sportive et le plaisir de bouger à Saint-Michel-Chef-Chef. Tous niveaux, tous âges, une seule passion.

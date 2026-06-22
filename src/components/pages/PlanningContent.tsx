@@ -34,7 +34,7 @@ const AdhesionDownload = () => {
           </svg>
         </div>
         <div className="flex-1">
-          <p className="text-[#18102E] text-sm font-medium mb-1">Formulaire d'adhésion Dans&CO</p>
+          <p className="text-[#18102E] text-sm font-medium mb-1">Formulaire d'adhésion Dans'&Co</p>
           <p className="text-[#18102E]/40 text-xs mb-4">PDF — À imprimer et apporter à la permanence</p>
           <a
             href="/formulaire-adhesion.pdf"

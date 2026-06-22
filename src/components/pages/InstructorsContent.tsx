@@ -17,7 +17,7 @@ const CompetitionSection = () => {
       <p className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-4">Compétition</p>
       <h2 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-3xl md:text-4xl tracking-tight text-[#18102E] mb-4">Section Compétition</h2>
       <p className="text-[#18102E]/60 text-sm leading-relaxed max-w-2xl mb-6">
-        Chez Dans&CO, notre section compétition rassemble des couples de danseurs passionnés qui représentent fièrement le club dans toute la France. Nos danseurs s'entraînent quotidiennement avec rigueur et enthousiasme pour exceller dans différents styles de danse, en alliant technique, créativité et énergie.
+        Chez Dans'&Co, notre section compétition rassemble des couples de danseurs passionnés qui représentent fièrement le club dans toute la France. Nos danseurs s'entraînent quotidiennement avec rigueur et enthousiasme pour exceller dans différents styles de danse, en alliant technique, créativité et énergie.
       </p>
       <div className="liquid-glass rounded-2xl p-6 grid sm:grid-cols-2 gap-8 max-w-2xl">
         <div>
