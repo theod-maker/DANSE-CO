@@ -40,61 +40,120 @@ const TimelineEvent = ({ year, label, text, images, index }: Event) => {
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   const isEven = index % 2 === 0
 
-  const dot = (
-    <motion.div
-      initial={{ scale: 0, opacity: 0 }}
-      animate={isInView ? { scale: 1, opacity: 1 } : {}}
-      transition={{ duration: 0.4, delay: 0.1, ease: EASING }}
-      className="relative z-10 w-4 h-4 rounded-full bg-[#6C5CA8] ring-4 ring-[#6C5CA8]/20"
-    />
-  )
-
-  const card = (
-    <motion.div
-      initial={{ opacity: 0, x: isEven ? -28 : 28 }}
-      animate={isInView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.7, delay: 0.2, ease: EASING }}
-      className={`liquid-glass rounded-3xl p-7 text-left${isEven ? ' md:text-right' : ''}`}
-    >
-      <p className="text-[#6C5CA8] text-xs uppercase tracking-[0.2em] font-medium mb-1">{year}</p>
-      <h3 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[#18102E] text-2xl italic mb-4">
-        {label}
-      </h3>
-      <p className="text-[#18102E]/60 text-sm leading-relaxed">{text}</p>
-    </motion.div>
-  )
-
-  const imageBlock = (
-    <div className={`flex flex-col gap-3 max-w-[220px] w-full${isEven ? '' : ' ml-auto'}`}>
-      {images.map((src, i) => (
-        <motion.div
-          key={src}
-          initial={{ opacity: 0, x: isEven ? 28 : -28 }}
-          animate={isInView ? { opacity: 1, x: 0 } : {}}
-          transition={{ duration: 0.7, delay: 0.25 + i * 0.1, ease: EASING }}
-          className="rounded-2xl overflow-hidden liquid-glass aspect-[4/3]"
-        >
-          <img src={src} alt="Archive Dans'&Co" className="w-full h-full object-cover" />
-        </motion.div>
-      ))}
-    </div>
-  )
-
   return (
-    <div ref={ref} className="grid grid-cols-1 md:grid-cols-[1fr_48px_1fr] items-center gap-6 md:gap-4">
-      {isEven ? (
-        <>
-          <div>{card}</div>
-          <div className="hidden md:flex justify-center">{dot}</div>
-          <div>{imageBlock}</div>
-        </>
-      ) : (
-        <>
-          <div>{imageBlock}</div>
-          <div className="hidden md:flex justify-center">{dot}</div>
-          <div>{card}</div>
-        </>
-      )}
+    <div ref={ref}>
+      {/* Mobile: timeline verticale à gauche */}
+      <div className="md:hidden flex gap-5">
+        <div className="flex flex-col items-center shrink-0">
+          <motion.div
+            initial={{ scale: 0, opacity: 0 }}
+            animate={isInView ? { scale: 1, opacity: 1 } : {}}
+            transition={{ duration: 0.4, delay: 0.1, ease: EASING }}
+            className="w-3 h-3 rounded-full bg-[#6C5CA8] ring-4 ring-[#6C5CA8]/20 mt-1.5"
+          />
+          <div className="w-px flex-1 bg-gradient-to-b from-[#6C5CA8]/40 to-transparent mt-2" />
+        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.7, delay: 0.2, ease: EASING }}
+          className="flex-1 pb-6 flex flex-col gap-4"
+        >
+          <div className="liquid-glass rounded-3xl p-6">
+            <p className="text-[#6C5CA8] text-xs uppercase tracking-[0.2em] font-medium mb-1">{year}</p>
+            <h3 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[#18102E] text-xl italic mb-3">
+              {label}
+            </h3>
+            <p className="text-[#18102E]/60 text-sm leading-relaxed">{text}</p>
+          </div>
+          <div className="flex flex-col gap-3">
+            {images.map((src, i) => (
+              <motion.div
+                key={src}
+                initial={{ opacity: 0, y: 16 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.3 + i * 0.1, ease: EASING }}
+                className="rounded-2xl overflow-hidden liquid-glass aspect-[4/3]"
+              >
+                <img src={src} alt="Archive Dans'&Co" className="w-full h-full object-cover" />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Desktop: timeline alternée au centre */}
+      <div className="hidden md:grid md:grid-cols-[1fr_48px_1fr] items-center gap-4">
+        {isEven ? (
+          <>
+            <motion.div
+              initial={{ opacity: 0, x: -28 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.2, ease: EASING }}
+              className="liquid-glass rounded-3xl p-7 text-right"
+            >
+              <p className="text-[#6C5CA8] text-xs uppercase tracking-[0.2em] font-medium mb-1">{year}</p>
+              <h3 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[#18102E] text-2xl italic mb-4">{label}</h3>
+              <p className="text-[#18102E]/60 text-sm leading-relaxed">{text}</p>
+            </motion.div>
+            <div className="flex justify-center">
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={isInView ? { scale: 1, opacity: 1 } : {}}
+                transition={{ duration: 0.4, delay: 0.1, ease: EASING }}
+                className="relative z-10 w-4 h-4 rounded-full bg-[#6C5CA8] ring-4 ring-[#6C5CA8]/20"
+              />
+            </div>
+            <div className="flex flex-col gap-3 max-w-[220px]">
+              {images.map((src, i) => (
+                <motion.div
+                  key={src}
+                  initial={{ opacity: 0, x: 28 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.7, delay: 0.25 + i * 0.1, ease: EASING }}
+                  className="rounded-2xl overflow-hidden liquid-glass aspect-[4/3]"
+                >
+                  <img src={src} alt="Archive Dans'&Co" className="w-full h-full object-cover" />
+                </motion.div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="flex flex-col gap-3 max-w-[220px] ml-auto">
+              {images.map((src, i) => (
+                <motion.div
+                  key={src}
+                  initial={{ opacity: 0, x: -28 }}
+                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  transition={{ duration: 0.7, delay: 0.25 + i * 0.1, ease: EASING }}
+                  className="rounded-2xl overflow-hidden liquid-glass aspect-[4/3]"
+                >
+                  <img src={src} alt="Archive Dans'&Co" className="w-full h-full object-cover" />
+                </motion.div>
+              ))}
+            </div>
+            <div className="flex justify-center">
+              <motion.div
+                initial={{ scale: 0, opacity: 0 }}
+                animate={isInView ? { scale: 1, opacity: 1 } : {}}
+                transition={{ duration: 0.4, delay: 0.1, ease: EASING }}
+                className="relative z-10 w-4 h-4 rounded-full bg-[#6C5CA8] ring-4 ring-[#6C5CA8]/20"
+              />
+            </div>
+            <motion.div
+              initial={{ opacity: 0, x: 28 }}
+              animate={isInView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.2, ease: EASING }}
+              className="liquid-glass rounded-3xl p-7"
+            >
+              <p className="text-[#6C5CA8] text-xs uppercase tracking-[0.2em] font-medium mb-1">{year}</p>
+              <h3 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[#18102E] text-2xl italic mb-4">{label}</h3>
+              <p className="text-[#18102E]/60 text-sm leading-relaxed">{text}</p>
+            </motion.div>
+          </>
+        )}
+      </div>
     </div>
   )
 }
