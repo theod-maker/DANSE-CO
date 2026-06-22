@@ -109,7 +109,7 @@ function ContactForm() {
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="liquid-glass rounded-3xl p-10 flex flex-col items-center gap-4 text-center"
+          className="liquid-glass rounded-3xl p-6 md:p-10 flex flex-col items-center gap-4 text-center"
         >
           <motion.div
             initial={{ scale: 0 }}
