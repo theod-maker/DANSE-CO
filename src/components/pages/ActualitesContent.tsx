@@ -40,7 +40,7 @@ function PinnedCard({ item, index }: { item: NewsContent; index: number }) {
       animate={isInView ? { opacity: 1, y: 0, rotate: rotation } : {}}
       whileHover={{ rotate: 0, y: -6, scale: 1.02, transition: { duration: 0.25, ease: 'easeOut' } }}
       transition={{ duration: 0.6, delay: index * 0.08, ease: EASING }}
-      className="relative mb-6 break-inside-avoid cursor-default"
+      className="relative cursor-default"
       style={{ transformOrigin: 'top center' }}
     >
       <Pin />
@@ -148,13 +148,17 @@ export default function ActualitesContent({ news }: ActualitesContentProps) {
           </motion.p>
         </div>
 
-        <div className="relative z-10 rounded-3xl p-8 md:p-12" style={{ background: 'rgba(107,92,168,0.04)', border: '1px solid rgba(107,92,168,0.08)' }}>
+        <div className="relative z-10 rounded-3xl p-8 md:p-12 pt-12" style={{ background: 'rgba(107,92,168,0.04)', border: '1px solid rgba(107,92,168,0.08)' }}>
           {news.length === 0 ? (
             <EmptyState />
           ) : (
-            <div className="columns-1 sm:columns-2 lg:columns-3 gap-6">
-              {news.map((item, i) => (
-                <PinnedCard key={item._id} item={item} index={i} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 items-start">
+              {[0, 1, 2].map(col => (
+                <div key={col} className="flex flex-col gap-8 pt-4">
+                  {news.filter((_, i) => i % 3 === col).map((item, i) => (
+                    <PinnedCard key={item._id} item={item} index={col + i * 3} />
+                  ))}
+                </div>
               ))}
             </div>
           )}
