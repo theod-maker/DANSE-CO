@@ -166,10 +166,11 @@ export const fallbackSiteInfo: SiteInfoContent = {
 export const fallbackDisciplines: DisciplineContent[] = [
   {
     _id: 'rock-roll',
-    title: 'Rock & Roll',
+    title: 'Rock & Swing',
     iconName: 'Zap',
     description: "Danse dynamique née dans les années 1950 aux États-Unis. Inspirée du swing, elle se danse à deux avec des pas rapides, des tours et beaucoup d'énergie. Popularisée par des artistes comme Elvis Presley, elle incarne le rythme et l'esprit festif des années 50.",
     benefits: ['Cardio', 'Énergie', 'Convivialité'],
+    imageUrl: '/images/disciplines/multidanses.jpeg',
   },
   {
     _id: 'salsa-cubaine',
@@ -177,6 +178,7 @@ export const fallbackDisciplines: DisciplineContent[] = [
     iconName: 'Heart',
     description: "Danse de couple née à Cuba dans les années 1940-1950. Rythmée et joyeuse, elle combine pas rapides, tours et figures en cercle appelées « Rueda ».",
     benefits: ['Rythme', 'Lâcher-prise', 'Convivialité'],
+    imageUrl: '/images/disciplines/salsa-cubaine.jpeg',
   },
   {
     _id: 'west-coast-swing',
@@ -184,6 +186,7 @@ export const fallbackDisciplines: DisciplineContent[] = [
     iconName: 'Music',
     description: "Il s'agit d'une danse qui permet de danser sur des musiques swings, modernes, lentes, rapides... Ce qui représente beaucoup de musiques passant à la radio !",
     benefits: ['Créativité', 'Musicalité', 'Élégance'],
+    imageUrl: '/images/disciplines/danse-en-ligne.png',
   },
   {
     _id: 'lindy-hop',
@@ -191,6 +194,7 @@ export const fallbackDisciplines: DisciplineContent[] = [
     iconName: 'Zap',
     description: "Danse swing née dans les années 1920 à New York. Elle se danse à deux et se caractérise par son énergie, son improvisation et ses mouvements dynamiques. Elle est aujourd'hui l'une des danses swing les plus pratiquées dans le monde.",
     benefits: ['Énergie', 'Improvisation', 'Convivialité'],
+    imageUrl: '/images/disciplines/lindy-hop.png',
   },
   {
     _id: 'multidanses',
@@ -198,6 +202,7 @@ export const fallbackDisciplines: DisciplineContent[] = [
     iconName: 'Music',
     description: "Explorez plusieurs styles de danse comme le chachacha, le tango, le rock'n roll ou encore la salsa. Chaque rythme a sa magie et permet de découvrir de nouvelles techniques tout en s'amusant.",
     benefits: ['Variété', 'Découverte', 'Technique'],
+    imageUrl: '/images/disciplines/rock-roll.png',
   },
   {
     _id: 'danse-en-ligne',
@@ -205,6 +210,7 @@ export const fallbackDisciplines: DisciplineContent[] = [
     iconName: 'Users',
     description: "Danse collective où l'on peut venir seul, tout le monde suit une même chorégraphie. Facile à apprendre et très conviviale, elle se danse sur tous les styles de musique : rumba, shim sham, chachacha, salsa.",
     benefits: ['Collectif', 'Accessible', 'Convivialité'],
+    imageUrl: '/images/disciplines/west-coast-swing.png',
   },
   {
     _id: 'danses-de-salon',
@@ -212,6 +218,7 @@ export const fallbackDisciplines: DisciplineContent[] = [
     iconName: 'Star',
     description: "Valse, tango, foxtrot, quickstep... Les danses de salon rassemblent les grandes danses de couple issues de la tradition européenne. Élégantes et accessibles, elles s'apprennent en duo et s'adaptent à tous les niveaux.",
     benefits: ['Élégance', 'Technique', 'Complicité'],
+    imageUrl: '/images/disciplines/danses-de-salon.jpeg',
   },
   {
     _id: 'cours-enfants',
@@ -219,6 +226,7 @@ export const fallbackDisciplines: DisciplineContent[] = [
     iconName: 'Star',
     description: "Nos petits danseurs découvrent le rythme, la coordination et la créativité à travers les danses latines : samba, chachacha, rumba, paso doble, jive. Une façon ludique de bouger, s'amuser et prendre confiance dès le plus jeune âge.",
     benefits: ['Rythme', 'Créativité', 'Confiance en soi'],
+    imageUrl: '/images/disciplines/cours-enfants.jpeg',
   },
 ]
 
@@ -267,43 +275,36 @@ export const fallbackPageTexts: PageTextsContent = {
   pricingSubtitle: 'Une tarification simple et transparente. Les tarifs sont annuels et incluent l\'adhésion à l\'association.',
 }
 
-export const fallbackNews: NewsContent[] = [
+const rawNews: NewsContent[] = [
   {
     _id: 'news-1',
     title: 'Reprise des cours — 21 septembre',
     date: '2026-09-21',
-    imageUrl: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800&q=80',
     excerpt: 'La saison 2026-2027 reprend le 21 septembre. Profitez de la semaine d\'ouverture pour tester gratuitement vos premiers cours lors de la semaine portes ouvertes.',
   },
   {
     _id: 'news-2',
     title: 'Forum des associations — 6 septembre',
     date: '2026-09-06',
-    imageUrl: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80',
     excerpt: 'Forum des associations le 6 septembre de 10h à 13h. Initiations et démonstrations prévues au complexe sportif de la Viauderie à Saint-Michel-Chef-Chef.',
   },
   {
     _id: 'news-3',
     title: 'Prochaine compétition — 17 octobre à Lardy',
     date: '2026-10-17',
-    imageUrl: 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=800&q=80',
     excerpt: 'Nos danseurs seront en compétition le 17 octobre à Lardy. Encouragez-les !',
-  },
-  {
-    _id: 'news-4',
-    title: 'Journée découverte — 6 septembre',
-    date: '2026-09-06',
-    imageUrl: 'https://images.unsplash.com/photo-1518834107812-67b0b7c58434?w=800&q=80',
-    excerpt: 'Venez essayer la danse gratuitement le 6 septembre de 15h à 18h. Salsa, Rock, Swing — une initiation pour chaque style, sans engagement.',
   },
   {
     _id: 'news-6',
     title: 'Nouveautés — Saison 2026-2027',
     date: '2026-09-01',
-    imageUrl: 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&q=80',
-    excerpt: 'Cette saison, de nouveaux cours font leur apparition : Lindy Hop, West Coast Swing, 2 créneaux de danses en ligne solo, 2 cours enfants, et lady stylist le mercredi soir.',
+    excerpt: 'Cette saison, de nouveaux cours font leur apparition : Lindy Hop, West Coast Swing, 2 créneaux de danses en ligne solo, 2 cours enfants, et lady staling le mercredi soir.',
   },
 ]
+
+export const fallbackNews: NewsContent[] = [...rawNews].sort(
+  (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+)
 
 export const fallbackPricing: PricingContent = {
   season: '2026 - 2027',

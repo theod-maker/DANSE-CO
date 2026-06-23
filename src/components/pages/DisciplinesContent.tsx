@@ -38,7 +38,7 @@ const DisciplineCard = ({ title, iconName, description, benefits, imageUrl, inde
       className="group liquid-glass rounded-3xl overflow-hidden flex flex-col relative"
     >
       <div className="aspect-[16/9] overflow-hidden">
-        <img src={photo} alt={title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+        <img src={photo} alt={title} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
       </div>
       <div className="p-5 md:p-8 flex flex-col gap-6 relative">
         <span

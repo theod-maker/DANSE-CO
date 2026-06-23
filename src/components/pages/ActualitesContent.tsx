@@ -1,12 +1,44 @@
 'use client'
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { Music, Star, Trophy, Heart, Sparkles } from 'lucide-react'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
 import type { NewsContent } from '@/src/lib/fallbackContent'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
-const UNSPLASH_FALLBACK = 'https://images.unsplash.com/photo-1504609813442-a8924e83f76e?w=800&q=80'
+
+const CARD_THEMES = [
+  {
+    bg: 'bg-gradient-to-br from-[#EDEAF6] via-[#E8E2F4] to-[#F5F0EA]',
+    icon: <Music size={28} className="text-[#6C5CA8]/35" />,
+    accent: <div className="absolute bottom-3 right-4 text-[64px] leading-none text-[#6C5CA8]/8 select-none" style={{ fontFamily: "'Instrument Serif', serif" }}>♪</div>,
+  },
+  {
+    bg: 'bg-gradient-to-tr from-[#F5F0EA] via-[#EDE8F5] to-[#E4DFF2]',
+    icon: <Star size={28} className="text-[#6C5CA8]/35" />,
+    accent: <div className="absolute top-3 left-4 text-[80px] leading-none text-[#6C5CA8]/6 select-none" style={{ fontFamily: "'Instrument Serif', serif" }}>★</div>,
+  },
+  {
+    bg: 'bg-gradient-to-bl from-[#EAE5F5] via-[#F0EBF8] to-[#FAF7F2]',
+    icon: <Trophy size={28} className="text-[#6C5CA8]/35" />,
+    accent: <div className="absolute bottom-2 right-6 w-16 h-16 rounded-full bg-[#6C5CA8]/5" />,
+  },
+  {
+    bg: 'bg-gradient-to-tl from-[#F7F3ED] via-[#EDE9F6] to-[#E6E0F3]',
+    icon: <Heart size={28} className="text-[#6C5CA8]/35" />,
+    accent: <div className="absolute top-4 right-4 text-[60px] leading-none text-[#6C5CA8]/7 select-none" style={{ fontFamily: "'Instrument Serif', serif" }}>♡</div>,
+  },
+  {
+    bg: 'bg-gradient-to-r from-[#EDEAF6] via-[#F2EEF9] to-[#F5F0EA]',
+    icon: <Sparkles size={28} className="text-[#6C5CA8]/35" />,
+    accent: (
+      <div className="absolute bottom-3 left-4 flex gap-2">
+        {[...Array(3)].map((_, i) => <div key={i} className="w-1.5 h-1.5 rounded-full bg-[#6C5CA8]/15" />)}
+      </div>
+    ),
+  },
+] as const
 
 const ROTATIONS = [-1.8, 1.2, -0.7, 2.1, -1.4, 0.9, -2.0, 1.6]
 
@@ -45,13 +77,17 @@ function PinnedCard({ item, index }: { item: NewsContent; index: number }) {
     >
       <Pin />
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(24,16,46,0.12)] border border-white/60">
-        {item.imageUrl && (
+        {item.imageUrl ? (
           <div className="relative h-44 overflow-hidden">
-            <img
-              src={item.imageUrl ?? UNSPLASH_FALLBACK}
-              alt={item.title}
-              className="w-full h-full object-cover"
-            />
+            <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover object-top" />
+          </div>
+        ) : (
+          <div className={`relative h-36 overflow-hidden flex items-center justify-center ${CARD_THEMES[index % CARD_THEMES.length].bg}`}>
+            {CARD_THEMES[index % CARD_THEMES.length].accent}
+            <div className="flex flex-col items-center gap-2 relative z-10">
+              {CARD_THEMES[index % CARD_THEMES.length].icon}
+              <span style={{ fontFamily: "'Instrument Serif', serif" }} className="text-sm text-[#6C5CA8]/30 italic tracking-wide">Dans'&Co</span>
+            </div>
           </div>
         )}
         <div className="p-5 flex flex-col gap-2">

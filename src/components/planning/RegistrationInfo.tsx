@@ -90,8 +90,8 @@ const RegistrationInfo = () => {
         <motion.div
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.6, delay: 0.45 }}
-          className="mt-6 text-[#18102E]/70 text-sm"
+          transition={{ duration: 0.6, delay: 0.55 }}
+          className="mt-4 text-[#18102E]/50 text-sm"
         >
           Une question ? Appelez-nous au{' '}
           <a href={`tel:${siteInfo.phone.replace(/\./g, '')}`} className="text-[#6C5CA8] font-medium hover:text-[#524490] transition-colors">

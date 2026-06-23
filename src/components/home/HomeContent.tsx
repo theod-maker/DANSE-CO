@@ -34,7 +34,7 @@ export default function HomeContent({ homepage, news, pageData }: Props) {
     <div className="min-h-screen overflow-x-hidden">
       <AppNavbar />
 
-      <section className="bg-[#F5F0EA] relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+      <section className="bg-[#F5F0EA] relative min-h-[80vh] flex flex-col items-center justify-center overflow-hidden">
 
         <div
           className="absolute rounded-full pointer-events-none [animation:orb-drift_12s_ease-in-out_infinite]"

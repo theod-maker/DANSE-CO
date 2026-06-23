@@ -134,7 +134,6 @@ export default function PlanningContent({ siteInfo, pageTexts, pageData }: Props
           <ScheduleGrid />
           <RegistrationInfo />
           <SpecialFormulas />
-          <AdhesionDownload />
         </div>
       </main>
       <AppFooter />
