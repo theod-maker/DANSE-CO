@@ -15,18 +15,10 @@ type IconComponent = React.ComponentType<LucideProps>
 
 const ICON_MAP: Record<IconName, IconComponent> = { Zap, Star, Heart, Music, Users }
 
-const DISCIPLINE_FALLBACK_IMAGES: Record<number, string> = {
-  0: 'https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=600&q=80',
-  1: 'https://images.unsplash.com/photo-1547153760-18fc86324498?w=600&q=80',
-  2: 'https://images.unsplash.com/photo-1535525153316-d772a249b53a?w=600&q=80',
-  3: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=600&q=80',
-}
-
-const DisciplineCard = ({ title, iconName, description, benefits, imageUrl, index }: DisciplineContent & { index: number }) => {
+const DisciplineCard = ({ title, iconName, description, benefits, index }: DisciplineContent & { index: number }) => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
   const Icon = ICON_MAP[iconName]
-  const photo = imageUrl || DISCIPLINE_FALLBACK_IMAGES[index % 4]
 
   return (
     <motion.div
@@ -37,9 +29,6 @@ const DisciplineCard = ({ title, iconName, description, benefits, imageUrl, inde
       transition={{ duration: 0.8, delay: index * 0.1, ease: EASING }}
       className="group liquid-glass rounded-3xl overflow-hidden flex flex-col relative"
     >
-      <div className="aspect-[16/9] overflow-hidden">
-        <img src={photo} alt={title} className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
-      </div>
       <div className="p-5 md:p-8 flex flex-col gap-6 relative">
         <span
           style={{ fontFamily: "'Instrument Serif', serif" }}
