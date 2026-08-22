@@ -305,7 +305,7 @@ const rawNews: NewsContent[] = [
     _id: 'news-6',
     title: 'Nouveautés — Saison 2026-2027',
     date: '2026-09-01',
-    excerpt: 'Cette saison, de nouveaux cours font leur apparition : Lindy Hop, West Coast Swing, 2 créneaux de danses en ligne solo, 2 cours enfants, et lady staling le mercredi soir.',
+    excerpt: 'Cette saison, de nouveaux cours font leur apparition : Lindy Hop, West Coast Swing, 2 créneaux de danses en ligne solo, 2 cours enfants, et lady styling le mercredi soir.',
   },
 ]
 
