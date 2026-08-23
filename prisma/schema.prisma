@@ -1,0 +1,179 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum DisciplineIcon {
+  Zap
+  Star
+  Heart
+  Music
+  Users
+}
+
+model Homepage {
+  id                       String   @id @default("singleton")
+  heroImageUrl             String?
+  heroTagline              String?
+  heroTitle                String
+  heroDescription          String
+  aboutTitle               String
+  philosophyTitle          String
+  philosophyBlock1Label    String
+  philosophyBlock1Text     String
+  philosophyBlock2Label    String
+  philosophyBlock2Text     String
+  philosophyImageUrl       String?
+  featuredVideoDescription String
+  featuredImageUrl         String?
+  featuredSectionLabel     String?
+  servicesSectionTitle     String
+  servicesSectionSubtitle  String
+  servicesCard1Description String
+  servicesCard1ImageUrl    String?
+  servicesCard2Description String
+  servicesCard2ImageUrl    String?
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+}
+
+model Pricing {
+  id            String       @id @default("singleton")
+  season        String
+  membershipFee String
+  infoItems     String[]
+  rows          PricingRow[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model PricingRow {
+  id           String   @id @default(uuid())
+  label        String
+  price        String
+  detail       String
+  highlight    Boolean  @default(false)
+  displayOrder Int      @default(0)
+  pricingId    String
+  pricing      Pricing  @relation(fields: [pricingId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([pricingId, displayOrder])
+}
+
+model SiteInfo {
+  id             String   @id @default("singleton")
+  phone          String
+  email          String
+  mailingAddress String
+  instagramUrl   String
+  facebookUrl    String
+  twitterUrl     String
+  websiteUrl     String
+  season         String
+  footerTagline  String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model RegistrationInfo {
+  id                String   @id @default("singleton")
+  permanence1Days   String
+  permanence1Hours  String
+  permanence1Venue  String
+  permanence2Days   String
+  permanence2Hours  String
+  permanence2Venue  String
+  requiredDocuments String[]
+  photoNote         String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model PageTexts {
+  id                  String   @id @default("singleton")
+  planningSubtitle    String
+  disciplinesSubtitle String
+  locationsSubtitle   String
+  contactSubtitle     String
+  instructorsSubtitle String
+  pricingSubtitle     String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Instructor {
+  id           String   @id @default(uuid())
+  name         String
+  specialty    String
+  bio          String
+  experience   String
+  photoUrl     String?
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([displayOrder])
+}
+
+model ScheduleEntry {
+  id           String   @id @default(uuid())
+  name         String
+  day          String
+  time         String
+  venue        String?
+  level        String
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([day, displayOrder])
+}
+
+model Discipline {
+  id           String         @id @default(uuid())
+  title        String
+  iconName     DisciplineIcon
+  description  String
+  benefits     String[]
+  imageUrl     String?
+  displayOrder Int            @default(0)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@index([displayOrder])
+}
+
+model Venue {
+  id            String   @id @default(uuid())
+  name          String
+  address       String
+  description   String
+  amenities     String[]
+  mapEmbedUrl   String
+  googleMapsUrl String
+  imageUrl      String?
+  displayOrder  Int      @default(0)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([displayOrder])
+}
+
+model News {
+  id        String   @id @default(uuid())
+  title     String
+  date      DateTime
+  imageUrl  String?
+  excerpt   String
+  link      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([date])
+}

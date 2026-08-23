@@ -6,3 +6,5 @@ dist/
 .DS_Store
 .vercel
 *.pdf
+
+/src/generated/prisma

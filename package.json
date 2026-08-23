@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^7.9.1",
     "@sanity/client": "^7.20.0",
     "@sanity/presentation": "^2.0.0",
     "@sanity/vision": "^5.19.0",
@@ -28,7 +29,9 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.27",
+    "dotenv": "^17.4.2",
     "postcss": "^8.5.8",
+    "prisma": "^7.9.1",
     "tailwindcss": "^4.2.2",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.2.2"
