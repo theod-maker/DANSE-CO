@@ -10,10 +10,10 @@ See: .paul/PROJECT.md (updated 2026-04-05)
 ## Current Position
 
 Milestone: v2.0 CMS Maison
-Phase: 14 (Fondations CMS) — 1 of 6
-Plan: Not started
-Status: Ready to plan
-Last activity: 2026-08-23 — Milestone v2.0 créé
+Phase: 14 (Fondations CMS) — 1 of 6 — Planning
+Plan: 14-01 créé, en attente d'approbation
+Status: PLAN créé, prêt pour APPLY
+Last activity: 2026-08-23 — Créé `.paul/phases/14-fondations-cms/14-01-PLAN.md`
 
 Progress:
 - v2.0 CMS Maison: [░░░░░░░░░░] 0%
@@ -30,7 +30,7 @@ Progress:
 
 ```
 PLAN ──▶ APPLY ──▶ UNIFY
-  ○        ○        ○     [Ready for first PLAN]
+  ✓        ○        ○     [Plan 14-01 créé, en attente d'approbation]
 ```
 
 ## Accumulated Context
@@ -71,9 +71,9 @@ PLAN ──▶ APPLY ──▶ UNIFY
 ## Session Continuity
 
 Last session: 2026-08-23
-Stopped at: Milestone v2.0 CMS Maison créé, structure des phases 14 à 19 en place
-Next action: `/paul:plan` pour la phase 14 (Fondations CMS)
-Resume file: `.paul/ROADMAP.md`
+Stopped at: Plan 14-01 créé (socle base de données), en attente d'approbation
+Next action: Relire le plan puis `/paul:apply .paul/phases/14-fondations-cms/14-01-PLAN.md`
+Resume file: `.paul/phases/14-fondations-cms/14-01-PLAN.md`
 
 ---
 *STATE.md — Updated: 2026-08-23*

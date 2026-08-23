@@ -23,7 +23,7 @@ Focus: Donner au client un CMS sur mesure où il peut tout modifier lui-même, s
 
 | Phase | Name | Plans | Status | Completed |
 |-------|------|-------|--------|-----------|
-| 14 | Fondations CMS | TBD | Not started | - |
+| 14 | Fondations CMS | 2 | Planning | - |
 | 15 | CRUD Contenu | TBD | Not started | - |
 | 16 | Médias | TBD | Not started | - |
 | 17 | Éditeur Visuel | TBD | Not started | - |
@@ -53,13 +53,15 @@ Site en ligne. Reste bloqué sur des actions humaines hors développement : acha
 
 **Scope:**
 - Choix et provisionnement de la base : Vercel Postgres (Neon) proposé, cohérent avec l'hébergement existant
-- Schéma de données couvrant les 7 familles de contenu, transposé depuis les schemas Sanity existants
+- Schéma de données couvrant les 10 types de contenu (5 singletons, 5 collections), transposé depuis les interfaces de `src/lib/fallbackContent.ts`
 - Prisma comme ORM, migrations versionnées
 - Authentification admin (nombre de comptes réduit, client non technique)
 - Route `/admin` protégée, coquille vide à ce stade
 - Bases dev et production séparées dès le départ
 
-**Plans:** TBD (définis pendant `/paul:plan`)
+**Plans:**
+- [ ] 14-01: Socle base de données — isolation, Prisma, schéma des 10 types, migration
+- [ ] 14-02: Authentification admin + route `/admin` protégée
 
 ### Phase 15: CRUD Contenu
 
