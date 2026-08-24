@@ -10,7 +10,7 @@ interface NavEntry {
 }
 
 const COLLECTIONS: NavEntry[] = [
-  { label: 'Actualités', href: '/admin/actualites', available: false },
+  { label: 'Actualités', href: '/admin/actualites', available: true },
   { label: 'Planning', href: '/admin/planning', available: false },
   { label: 'Disciplines', href: '/admin/disciplines', available: false },
   { label: 'Professeurs', href: '/admin/professeurs', available: false },
