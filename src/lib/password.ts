@@ -22,6 +22,10 @@ export function validatePasswordChange(
   return null
 }
 
+const MAXIMUM_SCRYPT_COST = 2 ** 20
+const MAXIMUM_SCRYPT_BLOCK_SIZE = 32
+const MAXIMUM_SCRYPT_PARALLELIZATION = 16
+
 const SCRYPT_COST = 16384
 const SCRYPT_BLOCK_SIZE = 8
 const SCRYPT_PARALLELIZATION = 1
@@ -83,6 +87,10 @@ export async function verifyPassword(password: string, storedHash: string): Prom
   if (!Number.isInteger(cost) || !Number.isInteger(blockSize) || !Number.isInteger(parallelization)) {
     return false
   }
+
+  if (cost < 2 || cost > MAXIMUM_SCRYPT_COST || (cost & (cost - 1)) !== 0) return false
+  if (blockSize < 1 || blockSize > MAXIMUM_SCRYPT_BLOCK_SIZE) return false
+  if (parallelization < 1 || parallelization > MAXIMUM_SCRYPT_PARALLELIZATION) return false
 
   const salt = Buffer.from(segments[4], 'base64')
   const expectedKey = Buffer.from(segments[5], 'base64')

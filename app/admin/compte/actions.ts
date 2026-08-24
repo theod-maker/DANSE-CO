@@ -1,8 +1,14 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { hashPassword, validatePasswordChange, verifyPassword } from '../../../src/lib/password'
+import {
+  SESSION_COOKIE_NAME,
+  SESSION_DURATION_SECONDS,
+  createSessionToken,
+} from '../../../src/lib/session'
 
 export interface PasswordChangeState {
   status: 'idle' | 'success' | 'error'
@@ -41,10 +47,24 @@ export async function changePassword(
     return { status: 'error', message: 'Le mot de passe actuel est incorrect.' }
   }
 
+  const changedAt = new Date()
+
   await prisma.adminUser.update({
     where: { id: account.id },
-    data: { passwordHash: await hashPassword(newPassword) },
+    data: { passwordHash: await hashPassword(newPassword), passwordChangedAt: changedAt },
   })
 
-  return { status: 'success', message: 'Mot de passe modifié.' }
+  const cookieStore = await cookies()
+  cookieStore.set(SESSION_COOKIE_NAME, await createSessionToken(account.id), {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    maxAge: SESSION_DURATION_SECONDS,
+  })
+
+  return {
+    status: 'success',
+    message: 'Mot de passe modifié. Les autres sessions ouvertes ont été déconnectées.',
+  }
 }

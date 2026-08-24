@@ -167,13 +167,14 @@ model Venue {
 }
 
 model AdminUser {
-  id           String    @id @default(uuid())
-  username     String    @unique
-  passwordHash String
-  displayName  String
-  lastLoginAt  DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id                String    @id @default(uuid())
+  username          String    @unique
+  passwordHash      String
+  displayName       String
+  lastLoginAt       DateTime?
+  passwordChangedAt DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
 model News {

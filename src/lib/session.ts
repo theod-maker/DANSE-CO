@@ -4,6 +4,12 @@ export const SESSION_DURATION_SECONDS = 60 * 60 * 8
 interface SessionPayload {
   userId: string
   expiresAt: number
+  issuedAtMs: number
+}
+
+export interface VerifiedSession {
+  userId: string
+  issuedAtMs: number
 }
 
 function toBase64Url(bytes: Uint8Array): string {
@@ -24,10 +30,30 @@ function fromBase64Url(value: string): Uint8Array | null {
   }
 }
 
+const MINIMUM_SECRET_LENGTH = 32
+const PLACEHOLDER_SECRET = 'remplacer-par-une-valeur-aleatoire-de-32-octets-minimum'
+
 async function importSigningKey(): Promise<CryptoKey> {
   const secret = process.env['AUTH_SECRET']
+
   if (!secret) {
-    throw new Error('AUTH_SECRET manquant — impossible de signer ou vérifier les sessions')
+    throw new Error(
+      'AUTH_SECRET manquant. Générer une valeur avec : openssl rand -base64 48'
+    )
+  }
+
+  if (secret === PLACEHOLDER_SECRET) {
+    throw new Error(
+      "AUTH_SECRET vaut encore l'exemple de .env.example, qui est public sur GitHub. " +
+        'Générer une vraie valeur avec : openssl rand -base64 48'
+    )
+  }
+
+  if (secret.length < MINIMUM_SECRET_LENGTH) {
+    throw new Error(
+      `AUTH_SECRET trop court : ${MINIMUM_SECRET_LENGTH} caractères minimum requis. ` +
+        'Générer une valeur avec : openssl rand -base64 48'
+    )
   }
 
   return crypto.subtle.importKey(
@@ -40,9 +66,11 @@ async function importSigningKey(): Promise<CryptoKey> {
 }
 
 export async function createSessionToken(userId: string): Promise<string> {
+  const issuedAtMs = Date.now()
   const payload: SessionPayload = {
     userId,
-    expiresAt: Math.floor(Date.now() / 1000) + SESSION_DURATION_SECONDS,
+    issuedAtMs,
+    expiresAt: Math.floor(issuedAtMs / 1000) + SESSION_DURATION_SECONDS,
   }
 
   const payloadBytes = new TextEncoder().encode(JSON.stringify(payload))
@@ -55,6 +83,13 @@ export async function createSessionToken(userId: string): Promise<string> {
 }
 
 export async function verifySessionToken(token: string | undefined): Promise<string | null> {
+  const session = await verifySessionPayload(token)
+  return session ? session.userId : null
+}
+
+export async function verifySessionPayload(
+  token: string | undefined
+): Promise<VerifiedSession | null> {
   if (!token) return null
 
   const segments = token.split('.')
@@ -86,5 +121,7 @@ export async function verifySessionToken(token: string | undefined): Promise<str
   if (typeof payload.userId !== 'string' || typeof payload.expiresAt !== 'number') return null
   if (payload.expiresAt <= Math.floor(Date.now() / 1000)) return null
 
-  return payload.userId
+  const issuedAtMs = typeof payload.issuedAtMs === 'number' ? payload.issuedAtMs : 0
+
+  return { userId: payload.userId, issuedAtMs }
 }

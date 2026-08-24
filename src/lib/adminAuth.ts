@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { prisma } from './db.ts'
-import { SESSION_COOKIE_NAME, verifySessionToken } from './session.ts'
+import { SESSION_COOKIE_NAME, verifySessionPayload } from './session.ts'
 
 export interface AdminAccount {
   id: string
@@ -10,15 +10,21 @@ export interface AdminAccount {
 
 export async function getCurrentAdmin(): Promise<AdminAccount | null> {
   const cookieStore = await cookies()
-  const userId = await verifySessionToken(cookieStore.get(SESSION_COOKIE_NAME)?.value)
-  if (!userId) return null
+  const session = await verifySessionPayload(cookieStore.get(SESSION_COOKIE_NAME)?.value)
+  if (!session) return null
 
   const account = await prisma.adminUser.findUnique({
-    where: { id: userId },
-    select: { id: true, username: true, displayName: true },
+    where: { id: session.userId },
+    select: { id: true, username: true, displayName: true, passwordChangedAt: true },
   })
 
-  return account
+  if (!account) return null
+
+  if (account.passwordChangedAt && session.issuedAtMs <= account.passwordChangedAt.getTime()) {
+    return null
+  }
+
+  return { id: account.id, username: account.username, displayName: account.displayName }
 }
 
 export async function requireCurrentAdmin(): Promise<AdminAccount> {
