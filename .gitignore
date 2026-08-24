@@ -8,3 +8,5 @@ dist/
 *.pdf
 
 /src/generated/prisma
+
+tsconfig.tsbuildinfo

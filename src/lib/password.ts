@@ -1,5 +1,27 @@
 import { randomBytes, scrypt, timingSafeEqual } from 'node:crypto'
 
+export const MINIMUM_PASSWORD_LENGTH = 12
+
+export function validatePasswordChange(
+  currentPassword: string,
+  newPassword: string,
+  confirmation: string
+): string | null {
+  if (!currentPassword || !newPassword || !confirmation) {
+    return 'Tous les champs sont obligatoires.'
+  }
+  if (newPassword.length < MINIMUM_PASSWORD_LENGTH) {
+    return `Le nouveau mot de passe doit faire au moins ${MINIMUM_PASSWORD_LENGTH} caractères.`
+  }
+  if (newPassword !== confirmation) {
+    return 'Le nouveau mot de passe et sa confirmation diffèrent.'
+  }
+  if (newPassword === currentPassword) {
+    return 'Le nouveau mot de passe doit être différent de l’actuel.'
+  }
+  return null
+}
+
 const SCRYPT_COST = 16384
 const SCRYPT_BLOCK_SIZE = 8
 const SCRYPT_PARALLELIZATION = 1

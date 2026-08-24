@@ -1,19 +1,25 @@
 import { createInterface, type Interface } from 'node:readline'
 import { stdin, stdout } from 'node:process'
 import { config } from 'dotenv'
-import { hashPassword } from '../src/lib/password.ts'
+import { hashPassword, MINIMUM_PASSWORD_LENGTH } from '../src/lib/password.ts'
 
 config({ path: '.env.local' })
 
 const { prisma } = await import('../src/lib/db.ts')
-
-const MINIMUM_PASSWORD_LENGTH = 12
 
 interface MaskableInterface extends Interface {
   _writeToOutput?: (message: string) => void
 }
 
 function ask(question: string, hidden = false): Promise<string> {
+  if (!stdin.isTTY) {
+    throw new Error(
+      "Ce script a besoin d'un terminal interactif.\n" +
+        "Lancez-le depuis une vraie fenêtre de terminal, ou fournissez les valeurs par variables\n" +
+        "d'environnement : ADMIN_USERNAME, ADMIN_DISPLAY_NAME, ADMIN_PASSWORD."
+    )
+  }
+
   return new Promise((resolve) => {
     const readline = createInterface({ input: stdin, output: stdout }) as MaskableInterface
 
