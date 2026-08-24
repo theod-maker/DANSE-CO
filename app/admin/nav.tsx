@@ -13,8 +13,8 @@ const COLLECTIONS: NavEntry[] = [
   { label: 'Actualités', href: '/admin/actualites', available: true },
   { label: 'Planning', href: '/admin/planning', available: false },
   { label: 'Disciplines', href: '/admin/disciplines', available: false },
-  { label: 'Professeurs', href: '/admin/professeurs', available: false },
-  { label: 'Salles', href: '/admin/salles', available: false },
+  { label: 'Professeurs', href: '/admin/professeurs', available: true },
+  { label: 'Salles', href: '/admin/salles', available: true },
 ]
 
 const PAGES: NavEntry[] = [
