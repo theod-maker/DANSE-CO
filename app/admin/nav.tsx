@@ -18,8 +18,8 @@ const COLLECTIONS: NavEntry[] = [
 ]
 
 const PAGES: NavEntry[] = [
-  { label: 'Accueil', href: '/admin/accueil', available: false },
-  { label: 'Tarifs', href: '/admin/tarifs', available: false },
+  { label: 'Accueil', href: '/admin/accueil', available: true },
+  { label: 'Tarifs', href: '/admin/tarifs', available: true },
   { label: 'Inscriptions', href: '/admin/inscriptions', available: true },
   { label: 'Textes des pages', href: '/admin/textes', available: true },
   { label: 'Informations du site', href: '/admin/informations', available: true },
