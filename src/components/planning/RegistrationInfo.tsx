@@ -1,13 +1,24 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { AlertCircle, FileText, Camera } from 'lucide-react';
-import { fallbackRegistrationInfo, fallbackSiteInfo } from '../../lib/fallbackContent';
+import {
+  fallbackRegistrationInfo,
+  fallbackSiteInfo,
+  type RegistrationInfoContent,
+  type SiteInfoContent,
+} from '../../lib/fallbackContent';
 
-const RegistrationInfo = () => {
+const RegistrationInfo = ({
+  registrationInfo = fallbackRegistrationInfo,
+  siteInfo: siteInfoProp = fallbackSiteInfo,
+}: {
+  registrationInfo?: RegistrationInfoContent
+  siteInfo?: SiteInfoContent
+} = {}) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
-  const regInfo = fallbackRegistrationInfo;
-  const siteInfo = fallbackSiteInfo;
+  const regInfo = registrationInfo;
+  const siteInfo = siteInfoProp;
 
   const cards = [
     {

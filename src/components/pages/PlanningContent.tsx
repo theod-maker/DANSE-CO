@@ -6,7 +6,12 @@ import RegistrationInfo from '@/src/components/planning/RegistrationInfo'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
 import BlockRenderer from '@/src/components/blocks/BlockRenderer'
-import type { SiteInfoContent, PageTextsContent } from '@/src/lib/fallbackContent'
+import type {
+  SiteInfoContent,
+  PageTextsContent,
+  ScheduleEntryContent,
+  RegistrationInfoContent,
+} from '@/src/lib/fallbackContent'
 import type { PageContent } from '@/src/lib/pageBuilderTypes'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
@@ -93,10 +98,12 @@ const SpecialFormulas = () => {
 interface Props {
   siteInfo: SiteInfoContent
   pageTexts: PageTextsContent
+  schedule: ScheduleEntryContent[]
+  registrationInfo: RegistrationInfoContent
   pageData: PageContent | null
 }
 
-export default function PlanningContent({ siteInfo, pageTexts, pageData }: Props) {
+export default function PlanningContent({ siteInfo, pageTexts, schedule, registrationInfo, pageData }: Props) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
 
@@ -105,7 +112,7 @@ export default function PlanningContent({ siteInfo, pageTexts, pageData }: Props
       <div className="min-h-screen overflow-x-hidden">
         <AppNavbar />
         <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter />
+        <AppFooter siteInfo={siteInfo} />
       </div>
     )
   }
@@ -131,12 +138,12 @@ export default function PlanningContent({ siteInfo, pageTexts, pageData }: Props
           </motion.p>
         </div>
         <div className="relative z-10">
-          <ScheduleGrid />
-          <RegistrationInfo />
+          <ScheduleGrid schedule={schedule} />
+          <RegistrationInfo registrationInfo={registrationInfo} siteInfo={siteInfo} />
           <SpecialFormulas />
         </div>
       </main>
-      <AppFooter />
+      <AppFooter siteInfo={siteInfo} />
     </div>
   )
 }

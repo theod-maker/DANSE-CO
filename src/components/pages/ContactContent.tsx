@@ -49,7 +49,7 @@ export default function ContactContent({ siteInfo, pageTexts, venues, pageData }
       <div className="min-h-screen overflow-x-hidden">
         <AppNavbar />
         <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter />
+        <AppFooter siteInfo={siteInfo} />
       </div>
     )
   }
@@ -136,7 +136,7 @@ export default function ContactContent({ siteInfo, pageTexts, venues, pageData }
           </div>
         )}
       </main>
-      <AppFooter />
+      <AppFooter siteInfo={siteInfo} />
     </div>
   )
 }

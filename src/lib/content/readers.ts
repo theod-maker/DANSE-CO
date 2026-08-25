@@ -21,7 +21,13 @@ import {
   type SiteInfoContent,
   type VenueContent,
 } from '../fallbackContent.ts'
+import { unstable_cache } from 'next/cache'
 import { readWithFallback } from './source.ts'
+import { CONTENT_TAGS, type ContentTag } from './revalidate.ts'
+
+function cached<T>(tag: ContentTag, read: () => Promise<T | null>): () => Promise<T | null> {
+  return unstable_cache(read, [CONTENT_TAGS[tag]], { tags: [CONTENT_TAGS[tag]] })
+}
 
 const SINGLETON_ID = 'singleton'
 
@@ -57,7 +63,7 @@ function startMinutes(time: string): number {
 }
 
 export function readHomepage(): Promise<HomepageContent> {
-  return readWithFallback('accueil', async () => {
+  return readWithFallback('accueil', cached('homepage', async () => {
     const row = await prisma.homepage.findUnique({ where: { id: SINGLETON_ID } })
     if (!row) return null
 
@@ -83,11 +89,11 @@ export function readHomepage(): Promise<HomepageContent> {
       servicesCard2Description: row.servicesCard2Description,
       servicesCard2ImageUrl: optional(row.servicesCard2ImageUrl),
     }
-  }, fallbackHomepage)
+  }), fallbackHomepage)
 }
 
 export function readSiteInfo(): Promise<SiteInfoContent> {
-  return readWithFallback('informations du site', async () => {
+  return readWithFallback('informations du site', cached('siteInfo', async () => {
     const row = await prisma.siteInfo.findUnique({ where: { id: SINGLETON_ID } })
     if (!row) return null
 
@@ -102,11 +108,11 @@ export function readSiteInfo(): Promise<SiteInfoContent> {
       season: row.season,
       footerTagline: row.footerTagline,
     }
-  }, fallbackSiteInfo)
+  }), fallbackSiteInfo)
 }
 
 export function readPageTexts(): Promise<PageTextsContent> {
-  return readWithFallback('textes des pages', async () => {
+  return readWithFallback('textes des pages', cached('pageTexts', async () => {
     const row = await prisma.pageTexts.findUnique({ where: { id: SINGLETON_ID } })
     if (!row) return null
 
@@ -118,11 +124,11 @@ export function readPageTexts(): Promise<PageTextsContent> {
       instructorsSubtitle: row.instructorsSubtitle,
       pricingSubtitle: row.pricingSubtitle,
     }
-  }, fallbackPageTexts)
+  }), fallbackPageTexts)
 }
 
 export function readRegistrationInfo(): Promise<RegistrationInfoContent> {
-  return readWithFallback('inscriptions', async () => {
+  return readWithFallback('inscriptions', cached('registrationInfo', async () => {
     const row = await prisma.registrationInfo.findUnique({ where: { id: SINGLETON_ID } })
     if (!row) return null
 
@@ -136,11 +142,11 @@ export function readRegistrationInfo(): Promise<RegistrationInfoContent> {
       requiredDocuments: row.requiredDocuments,
       photoNote: row.photoNote,
     }
-  }, fallbackRegistrationInfo)
+  }), fallbackRegistrationInfo)
 }
 
 export function readPricing(): Promise<PricingContent> {
-  return readWithFallback('tarifs', async () => {
+  return readWithFallback('tarifs', cached('pricing', async () => {
     const row = await prisma.pricing.findUnique({
       where: { id: SINGLETON_ID },
       include: { rows: { orderBy: { displayOrder: 'asc' } } },
@@ -158,11 +164,11 @@ export function readPricing(): Promise<PricingContent> {
         highlight: entry.highlight || undefined,
       })),
     }
-  }, fallbackPricing)
+  }), fallbackPricing)
 }
 
 export function readInstructors(): Promise<InstructorContent[]> {
-  return readWithFallback('professeurs', async () => {
+  return readWithFallback('professeurs', cached('instructors', async () => {
     const rows = await prisma.instructor.findMany({ orderBy: { displayOrder: 'asc' } })
 
     return rows.map((row) => ({
@@ -173,11 +179,11 @@ export function readInstructors(): Promise<InstructorContent[]> {
       experience: row.experience,
       photoUrl: optional(row.photoUrl),
     }))
-  }, fallbackInstructors)
+  }), fallbackInstructors)
 }
 
 export function readDisciplines(): Promise<DisciplineContent[]> {
-  return readWithFallback('disciplines', async () => {
+  return readWithFallback('disciplines', cached('disciplines', async () => {
     const rows = await prisma.discipline.findMany({ orderBy: { displayOrder: 'asc' } })
 
     return rows.map((row) => ({
@@ -188,11 +194,11 @@ export function readDisciplines(): Promise<DisciplineContent[]> {
       benefits: row.benefits,
       imageUrl: optional(row.imageUrl),
     }))
-  }, fallbackDisciplines)
+  }), fallbackDisciplines)
 }
 
 export function readVenues(): Promise<VenueContent[]> {
-  return readWithFallback('salles', async () => {
+  return readWithFallback('salles', cached('venues', async () => {
     const rows = await prisma.venue.findMany({ orderBy: { displayOrder: 'asc' } })
 
     return rows.map((row) => ({
@@ -205,11 +211,11 @@ export function readVenues(): Promise<VenueContent[]> {
       googleMapsUrl: row.googleMapsUrl,
       imageUrl: optional(row.imageUrl),
     }))
-  }, fallbackVenues)
+  }), fallbackVenues)
 }
 
 export function readSchedule(): Promise<ScheduleEntryContent[]> {
-  return readWithFallback('planning', async () => {
+  return readWithFallback('planning', cached('schedule', async () => {
     const rows = await prisma.scheduleEntry.findMany()
 
     return [...rows]
@@ -222,11 +228,11 @@ export function readSchedule(): Promise<ScheduleEntryContent[]> {
         venue: optional(row.venue),
         level: row.level,
       }))
-  }, fallbackSchedule)
+  }), fallbackSchedule)
 }
 
 export function readNews(): Promise<NewsContent[]> {
-  return readWithFallback('actualités', async () => {
+  return readWithFallback('actualités', cached('news', async () => {
     const rows = await prisma.news.findMany({ orderBy: { date: 'asc' } })
 
     return rows.map((row) => ({
@@ -237,5 +243,5 @@ export function readNews(): Promise<NewsContent[]> {
       excerpt: row.excerpt,
       link: optional(row.link),
     }))
-  }, fallbackNews)
+  }), fallbackNews)
 }

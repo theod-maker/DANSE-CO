@@ -6,7 +6,7 @@ import Link from 'next/link'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
 import BlockRenderer from '@/src/components/blocks/BlockRenderer'
-import type { PricingContent, PricingRowContent, PageTextsContent } from '@/src/lib/fallbackContent'
+import type { PricingContent, PricingRowContent, PageTextsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
 import type { PageContent } from '@/src/lib/pageBuilderTypes'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
@@ -31,12 +31,13 @@ const PricingCard = ({ label, price, detail, highlight, index }: PricingRowConte
 }
 
 interface Props {
+  siteInfo: SiteInfoContent
   pricingData: PricingContent
   pageTexts: PageTextsContent
   pageData: PageContent | null
 }
 
-export default function PricingContent({ pricingData, pageTexts, pageData }: Props) {
+export default function PricingContent({ siteInfo, pricingData, pageTexts, pageData }: Props) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
   const infoRef = useRef(null)
@@ -47,7 +48,7 @@ export default function PricingContent({ pricingData, pageTexts, pageData }: Pro
       <div className="min-h-screen overflow-x-hidden">
         <AppNavbar />
         <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter />
+        <AppFooter siteInfo={siteInfo} />
       </div>
     )
   }
@@ -86,7 +87,7 @@ export default function PricingContent({ pricingData, pageTexts, pageData }: Pro
           </div>
         </motion.div>
       </main>
-      <AppFooter />
+      <AppFooter siteInfo={siteInfo} />
     </div>
   )
 }

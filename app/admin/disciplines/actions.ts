@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateDisciplineInput, type DisciplineFieldErrors } from './validation'
+import { revalidateContent } from '../_shared/revalidate-after-save'
 
 const LIST_PATH = '/admin/disciplines'
 
@@ -55,6 +56,8 @@ export async function saveDiscipline(
   }
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('disciplines')
   redirect(LIST_PATH)
 }
 
@@ -68,6 +71,8 @@ export async function deleteDiscipline(formData: FormData): Promise<void> {
   await prisma.discipline.deleteMany({ where: { id } })
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('disciplines')
   redirect(LIST_PATH)
 }
 
@@ -83,4 +88,6 @@ export async function reorderDisciplines(orderedIds: string[]): Promise<void> {
   )
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('disciplines')
 }

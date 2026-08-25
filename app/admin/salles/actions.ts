@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateVenueInput, type VenueFieldErrors } from './validation'
+import { revalidateContent } from '../_shared/revalidate-after-save'
 
 const LIST_PATH = '/admin/salles'
 
@@ -57,6 +58,8 @@ export async function saveVenue(
   }
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('venues')
   redirect(LIST_PATH)
 }
 
@@ -70,6 +73,8 @@ export async function deleteVenue(formData: FormData): Promise<void> {
   await prisma.venue.deleteMany({ where: { id } })
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('venues')
   redirect(LIST_PATH)
 }
 
@@ -85,4 +90,6 @@ export async function reorderVenues(orderedIds: string[]): Promise<void> {
   )
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('venues')
 }

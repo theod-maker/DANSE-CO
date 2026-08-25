@@ -5,7 +5,7 @@ import { Music, Zap, Heart, Star, Users, type LucideProps } from 'lucide-react'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
 import BlockRenderer from '@/src/components/blocks/BlockRenderer'
-import type { DisciplineContent, PageTextsContent } from '@/src/lib/fallbackContent'
+import type { DisciplineContent, PageTextsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
 import type { PageContent } from '@/src/lib/pageBuilderTypes'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
@@ -66,12 +66,13 @@ const DisciplineCard = ({ title, iconName, description, benefits, index }: Disci
 }
 
 interface Props {
+  siteInfo: SiteInfoContent
   disciplines: DisciplineContent[]
   pageTexts: PageTextsContent
   pageData: PageContent | null
 }
 
-export default function DisciplinesContent({ disciplines, pageTexts, pageData }: Props) {
+export default function DisciplinesContent({ siteInfo, disciplines, pageTexts, pageData }: Props) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
 
@@ -80,7 +81,7 @@ export default function DisciplinesContent({ disciplines, pageTexts, pageData }:
       <div className="min-h-screen overflow-x-hidden">
         <AppNavbar />
         <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter />
+        <AppFooter siteInfo={siteInfo} />
       </div>
     )
   }
@@ -114,7 +115,7 @@ export default function DisciplinesContent({ disciplines, pageTexts, pageData }:
           ))}
         </div>
       </main>
-      <AppFooter />
+      <AppFooter siteInfo={siteInfo} />
     </div>
   )
 }

@@ -3,14 +3,17 @@ export const metadata: Metadata = {
   title: 'Nos Disciplines',
   description: 'Découvrez nos disciplines : Lindy Hop, West Coast Swing, Multidanses, Danse en ligne, cours enfants. Tous niveaux à Saint-Michel-Chef-Chef.',
 }
-import { fallbackDisciplines, fallbackPageTexts } from '@/src/lib/fallbackContent'
+import { readDisciplines, readPageTexts, readSiteInfo } from '@/src/lib/content/readers'
 import DisciplinesContent from '@/src/components/pages/DisciplinesContent'
 
 export default async function Disciplines() {
+  const [disciplines, pagetexts, siteinfo] = await Promise.all([readDisciplines(), readPageTexts(), readSiteInfo()])
+
   return (
     <DisciplinesContent
-      disciplines={fallbackDisciplines}
-      pageTexts={fallbackPageTexts}
+      siteInfo={siteinfo}
+      disciplines={disciplines}
+      pageTexts={pagetexts}
       pageData={null}
     />
   )

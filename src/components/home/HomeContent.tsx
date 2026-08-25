@@ -6,18 +6,19 @@ import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
 import NewsSection from '@/src/components/asme/NewsSection'
 import BlockRenderer from '@/src/components/blocks/BlockRenderer'
-import type { HomepageContent, NewsContent } from '@/src/lib/fallbackContent'
+import type { HomepageContent, NewsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
 import type { PageContent } from '@/src/lib/pageBuilderTypes'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
 interface Props {
   homepage: HomepageContent
+  siteInfo: SiteInfoContent
   news: NewsContent[]
   pageData: PageContent | null
 }
 
-export default function HomeContent({ homepage, news, pageData }: Props) {
+export default function HomeContent({ homepage, siteInfo, news, pageData }: Props) {
   if (pageData) {
     return (
       <div className="min-h-screen overflow-x-hidden">
@@ -25,7 +26,7 @@ export default function HomeContent({ homepage, news, pageData }: Props) {
         <main className="pb-32">
           <BlockRenderer blocks={pageData.blocks} />
         </main>
-        <AppFooter />
+        <AppFooter siteInfo={siteInfo} />
       </div>
     )
   }
@@ -122,7 +123,7 @@ export default function HomeContent({ homepage, news, pageData }: Props) {
       </section>
 
       <NewsSection news={news} />
-      <AppFooter />
+      <AppFooter siteInfo={siteInfo} />
     </div>
   )
 }

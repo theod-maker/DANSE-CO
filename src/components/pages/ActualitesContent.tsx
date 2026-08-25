@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion'
 import { Music, Star, Trophy, Heart, Sparkles } from 'lucide-react'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
-import type { NewsContent } from '@/src/lib/fallbackContent'
+import type { NewsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
@@ -132,10 +132,11 @@ function EmptyState() {
 }
 
 interface ActualitesContentProps {
+  siteInfo: SiteInfoContent
   news: NewsContent[]
 }
 
-export default function ActualitesContent({ news }: ActualitesContentProps) {
+export default function ActualitesContent({ siteInfo, news }: ActualitesContentProps) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
 
@@ -200,7 +201,7 @@ export default function ActualitesContent({ news }: ActualitesContentProps) {
           )}
         </div>
       </main>
-      <AppFooter />
+      <AppFooter siteInfo={siteInfo} />
     </div>
   )
 }

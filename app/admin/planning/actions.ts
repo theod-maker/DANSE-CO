@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateCourseInput, type CourseFieldErrors } from './validation'
+import { revalidateContent } from '../_shared/revalidate-after-save'
 
 const LIST_PATH = '/admin/planning'
 
@@ -54,6 +55,8 @@ export async function saveCourse(
   }
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('schedule')
   redirect(LIST_PATH)
 }
 
@@ -67,5 +70,7 @@ export async function deleteCourse(formData: FormData): Promise<void> {
   await prisma.scheduleEntry.deleteMany({ where: { id } })
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('schedule')
   redirect(LIST_PATH)
 }

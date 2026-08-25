@@ -5,6 +5,7 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { SINGLETON_ID } from '../_shared/singleton-id'
 import { validateRegistrationInput, type RegistrationFieldErrors } from './validation'
+import { revalidateContent } from '../_shared/revalidate-after-save'
 
 const PATH = '/admin/inscriptions'
 
@@ -58,5 +59,7 @@ export async function saveRegistrationInfo(
   })
 
   revalidatePath(PATH)
+
+  await revalidateContent('registrationInfo')
   return { status: 'success', message: 'Informations enregistrées.' }
 }

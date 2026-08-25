@@ -10,6 +10,7 @@ import {
   type PageTextsFieldErrors,
   type PageTextsInput,
 } from './validation'
+import { revalidateContent } from '../_shared/revalidate-after-save'
 
 const PATH = '/admin/textes'
 
@@ -45,5 +46,7 @@ export async function savePageTexts(
   })
 
   revalidatePath(PATH)
+
+  await revalidateContent('pageTexts')
   return { status: 'success', message: 'Textes enregistrés.' }
 }

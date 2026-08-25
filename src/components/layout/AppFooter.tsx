@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link';
-import { fallbackSiteInfo } from '../../lib/fallbackContent';
+import { fallbackSiteInfo, type SiteInfoContent } from '../../lib/fallbackContent';
 
 const InstagramIcon = ({ size = 16 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -14,8 +14,7 @@ const FacebookIcon = ({ size = 16 }: { size?: number }) => (
   </svg>
 );
 
-const AppFooter: React.FC = () => {
-  const siteInfo = fallbackSiteInfo;
+const AppFooter = ({ siteInfo = fallbackSiteInfo }: { siteInfo?: SiteInfoContent } = {}) => {
 
   return (
     <footer className="bg-[#F5F0EA] border-t border-[#18102E]/8 px-6 py-12">

@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateNewsInput, type NewsFieldErrors } from './validation'
+import { revalidateContent } from '../_shared/revalidate-after-save'
 
 const LIST_PATH = '/admin/actualites'
 
@@ -59,6 +60,8 @@ export async function saveNews(
   }
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('news')
   redirect(LIST_PATH)
 }
 
@@ -72,5 +75,7 @@ export async function deleteNews(formData: FormData): Promise<void> {
   await prisma.news.deleteMany({ where: { id } })
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('news')
   redirect(LIST_PATH)
 }

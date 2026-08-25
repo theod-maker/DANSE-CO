@@ -5,6 +5,7 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { SINGLETON_ID } from '../_shared/singleton-id'
 import { validateSiteInfoInput, type SiteInfoFieldErrors, type SiteInfoInput } from './validation'
+import { revalidateContent } from '../_shared/revalidate-after-save'
 
 const PATH = '/admin/informations'
 
@@ -52,5 +53,7 @@ export async function saveSiteInfo(
   })
 
   revalidatePath(PATH)
+
+  await revalidateContent('siteInfo')
   return { status: 'success', message: 'Informations enregistrées.' }
 }

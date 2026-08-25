@@ -10,6 +10,7 @@ import {
   type HomepageFieldErrors,
   type HomepageInput,
 } from './validation'
+import { revalidateContent } from '../_shared/revalidate-after-save'
 
 const PATH = '/admin/accueil'
 
@@ -45,5 +46,7 @@ export async function saveHomepage(
   })
 
   revalidatePath(PATH)
+
+  await revalidateContent('homepage')
   return { status: 'success', message: "Page d'accueil enregistrée." }
 }

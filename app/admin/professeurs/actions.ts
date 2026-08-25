@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateInstructorInput, type InstructorFieldErrors } from './validation'
+import { revalidateContent } from '../_shared/revalidate-after-save'
 
 const LIST_PATH = '/admin/professeurs'
 
@@ -55,6 +56,8 @@ export async function saveInstructor(
   }
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('instructors')
   redirect(LIST_PATH)
 }
 
@@ -68,6 +71,8 @@ export async function deleteInstructor(formData: FormData): Promise<void> {
   await prisma.instructor.deleteMany({ where: { id } })
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('instructors')
   redirect(LIST_PATH)
 }
 
@@ -83,4 +88,6 @@ export async function reorderInstructors(orderedIds: string[]): Promise<void> {
   )
 
   revalidatePath(LIST_PATH)
+
+  await revalidateContent('instructors')
 }

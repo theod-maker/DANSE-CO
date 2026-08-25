@@ -5,18 +5,19 @@ import VenueCard from '@/src/components/locations/VenueCard'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
 import BlockRenderer from '@/src/components/blocks/BlockRenderer'
-import type { VenueContent, PageTextsContent } from '@/src/lib/fallbackContent'
+import type { VenueContent, PageTextsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
 import type { PageContent } from '@/src/lib/pageBuilderTypes'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
 interface Props {
+  siteInfo: SiteInfoContent
   venues: VenueContent[]
   pageTexts: PageTextsContent
   pageData: PageContent | null
 }
 
-export default function LocationsContent({ venues, pageTexts, pageData }: Props) {
+export default function LocationsContent({ siteInfo, venues, pageTexts, pageData }: Props) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
 
@@ -25,7 +26,7 @@ export default function LocationsContent({ venues, pageTexts, pageData }: Props)
       <div className="min-h-screen overflow-x-hidden">
         <AppNavbar />
         <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter />
+        <AppFooter siteInfo={siteInfo} />
       </div>
     )
   }
@@ -56,7 +57,7 @@ export default function LocationsContent({ venues, pageTexts, pageData }: Props)
           ))}
         </div>
       </main>
-      <AppFooter />
+      <AppFooter siteInfo={siteInfo} />
     </div>
   )
 }

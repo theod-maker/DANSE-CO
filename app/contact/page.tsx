@@ -3,15 +3,17 @@ export const metadata: Metadata = {
   title: 'Contact',
   description: 'Contactez Dans&CO. Téléphone, email, adresse courrier. Nous répondons rapidement à toutes vos questions sur les cours de danse.',
 }
-import { fallbackSiteInfo, fallbackPageTexts, fallbackVenues } from '@/src/lib/fallbackContent'
+import { readSiteInfo, readPageTexts, readVenues } from '@/src/lib/content/readers'
 import ContactContent from '@/src/components/pages/ContactContent'
 
 export default async function Contact() {
+  const [siteinfo, pagetexts, venues] = await Promise.all([readSiteInfo(), readPageTexts(), readVenues()])
+
   return (
     <ContactContent
-      siteInfo={fallbackSiteInfo}
-      pageTexts={fallbackPageTexts}
-      venues={fallbackVenues}
+      siteInfo={siteinfo}
+      pageTexts={pagetexts}
+      venues={venues}
       pageData={null}
     />
   )
