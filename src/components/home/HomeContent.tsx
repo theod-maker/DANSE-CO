@@ -5,6 +5,10 @@ import { ArrowRight } from 'lucide-react'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
 import NewsSection from '@/src/components/asme/NewsSection'
+import AboutSection from '@/src/components/asme/AboutSection'
+import PhilosophySection from '@/src/components/asme/PhilosophySection'
+import ServicesSection from '@/src/components/asme/ServicesSection'
+import FeaturedVideoSection from '@/src/components/asme/FeaturedVideoSection'
 import BlockRenderer from '@/src/components/blocks/BlockRenderer'
 import type { HomepageContent, NewsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
 import type { PageContent } from '@/src/lib/pageBuilderTypes'
@@ -122,6 +126,10 @@ export default function HomeContent({ homepage, siteInfo, news, pageData }: Prop
 
       </section>
 
+      <AboutSection content={homepage} />
+      <PhilosophySection content={homepage} />
+      <ServicesSection content={homepage} />
+      <FeaturedVideoSection content={homepage} />
       <NewsSection news={news} />
       <AppFooter siteInfo={siteInfo} />
     </div>
