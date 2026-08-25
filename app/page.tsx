@@ -1,11 +1,17 @@
-import { readHomepage, readNews, readSiteInfo } from '@/src/lib/content/readers'
+import {
+  readHomepage,
+  readNews,
+  readSiteInfo,
+  readHomepageSections,
+} from '@/src/lib/content/readers'
 import HomeContent from '@/src/components/home/HomeContent'
 
 export default async function Home() {
-  const [homepage, news, siteinfo] = await Promise.all([
+  const [homepage, news, siteinfo, sections] = await Promise.all([
     readHomepage(),
     readNews(),
     readSiteInfo(),
+    readHomepageSections(),
   ])
 
   return (
@@ -13,6 +19,7 @@ export default async function Home() {
       homepage={homepage}
       news={news}
       siteInfo={siteinfo}
+      sections={sections}
       pageData={null}
     />
   )

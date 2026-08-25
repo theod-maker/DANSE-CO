@@ -9,6 +9,7 @@ export const CONTENT_TAGS = {
   venues: 'contenu-salles',
   schedule: 'contenu-planning',
   news: 'contenu-actualites',
+  sections: 'contenu-sections',
 } as const
 
 export type ContentTag = keyof typeof CONTENT_TAGS

@@ -12,17 +12,19 @@ import FeaturedVideoSection from '@/src/components/asme/FeaturedVideoSection'
 import BlockRenderer from '@/src/components/blocks/BlockRenderer'
 import type { HomepageContent, NewsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
 import type { PageContent } from '@/src/lib/pageBuilderTypes'
+import type { ResolvedSection } from '@/src/lib/content/sections'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
 interface Props {
   homepage: HomepageContent
   siteInfo: SiteInfoContent
+  sections: ResolvedSection[]
   news: NewsContent[]
   pageData: PageContent | null
 }
 
-export default function HomeContent({ homepage, siteInfo, news, pageData }: Props) {
+export default function HomeContent({ homepage, siteInfo, news, sections, pageData }: Props) {
   if (pageData) {
     return (
       <div className="min-h-screen overflow-x-hidden">
@@ -126,11 +128,24 @@ export default function HomeContent({ homepage, siteInfo, news, pageData }: Prop
 
       </section>
 
-      <AboutSection content={homepage} />
-      <PhilosophySection content={homepage} />
-      <ServicesSection content={homepage} />
-      <FeaturedVideoSection content={homepage} />
-      <NewsSection news={news} />
+      {sections
+        .filter((section) => section.visible)
+        .map((section) => {
+          switch (section.key) {
+            case 'about':
+              return <AboutSection key={section.key} content={homepage} />
+            case 'philosophy':
+              return <PhilosophySection key={section.key} content={homepage} />
+            case 'services':
+              return <ServicesSection key={section.key} content={homepage} />
+            case 'featuredVideo':
+              return <FeaturedVideoSection key={section.key} content={homepage} />
+            case 'news':
+              return <NewsSection key={section.key} news={news} />
+            default:
+              return null
+          }
+        })}
       <AppFooter siteInfo={siteInfo} />
     </div>
   )

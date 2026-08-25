@@ -24,6 +24,7 @@ import {
 import { unstable_cache } from 'next/cache'
 import { readWithFallback } from './source.ts'
 import { CONTENT_TAGS, type ContentTag } from './revalidate.ts'
+import { HOMEPAGE_KEY, defaultSections, resolveSections, type ResolvedSection } from './sections.ts'
 
 function cached<T>(tag: ContentTag, read: () => Promise<T | null>): () => Promise<T | null> {
   return unstable_cache(read, [CONTENT_TAGS[tag]], { tags: [CONTENT_TAGS[tag]] })
@@ -244,4 +245,18 @@ export function readNews(): Promise<NewsContent[]> {
       link: optional(row.link),
     }))
   }), fallbackNews)
+}
+
+export function readHomepageSections(): Promise<ResolvedSection[]> {
+  return readWithFallback(
+    'sections',
+    cached('sections', async () => {
+      const stored = await prisma.pageSection.findMany({
+        where: { pageKey: HOMEPAGE_KEY },
+        orderBy: { displayOrder: 'asc' },
+      })
+      return resolveSections(stored)
+    }),
+    defaultSections()
+  )
 }
