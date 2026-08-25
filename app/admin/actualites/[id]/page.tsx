@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../../src/lib/db'
 import { getCurrentAdmin } from '../../../../src/lib/adminAuth'
 import { NewsForm } from '../news-form'
+import { listMediaOptions } from '../../medias/queries'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,6 +14,8 @@ function toDateInputValue(date: Date): string {
 export default async function EditNewsPage({ params }: { params: Promise<{ id: string }> }) {
   const account = await getCurrentAdmin()
   if (!account) redirect('/admin/login')
+
+  const mediaOptions = await listMediaOptions()
 
   const { id } = await params
   const entry = await prisma.news.findUnique({ where: { id } })
@@ -49,6 +52,7 @@ export default async function EditNewsPage({ params }: { params: Promise<{ id: s
       </h1>
 
       <NewsForm
+        mediaOptions={mediaOptions}
         initialValues={{
           id: entry.id,
           title: entry.title,

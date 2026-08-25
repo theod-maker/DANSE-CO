@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useActionState } from 'react'
 import { FormAlert, SubmitButton, TextAreaField, TextField } from '../_shared/fields'
 import { StringListField } from '../_shared/string-list-field'
+import { ImageField } from '../_shared/image-field'
+import type { MediaOption } from '../medias/queries'
 import { saveVenue, type VenueFormState } from './actions'
 
 export interface VenueFormValues {
@@ -19,7 +21,13 @@ export interface VenueFormValues {
 
 const INITIAL_STATE: VenueFormState = {}
 
-export function VenueForm({ initialValues }: { initialValues: VenueFormValues }) {
+export function VenueForm({
+  initialValues,
+  mediaOptions,
+}: {
+  initialValues: VenueFormValues
+  mediaOptions: MediaOption[]
+}) {
   const [state, formAction] = useActionState(saveVenue, INITIAL_STATE)
   const values = state.values ?? initialValues
   const isEditing = Boolean(initialValues.id)
@@ -72,11 +80,11 @@ export function VenueForm({ initialValues }: { initialValues: VenueFormValues })
         error={state.errors?.googleMapsUrl}
       />
 
-      <TextField
+      <ImageField
         name="imageUrl"
-        label="Adresse de la photo"
-        optional
+        label="Photo de la salle"
         defaultValue={values.imageUrl}
+        mediaOptions={mediaOptions}
         error={state.errors?.imageUrl}
       />
 

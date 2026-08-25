@@ -3,12 +3,15 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../../src/lib/db'
 import { getCurrentAdmin } from '../../../../src/lib/adminAuth'
 import { DisciplineForm } from '../discipline-form'
+import { listMediaOptions } from '../../medias/queries'
 
 export const dynamic = 'force-dynamic'
 
 export default async function EditDisciplinePage({ params }: { params: Promise<{ id: string }> }) {
   const account = await getCurrentAdmin()
   if (!account) redirect('/admin/login')
+
+  const mediaOptions = await listMediaOptions()
 
   const { id } = await params
   const discipline = await prisma.discipline.findUnique({ where: { id } })
@@ -43,6 +46,7 @@ export default async function EditDisciplinePage({ params }: { params: Promise<{
       </h1>
 
       <DisciplineForm
+        mediaOptions={mediaOptions}
         initialValues={{
           id: discipline.id,
           title: discipline.title,

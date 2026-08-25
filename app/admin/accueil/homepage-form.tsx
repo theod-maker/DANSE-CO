@@ -3,12 +3,12 @@
 import type { ReactNode } from 'react'
 import { useActionState } from 'react'
 import { FormAlert, SubmitButton, TextAreaField, TextField } from '../_shared/fields'
+import { ImageField } from '../_shared/image-field'
+import type { MediaOption } from '../medias/queries'
 import { saveHomepage, type HomepageFormState } from './actions'
 import type { HomepageInput } from './validation'
 
 const INITIAL_STATE: HomepageFormState = { status: 'idle' }
-
-const IMAGE_HINT = 'Un chemin interne comme /images/photo.jpg, ou une adresse https://'
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -19,7 +19,13 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
   )
 }
 
-export function HomepageForm({ initialValues }: { initialValues: Record<keyof HomepageInput, string> }) {
+export function HomepageForm({
+  initialValues,
+  mediaOptions,
+}: {
+  initialValues: Record<keyof HomepageInput, string>
+  mediaOptions: MediaOption[]
+}) {
   const [state, formAction] = useActionState(saveHomepage, INITIAL_STATE)
   const values = state.values ?? initialValues
   const errors = state.errors
@@ -41,7 +47,13 @@ export function HomepageForm({ initialValues }: { initialValues: Record<keyof Ho
         <TextField name="heroTitle" label="Titre principal" defaultValue={values.heroTitle} error={errors?.heroTitle} />
         <TextAreaField name="heroDescription" label="Description" rows={3} defaultValue={values.heroDescription} error={errors?.heroDescription} />
         <TextField name="heroTagline" label="Petite phrase au-dessus du titre" optional defaultValue={values.heroTagline} error={errors?.heroTagline} />
-        <TextField name="heroImageUrl" label="Image de fond" optional hint={IMAGE_HINT} defaultValue={values.heroImageUrl} error={errors?.heroImageUrl} />
+        <ImageField
+          name="heroImageUrl"
+          label="Image de fond"
+          defaultValue={values.heroImageUrl}
+          mediaOptions={mediaOptions}
+          error={errors?.heroImageUrl}
+        />
       </Section>
 
       <Section title="Philosophie">
@@ -51,22 +63,46 @@ export function HomepageForm({ initialValues }: { initialValues: Record<keyof Ho
         <TextAreaField name="philosophyBlock1Text" label="Texte du premier bloc" rows={4} defaultValue={values.philosophyBlock1Text} error={errors?.philosophyBlock1Text} />
         <TextField name="philosophyBlock2Label" label="Libellé du second bloc" hint="Par exemple : NOTRE ENGAGEMENT" defaultValue={values.philosophyBlock2Label} error={errors?.philosophyBlock2Label} />
         <TextAreaField name="philosophyBlock2Text" label="Texte du second bloc" rows={4} defaultValue={values.philosophyBlock2Text} error={errors?.philosophyBlock2Text} />
-        <TextField name="philosophyImageUrl" label="Image" optional hint={IMAGE_HINT} defaultValue={values.philosophyImageUrl} error={errors?.philosophyImageUrl} />
+        <ImageField
+          name="philosophyImageUrl"
+          label="Image"
+          defaultValue={values.philosophyImageUrl}
+          mediaOptions={mediaOptions}
+          error={errors?.philosophyImageUrl}
+        />
       </Section>
 
       <Section title="Mise en avant">
         <TextField name="featuredSectionLabel" label="Libellé de la section" optional defaultValue={values.featuredSectionLabel} error={errors?.featuredSectionLabel} />
         <TextAreaField name="featuredVideoDescription" label="Description" rows={4} defaultValue={values.featuredVideoDescription} error={errors?.featuredVideoDescription} />
-        <TextField name="featuredImageUrl" label="Image" optional hint={IMAGE_HINT} defaultValue={values.featuredImageUrl} error={errors?.featuredImageUrl} />
+        <ImageField
+          name="featuredImageUrl"
+          label="Image"
+          defaultValue={values.featuredImageUrl}
+          mediaOptions={mediaOptions}
+          error={errors?.featuredImageUrl}
+        />
       </Section>
 
       <Section title="Nos cours">
         <TextField name="servicesSectionTitle" label="Titre de la section" defaultValue={values.servicesSectionTitle} error={errors?.servicesSectionTitle} />
         <TextField name="servicesSectionSubtitle" label="Sous-titre" defaultValue={values.servicesSectionSubtitle} error={errors?.servicesSectionSubtitle} />
         <TextAreaField name="servicesCard1Description" label="Description de la première carte" rows={3} defaultValue={values.servicesCard1Description} error={errors?.servicesCard1Description} />
-        <TextField name="servicesCard1ImageUrl" label="Image de la première carte" optional hint={IMAGE_HINT} defaultValue={values.servicesCard1ImageUrl} error={errors?.servicesCard1ImageUrl} />
+        <ImageField
+          name="servicesCard1ImageUrl"
+          label="Image de la première carte"
+          defaultValue={values.servicesCard1ImageUrl}
+          mediaOptions={mediaOptions}
+          error={errors?.servicesCard1ImageUrl}
+        />
         <TextAreaField name="servicesCard2Description" label="Description de la seconde carte" rows={3} defaultValue={values.servicesCard2Description} error={errors?.servicesCard2Description} />
-        <TextField name="servicesCard2ImageUrl" label="Image de la seconde carte" optional hint={IMAGE_HINT} defaultValue={values.servicesCard2ImageUrl} error={errors?.servicesCard2ImageUrl} />
+        <ImageField
+          name="servicesCard2ImageUrl"
+          label="Image de la seconde carte"
+          defaultValue={values.servicesCard2ImageUrl}
+          mediaOptions={mediaOptions}
+          error={errors?.servicesCard2ImageUrl}
+        />
       </Section>
 
       <SubmitButton label="Enregistrer" pendingLabel="Enregistrement…" />

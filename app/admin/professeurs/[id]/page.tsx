@@ -3,12 +3,15 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../../src/lib/db'
 import { getCurrentAdmin } from '../../../../src/lib/adminAuth'
 import { InstructorForm } from '../instructor-form'
+import { listMediaOptions } from '../../medias/queries'
 
 export const dynamic = 'force-dynamic'
 
 export default async function EditInstructorPage({ params }: { params: Promise<{ id: string }> }) {
   const account = await getCurrentAdmin()
   if (!account) redirect('/admin/login')
+
+  const mediaOptions = await listMediaOptions()
 
   const { id } = await params
   const instructor = await prisma.instructor.findUnique({ where: { id } })
@@ -45,6 +48,7 @@ export default async function EditInstructorPage({ params }: { params: Promise<{
       </h1>
 
       <InstructorForm
+        mediaOptions={mediaOptions}
         initialValues={{
           id: instructor.id,
           name: instructor.name,

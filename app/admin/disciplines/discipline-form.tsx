@@ -5,6 +5,8 @@ import { useActionState } from 'react'
 import { FormAlert, SubmitButton, TextAreaField, TextField } from '../_shared/fields'
 import { StringListField } from '../_shared/string-list-field'
 import { IconPicker } from './icon-picker'
+import { ImageField } from '../_shared/image-field'
+import type { MediaOption } from '../medias/queries'
 import { saveDiscipline, type DisciplineFormState } from './actions'
 import type { DisciplineIconName } from './validation'
 
@@ -19,7 +21,13 @@ export interface DisciplineFormValues {
 
 const INITIAL_STATE: DisciplineFormState = {}
 
-export function DisciplineForm({ initialValues }: { initialValues: DisciplineFormValues }) {
+export function DisciplineForm({
+  initialValues,
+  mediaOptions,
+}: {
+  initialValues: DisciplineFormValues
+  mediaOptions: MediaOption[]
+}) {
   const [state, formAction] = useActionState(saveDiscipline, INITIAL_STATE)
   const values = state.values ?? initialValues
   const isEditing = Boolean(initialValues.id)
@@ -54,12 +62,11 @@ export function DisciplineForm({ initialValues }: { initialValues: DisciplineFor
         defaultValue={values.benefits}
       />
 
-      <TextField
+      <ImageField
         name="imageUrl"
         label="Photo"
-        optional
-        hint="Un chemin interne comme /images/disciplines/salsa.jpeg, ou une adresse https://"
         defaultValue={values.imageUrl}
+        mediaOptions={mediaOptions}
         error={state.errors?.imageUrl}
       />
 

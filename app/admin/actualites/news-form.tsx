@@ -4,6 +4,8 @@ import Link from 'next/link'
 import { useActionState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { saveNews, type NewsFormState } from './actions'
+import { ImageField } from '../_shared/image-field'
+import type { MediaOption } from '../medias/queries'
 
 export interface NewsFormValues {
   id?: string
@@ -38,7 +40,13 @@ function SubmitButton({ isEditing }: { isEditing: boolean }) {
   )
 }
 
-export function NewsForm({ initialValues }: { initialValues: NewsFormValues }) {
+export function NewsForm({
+  initialValues,
+  mediaOptions,
+}: {
+  initialValues: NewsFormValues
+  mediaOptions: MediaOption[]
+}) {
   const [state, formAction] = useActionState(saveNews, INITIAL_STATE)
   const values = state.values ?? initialValues
   const isEditing = Boolean(initialValues.id)
@@ -93,19 +101,13 @@ export function NewsForm({ initialValues }: { initialValues: NewsFormValues }) {
         <FieldError message={state.errors?.excerpt} />
       </div>
 
-      <div>
-        <label htmlFor="imageUrl" className="mb-1 block text-sm text-neutral-700">
-          Adresse de l&apos;image <span className="text-neutral-400">(facultatif)</span>
-        </label>
-        <input
-          id="imageUrl"
-          name="imageUrl"
-          type="text"
-          defaultValue={values.imageUrl}
-          className={FIELD_CLASSNAME}
-        />
-        <FieldError message={state.errors?.imageUrl} />
-      </div>
+      <ImageField
+        name="imageUrl"
+        label="Image"
+        defaultValue={values.imageUrl}
+        mediaOptions={mediaOptions}
+        error={state.errors?.imageUrl}
+      />
 
       <div>
         <label htmlFor="link" className="mb-1 block text-sm text-neutral-700">

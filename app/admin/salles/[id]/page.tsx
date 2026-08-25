@@ -3,12 +3,15 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../../src/lib/db'
 import { getCurrentAdmin } from '../../../../src/lib/adminAuth'
 import { VenueForm } from '../venue-form'
+import { listMediaOptions } from '../../medias/queries'
 
 export const dynamic = 'force-dynamic'
 
 export default async function EditVenuePage({ params }: { params: Promise<{ id: string }> }) {
   const account = await getCurrentAdmin()
   if (!account) redirect('/admin/login')
+
+  const mediaOptions = await listMediaOptions()
 
   const { id } = await params
   const venue = await prisma.venue.findUnique({ where: { id } })
@@ -45,6 +48,7 @@ export default async function EditVenuePage({ params }: { params: Promise<{ id: 
       </h1>
 
       <VenueForm
+        mediaOptions={mediaOptions}
         initialValues={{
           id: venue.id,
           name: venue.name,

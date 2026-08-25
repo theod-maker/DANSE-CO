@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { useActionState } from 'react'
 import { FormAlert, SubmitButton, TextAreaField, TextField } from '../_shared/fields'
+import { ImageField } from '../_shared/image-field'
+import type { MediaOption } from '../medias/queries'
 import { saveInstructor, type InstructorFormState } from './actions'
 
 export interface InstructorFormValues {
@@ -16,7 +18,13 @@ export interface InstructorFormValues {
 
 const INITIAL_STATE: InstructorFormState = {}
 
-export function InstructorForm({ initialValues }: { initialValues: InstructorFormValues }) {
+export function InstructorForm({
+  initialValues,
+  mediaOptions,
+}: {
+  initialValues: InstructorFormValues
+  mediaOptions: MediaOption[]
+}) {
   const [state, formAction] = useActionState(saveInstructor, INITIAL_STATE)
   const values = state.values ?? initialValues
   const isEditing = Boolean(initialValues.id)
@@ -53,12 +61,11 @@ export function InstructorForm({ initialValues }: { initialValues: InstructorFor
         error={state.errors?.experience}
       />
 
-      <TextField
+      <ImageField
         name="photoUrl"
         label="Photo"
-        optional
-        hint="Un chemin interne comme /images/photo.jpg, ou une adresse commençant par https://"
         defaultValue={values.photoUrl}
+        mediaOptions={mediaOptions}
         error={state.errors?.photoUrl}
       />
 

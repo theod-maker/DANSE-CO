@@ -5,12 +5,15 @@ import { SINGLETON_ID } from '../_shared/singleton-id'
 import { HOMEPAGE_FIELDS } from './validation'
 import { HomepageForm } from './homepage-form'
 import type { HomepageInput } from './validation'
+import { listMediaOptions } from '../medias/queries'
 
 export const dynamic = 'force-dynamic'
 
 export default async function HomepageAdminPage() {
   const account = await getCurrentAdmin()
   if (!account) redirect('/admin/login')
+
+  const mediaOptions = await listMediaOptions()
 
   const stored = await prisma.homepage.findUnique({ where: { id: SINGLETON_ID } })
 
@@ -31,7 +34,9 @@ export default async function HomepageAdminPage() {
         Les textes et images de la page que voient vos visiteurs en arrivant.
       </p>
 
-      <HomepageForm initialValues={initialValues} />
+      <HomepageForm
+        mediaOptions={mediaOptions}
+        initialValues={initialValues} />
     </div>
   )
 }

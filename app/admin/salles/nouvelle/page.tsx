@@ -1,12 +1,15 @@
 import { redirect } from 'next/navigation'
 import { getCurrentAdmin } from '../../../../src/lib/adminAuth'
 import { VenueForm } from '../venue-form'
+import { listMediaOptions } from '../../medias/queries'
 
 export const dynamic = 'force-dynamic'
 
 export default async function NewVenuePage() {
   const account = await getCurrentAdmin()
   if (!account) redirect('/admin/login')
+
+  const mediaOptions = await listMediaOptions()
 
   return (
     <div>
@@ -18,6 +21,7 @@ export default async function NewVenuePage() {
       </h1>
 
       <VenueForm
+        mediaOptions={mediaOptions}
         initialValues={{
           name: '',
           address: '',
