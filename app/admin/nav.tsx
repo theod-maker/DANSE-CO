@@ -25,6 +25,8 @@ const PAGES: NavEntry[] = [
   { label: 'Informations du site', href: '/admin/informations', available: true },
 ]
 
+const MEDIA: NavEntry[] = [{ label: 'Médias', href: '/admin/medias', available: true }]
+
 const ACCOUNT: NavEntry[] = [{ label: 'Mon compte', href: '/admin/compte', available: true }]
 
 function NavGroup({ title, entries, pathname }: { title: string; entries: NavEntry[]; pathname: string }) {
@@ -86,6 +88,7 @@ export function AdminNav() {
 
       <NavGroup title="Contenus" entries={COLLECTIONS} pathname={pathname} />
       <NavGroup title="Pages" entries={PAGES} pathname={pathname} />
+      <NavGroup title="Médias" entries={MEDIA} pathname={pathname} />
       <NavGroup title="Compte" entries={ACCOUNT} pathname={pathname} />
     </nav>
   )

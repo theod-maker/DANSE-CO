@@ -177,6 +177,17 @@ model AdminUser {
   updatedAt         DateTime  @updatedAt
 }
 
+model MediaAsset {
+  id           String   @id @default(uuid())
+  storedName   String   @unique
+  originalName String
+  mimeType     String
+  sizeBytes    Int
+  createdAt    DateTime @default(now())
+
+  @@index([createdAt])
+}
+
 model News {
   id        String   @id @default(uuid())
   title     String
