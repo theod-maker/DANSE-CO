@@ -20,9 +20,9 @@ const COLLECTIONS: NavEntry[] = [
 const PAGES: NavEntry[] = [
   { label: 'Accueil', href: '/admin/accueil', available: false },
   { label: 'Tarifs', href: '/admin/tarifs', available: false },
-  { label: 'Inscriptions', href: '/admin/inscriptions', available: false },
-  { label: 'Textes des pages', href: '/admin/textes', available: false },
-  { label: 'Informations du site', href: '/admin/informations', available: false },
+  { label: 'Inscriptions', href: '/admin/inscriptions', available: true },
+  { label: 'Textes des pages', href: '/admin/textes', available: true },
+  { label: 'Informations du site', href: '/admin/informations', available: true },
 ]
 
 const ACCOUNT: NavEntry[] = [{ label: 'Mon compte', href: '/admin/compte', available: true }]
