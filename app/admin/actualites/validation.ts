@@ -1,3 +1,5 @@
+import { optionalImagePath } from '../_shared/validation.ts'
+
 export interface NewsInput {
   title: string
   date: Date
@@ -89,7 +91,10 @@ export function validateNewsInput(raw: {
     }
   }
 
-  const imageUrl = normalizeOptionalUrl(raw.imageUrl, errors, 'imageUrl')
+  const imagePath = optionalImagePath(raw.imageUrl)
+  if ('error' in imagePath) errors.imageUrl = imagePath.error
+  const imageUrl = 'value' in imagePath ? imagePath.value : null
+
   const link = normalizeOptionalUrl(raw.link, errors, 'link')
 
   if (Object.keys(errors).length > 0) return { errors }

@@ -11,8 +11,8 @@ interface NavEntry {
 
 const COLLECTIONS: NavEntry[] = [
   { label: 'Actualités', href: '/admin/actualites', available: true },
-  { label: 'Planning', href: '/admin/planning', available: false },
-  { label: 'Disciplines', href: '/admin/disciplines', available: false },
+  { label: 'Planning', href: '/admin/planning', available: true },
+  { label: 'Disciplines', href: '/admin/disciplines', available: true },
   { label: 'Professeurs', href: '/admin/professeurs', available: true },
   { label: 'Salles', href: '/admin/salles', available: true },
 ]
