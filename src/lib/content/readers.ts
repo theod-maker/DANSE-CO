@@ -25,6 +25,7 @@ import { unstable_cache } from 'next/cache'
 import { readWithFallback } from './source.ts'
 import { CONTENT_TAGS, type ContentTag } from './revalidate.ts'
 import { HOMEPAGE_KEY, defaultSections, resolveSections, type ResolvedSection } from './sections.ts'
+import { isPreviewEnabled } from './preview.ts'
 
 function cached<T>(tag: ContentTag, read: () => Promise<T | null>): () => Promise<T | null> {
   return unstable_cache(read, [CONTENT_TAGS[tag]], { tags: [CONTENT_TAGS[tag]] })
@@ -59,138 +60,261 @@ function startMinutes(time: string): number {
   return Number(match[1]) * 60 + Number(match[2])
 }
 
-export function readHomepage(): Promise<HomepageContent> {
-  return readWithFallback('accueil', cached('homepage', async () => {
-    const row = await prisma.homepage.findUnique({
-      where: { id: SINGLETON_ID },
-      select: { publishedSnapshot: true },
-    })
-    const snapshot = row?.publishedSnapshot as HomepageContent | undefined
-    if (!snapshot) return null
+interface HomepageFields {
+  heroImageUrl: string | null
+  heroTagline: string | null
+  heroTitle: string
+  heroDescription: string
+  aboutTitle: string
+  philosophyTitle: string
+  philosophyBlock1Label: string
+  philosophyBlock1Text: string
+  philosophyBlock2Label: string
+  philosophyBlock2Text: string
+  philosophyImageUrl: string | null
+  featuredVideoDescription: string
+  featuredImageUrl: string | null
+  featuredSectionLabel: string | null
+  servicesSectionTitle: string
+  servicesSectionSubtitle: string
+  servicesCard1Description: string
+  servicesCard1ImageUrl: string | null
+  servicesCard2Description: string
+  servicesCard2ImageUrl: string | null
+}
 
-    return {
-      heroImageUrl: optional(snapshot.heroImageUrl),
-      heroTagline: optional(snapshot.heroTagline),
-      heroTitle: snapshot.heroTitle,
-      heroDescription: snapshot.heroDescription,
-      aboutTitle: snapshot.aboutTitle,
-      philosophyTitle: snapshot.philosophyTitle,
-      philosophyBlock1Label: snapshot.philosophyBlock1Label,
-      philosophyBlock1Text: snapshot.philosophyBlock1Text,
-      philosophyBlock2Label: snapshot.philosophyBlock2Label,
-      philosophyBlock2Text: snapshot.philosophyBlock2Text,
-      philosophyImageUrl: optional(snapshot.philosophyImageUrl),
-      featuredVideoDescription: snapshot.featuredVideoDescription,
-      featuredImageUrl: optional(snapshot.featuredImageUrl),
-      featuredSectionLabel: optional(snapshot.featuredSectionLabel),
-      servicesSectionTitle: snapshot.servicesSectionTitle,
-      servicesSectionSubtitle: snapshot.servicesSectionSubtitle,
-      servicesCard1Description: snapshot.servicesCard1Description,
-      servicesCard1ImageUrl: optional(snapshot.servicesCard1ImageUrl),
-      servicesCard2Description: snapshot.servicesCard2Description,
-      servicesCard2ImageUrl: optional(snapshot.servicesCard2ImageUrl),
-    }
-  }), fallbackHomepage)
+function toHomepageContent(fields: HomepageFields): HomepageContent {
+  return {
+    heroImageUrl: optional(fields.heroImageUrl),
+    heroTagline: optional(fields.heroTagline),
+    heroTitle: fields.heroTitle,
+    heroDescription: fields.heroDescription,
+    aboutTitle: fields.aboutTitle,
+    philosophyTitle: fields.philosophyTitle,
+    philosophyBlock1Label: fields.philosophyBlock1Label,
+    philosophyBlock1Text: fields.philosophyBlock1Text,
+    philosophyBlock2Label: fields.philosophyBlock2Label,
+    philosophyBlock2Text: fields.philosophyBlock2Text,
+    philosophyImageUrl: optional(fields.philosophyImageUrl),
+    featuredVideoDescription: fields.featuredVideoDescription,
+    featuredImageUrl: optional(fields.featuredImageUrl),
+    featuredSectionLabel: optional(fields.featuredSectionLabel),
+    servicesSectionTitle: fields.servicesSectionTitle,
+    servicesSectionSubtitle: fields.servicesSectionSubtitle,
+    servicesCard1Description: fields.servicesCard1Description,
+    servicesCard1ImageUrl: optional(fields.servicesCard1ImageUrl),
+    servicesCard2Description: fields.servicesCard2Description,
+    servicesCard2ImageUrl: optional(fields.servicesCard2ImageUrl),
+  }
+}
+
+async function readPublishedHomepage(): Promise<HomepageContent | null> {
+  const row = await prisma.homepage.findUnique({
+    where: { id: SINGLETON_ID },
+    select: { publishedSnapshot: true },
+  })
+  const snapshot = row?.publishedSnapshot as HomepageFields | undefined
+  return snapshot ? toHomepageContent(snapshot) : null
+}
+const readPublishedHomepageCached = cached('homepage', readPublishedHomepage)
+
+async function readLiveHomepage(): Promise<HomepageContent | null> {
+  const row = await prisma.homepage.findUnique({ where: { id: SINGLETON_ID } })
+  return row ? toHomepageContent(row) : null
+}
+
+export function readHomepage(): Promise<HomepageContent> {
+  return readWithFallback('accueil', async () => {
+    if (await isPreviewEnabled()) return readLiveHomepage()
+    return readPublishedHomepageCached()
+  }, fallbackHomepage)
+}
+
+interface SiteInfoFields {
+  phone: string
+  email: string
+  mailingAddress: string
+  instagramUrl: string
+  facebookUrl: string
+  twitterUrl: string
+  websiteUrl: string
+  season: string
+  footerTagline: string
+}
+
+function toSiteInfoContent(fields: SiteInfoFields): SiteInfoContent {
+  return {
+    phone: fields.phone,
+    email: fields.email,
+    mailingAddress: fields.mailingAddress,
+    instagramUrl: fields.instagramUrl,
+    facebookUrl: fields.facebookUrl,
+    twitterUrl: fields.twitterUrl,
+    websiteUrl: fields.websiteUrl,
+    season: fields.season,
+    footerTagline: fields.footerTagline,
+  }
+}
+
+async function readPublishedSiteInfo(): Promise<SiteInfoContent | null> {
+  const row = await prisma.siteInfo.findUnique({
+    where: { id: SINGLETON_ID },
+    select: { publishedSnapshot: true },
+  })
+  const snapshot = row?.publishedSnapshot as SiteInfoFields | undefined
+  return snapshot ? toSiteInfoContent(snapshot) : null
+}
+const readPublishedSiteInfoCached = cached('siteInfo', readPublishedSiteInfo)
+
+async function readLiveSiteInfo(): Promise<SiteInfoContent | null> {
+  const row = await prisma.siteInfo.findUnique({ where: { id: SINGLETON_ID } })
+  return row ? toSiteInfoContent(row) : null
 }
 
 export function readSiteInfo(): Promise<SiteInfoContent> {
-  return readWithFallback('informations du site', cached('siteInfo', async () => {
-    const row = await prisma.siteInfo.findUnique({
-      where: { id: SINGLETON_ID },
-      select: { publishedSnapshot: true },
-    })
-    const snapshot = row?.publishedSnapshot as SiteInfoContent | undefined
-    if (!snapshot) return null
+  return readWithFallback('informations du site', async () => {
+    if (await isPreviewEnabled()) return readLiveSiteInfo()
+    return readPublishedSiteInfoCached()
+  }, fallbackSiteInfo)
+}
 
-    return {
-      phone: snapshot.phone,
-      email: snapshot.email,
-      mailingAddress: snapshot.mailingAddress,
-      instagramUrl: snapshot.instagramUrl,
-      facebookUrl: snapshot.facebookUrl,
-      twitterUrl: snapshot.twitterUrl,
-      websiteUrl: snapshot.websiteUrl,
-      season: snapshot.season,
-      footerTagline: snapshot.footerTagline,
-    }
-  }), fallbackSiteInfo)
+interface PageTextsFields {
+  planningSubtitle: string
+  disciplinesSubtitle: string
+  locationsSubtitle: string
+  contactSubtitle: string
+  instructorsSubtitle: string
+  pricingSubtitle: string
+}
+
+function toPageTextsContent(fields: PageTextsFields): PageTextsContent {
+  return {
+    planningSubtitle: fields.planningSubtitle,
+    disciplinesSubtitle: fields.disciplinesSubtitle,
+    locationsSubtitle: fields.locationsSubtitle,
+    contactSubtitle: fields.contactSubtitle,
+    instructorsSubtitle: fields.instructorsSubtitle,
+    pricingSubtitle: fields.pricingSubtitle,
+  }
+}
+
+async function readPublishedPageTexts(): Promise<PageTextsContent | null> {
+  const row = await prisma.pageTexts.findUnique({
+    where: { id: SINGLETON_ID },
+    select: { publishedSnapshot: true },
+  })
+  const snapshot = row?.publishedSnapshot as PageTextsFields | undefined
+  return snapshot ? toPageTextsContent(snapshot) : null
+}
+const readPublishedPageTextsCached = cached('pageTexts', readPublishedPageTexts)
+
+async function readLivePageTexts(): Promise<PageTextsContent | null> {
+  const row = await prisma.pageTexts.findUnique({ where: { id: SINGLETON_ID } })
+  return row ? toPageTextsContent(row) : null
 }
 
 export function readPageTexts(): Promise<PageTextsContent> {
-  return readWithFallback('textes des pages', cached('pageTexts', async () => {
-    const row = await prisma.pageTexts.findUnique({
-      where: { id: SINGLETON_ID },
-      select: { publishedSnapshot: true },
-    })
-    const snapshot = row?.publishedSnapshot as PageTextsContent | undefined
-    if (!snapshot) return null
+  return readWithFallback('textes des pages', async () => {
+    if (await isPreviewEnabled()) return readLivePageTexts()
+    return readPublishedPageTextsCached()
+  }, fallbackPageTexts)
+}
 
-    return {
-      planningSubtitle: snapshot.planningSubtitle,
-      disciplinesSubtitle: snapshot.disciplinesSubtitle,
-      locationsSubtitle: snapshot.locationsSubtitle,
-      contactSubtitle: snapshot.contactSubtitle,
-      instructorsSubtitle: snapshot.instructorsSubtitle,
-      pricingSubtitle: snapshot.pricingSubtitle,
-    }
-  }), fallbackPageTexts)
+interface RegistrationInfoFields {
+  permanence1Days: string
+  permanence1Hours: string
+  permanence1Venue: string
+  permanence2Days: string
+  permanence2Hours: string
+  permanence2Venue: string
+  requiredDocuments: string[]
+  photoNote: string
+}
+
+function toRegistrationInfoContent(fields: RegistrationInfoFields): RegistrationInfoContent {
+  return {
+    permanence1Days: fields.permanence1Days,
+    permanence1Hours: fields.permanence1Hours,
+    permanence1Venue: fields.permanence1Venue,
+    permanence2Days: fields.permanence2Days,
+    permanence2Hours: fields.permanence2Hours,
+    permanence2Venue: fields.permanence2Venue,
+    requiredDocuments: fields.requiredDocuments,
+    photoNote: fields.photoNote,
+  }
+}
+
+async function readPublishedRegistrationInfo(): Promise<RegistrationInfoContent | null> {
+  const row = await prisma.registrationInfo.findUnique({
+    where: { id: SINGLETON_ID },
+    select: { publishedSnapshot: true },
+  })
+  const snapshot = row?.publishedSnapshot as RegistrationInfoFields | undefined
+  return snapshot ? toRegistrationInfoContent(snapshot) : null
+}
+const readPublishedRegistrationInfoCached = cached('registrationInfo', readPublishedRegistrationInfo)
+
+async function readLiveRegistrationInfo(): Promise<RegistrationInfoContent | null> {
+  const row = await prisma.registrationInfo.findUnique({ where: { id: SINGLETON_ID } })
+  return row ? toRegistrationInfoContent(row) : null
 }
 
 export function readRegistrationInfo(): Promise<RegistrationInfoContent> {
-  return readWithFallback('inscriptions', cached('registrationInfo', async () => {
-    const row = await prisma.registrationInfo.findUnique({
-      where: { id: SINGLETON_ID },
-      select: { publishedSnapshot: true },
-    })
-    const snapshot = row?.publishedSnapshot as RegistrationInfoContent | undefined
-    if (!snapshot) return null
-
-    return {
-      permanence1Days: snapshot.permanence1Days,
-      permanence1Hours: snapshot.permanence1Hours,
-      permanence1Venue: snapshot.permanence1Venue,
-      permanence2Days: snapshot.permanence2Days,
-      permanence2Hours: snapshot.permanence2Hours,
-      permanence2Venue: snapshot.permanence2Venue,
-      requiredDocuments: snapshot.requiredDocuments,
-      photoNote: snapshot.photoNote,
-    }
-  }), fallbackRegistrationInfo)
+  return readWithFallback('inscriptions', async () => {
+    if (await isPreviewEnabled()) return readLiveRegistrationInfo()
+    return readPublishedRegistrationInfoCached()
+  }, fallbackRegistrationInfo)
 }
 
-interface PricingSnapshot {
+interface PricingFields {
   season: string
   membershipFee: string
   infoItems: string[]
   rows: { label: string; price: string; detail: string; highlight: boolean; displayOrder: number }[]
 }
 
-export function readPricing(): Promise<PricingContent> {
-  return readWithFallback('tarifs', cached('pricing', async () => {
-    const row = await prisma.pricing.findUnique({
-      where: { id: SINGLETON_ID },
-      select: { publishedSnapshot: true },
-    })
-    const snapshot = row?.publishedSnapshot as PricingSnapshot | undefined
-    if (!snapshot) return null
-
-    return {
-      season: snapshot.season,
-      membershipFee: snapshot.membershipFee,
-      infoItems: snapshot.infoItems,
-      rows: [...snapshot.rows]
-        .sort((a, b) => a.displayOrder - b.displayOrder)
-        .map((entry) => ({
-          label: entry.label,
-          price: entry.price,
-          detail: entry.detail,
-          highlight: entry.highlight || undefined,
-        })),
-    }
-  }), fallbackPricing)
+function toPricingContent(fields: PricingFields): PricingContent {
+  return {
+    season: fields.season,
+    membershipFee: fields.membershipFee,
+    infoItems: fields.infoItems,
+    rows: [...fields.rows]
+      .sort((a, b) => a.displayOrder - b.displayOrder)
+      .map((entry) => ({
+        label: entry.label,
+        price: entry.price,
+        detail: entry.detail,
+        highlight: entry.highlight || undefined,
+      })),
+  }
 }
 
-interface InstructorSnapshot {
+async function readPublishedPricing(): Promise<PricingContent | null> {
+  const row = await prisma.pricing.findUnique({
+    where: { id: SINGLETON_ID },
+    select: { publishedSnapshot: true },
+  })
+  const snapshot = row?.publishedSnapshot as PricingFields | undefined
+  return snapshot ? toPricingContent(snapshot) : null
+}
+const readPublishedPricingCached = cached('pricing', readPublishedPricing)
+
+async function readLivePricing(): Promise<PricingContent | null> {
+  const row = await prisma.pricing.findUnique({
+    where: { id: SINGLETON_ID },
+    include: { rows: { orderBy: { displayOrder: 'asc' } } },
+  })
+  return row ? toPricingContent(row) : null
+}
+
+export function readPricing(): Promise<PricingContent> {
+  return readWithFallback('tarifs', async () => {
+    if (await isPreviewEnabled()) return readLivePricing()
+    return readPublishedPricingCached()
+  }, fallbackPricing)
+}
+
+interface InstructorFields {
   name: string
   specialty: string
   bio: string
@@ -198,30 +322,42 @@ interface InstructorSnapshot {
   photoUrl: string | null
 }
 
-export function readInstructors(): Promise<InstructorContent[]> {
-  return readWithFallback('professeurs', cached('instructors', async () => {
-    const rows = await prisma.instructor.findMany({
-      orderBy: { displayOrder: 'asc' },
-      select: { id: true, publishedSnapshot: true },
-    })
-
-    return rows
-      .filter((row) => row.publishedSnapshot !== null)
-      .map((row) => {
-        const snapshot = row.publishedSnapshot as unknown as InstructorSnapshot
-        return {
-          _id: row.id,
-          name: snapshot.name,
-          specialty: snapshot.specialty,
-          bio: snapshot.bio,
-          experience: snapshot.experience,
-          photoUrl: optional(snapshot.photoUrl),
-        }
-      })
-  }), fallbackInstructors)
+function toInstructorContent(id: string, fields: InstructorFields): InstructorContent {
+  return {
+    _id: id,
+    name: fields.name,
+    specialty: fields.specialty,
+    bio: fields.bio,
+    experience: fields.experience,
+    photoUrl: optional(fields.photoUrl),
+  }
 }
 
-interface DisciplineSnapshot {
+async function readPublishedInstructors(): Promise<InstructorContent[] | null> {
+  const rows = await prisma.instructor.findMany({
+    orderBy: { displayOrder: 'asc' },
+    select: { id: true, publishedSnapshot: true },
+  })
+
+  return rows
+    .filter((row) => row.publishedSnapshot !== null)
+    .map((row) => toInstructorContent(row.id, row.publishedSnapshot as unknown as InstructorFields))
+}
+const readPublishedInstructorsCached = cached('instructors', readPublishedInstructors)
+
+async function readLiveInstructors(): Promise<InstructorContent[]> {
+  const rows = await prisma.instructor.findMany({ orderBy: { displayOrder: 'asc' } })
+  return rows.map((row) => toInstructorContent(row.id, row))
+}
+
+export function readInstructors(): Promise<InstructorContent[]> {
+  return readWithFallback('professeurs', async () => {
+    if (await isPreviewEnabled()) return readLiveInstructors()
+    return readPublishedInstructorsCached()
+  }, fallbackInstructors)
+}
+
+interface DisciplineFields {
   title: string
   iconName: 'Zap' | 'Star' | 'Heart' | 'Music' | 'Users'
   description: string
@@ -229,30 +365,42 @@ interface DisciplineSnapshot {
   imageUrl: string | null
 }
 
-export function readDisciplines(): Promise<DisciplineContent[]> {
-  return readWithFallback('disciplines', cached('disciplines', async () => {
-    const rows = await prisma.discipline.findMany({
-      orderBy: { displayOrder: 'asc' },
-      select: { id: true, publishedSnapshot: true },
-    })
-
-    return rows
-      .filter((row) => row.publishedSnapshot !== null)
-      .map((row) => {
-        const snapshot = row.publishedSnapshot as unknown as DisciplineSnapshot
-        return {
-          _id: row.id,
-          title: snapshot.title,
-          iconName: snapshot.iconName,
-          description: snapshot.description,
-          benefits: snapshot.benefits,
-          imageUrl: optional(snapshot.imageUrl),
-        }
-      })
-  }), fallbackDisciplines)
+function toDisciplineContent(id: string, fields: DisciplineFields): DisciplineContent {
+  return {
+    _id: id,
+    title: fields.title,
+    iconName: fields.iconName,
+    description: fields.description,
+    benefits: fields.benefits,
+    imageUrl: optional(fields.imageUrl),
+  }
 }
 
-interface VenueSnapshot {
+async function readPublishedDisciplines(): Promise<DisciplineContent[] | null> {
+  const rows = await prisma.discipline.findMany({
+    orderBy: { displayOrder: 'asc' },
+    select: { id: true, publishedSnapshot: true },
+  })
+
+  return rows
+    .filter((row) => row.publishedSnapshot !== null)
+    .map((row) => toDisciplineContent(row.id, row.publishedSnapshot as unknown as DisciplineFields))
+}
+const readPublishedDisciplinesCached = cached('disciplines', readPublishedDisciplines)
+
+async function readLiveDisciplines(): Promise<DisciplineContent[]> {
+  const rows = await prisma.discipline.findMany({ orderBy: { displayOrder: 'asc' } })
+  return rows.map((row) => toDisciplineContent(row.id, row))
+}
+
+export function readDisciplines(): Promise<DisciplineContent[]> {
+  return readWithFallback('disciplines', async () => {
+    if (await isPreviewEnabled()) return readLiveDisciplines()
+    return readPublishedDisciplinesCached()
+  }, fallbackDisciplines)
+}
+
+interface VenueFields {
   name: string
   address: string
   description: string
@@ -262,32 +410,44 @@ interface VenueSnapshot {
   imageUrl: string | null
 }
 
-export function readVenues(): Promise<VenueContent[]> {
-  return readWithFallback('salles', cached('venues', async () => {
-    const rows = await prisma.venue.findMany({
-      orderBy: { displayOrder: 'asc' },
-      select: { id: true, publishedSnapshot: true },
-    })
-
-    return rows
-      .filter((row) => row.publishedSnapshot !== null)
-      .map((row) => {
-        const snapshot = row.publishedSnapshot as unknown as VenueSnapshot
-        return {
-          _id: row.id,
-          name: snapshot.name,
-          address: snapshot.address,
-          description: snapshot.description,
-          amenities: snapshot.amenities,
-          mapEmbedUrl: snapshot.mapEmbedUrl,
-          googleMapsUrl: snapshot.googleMapsUrl,
-          imageUrl: optional(snapshot.imageUrl),
-        }
-      })
-  }), fallbackVenues)
+function toVenueContent(id: string, fields: VenueFields): VenueContent {
+  return {
+    _id: id,
+    name: fields.name,
+    address: fields.address,
+    description: fields.description,
+    amenities: fields.amenities,
+    mapEmbedUrl: fields.mapEmbedUrl,
+    googleMapsUrl: fields.googleMapsUrl,
+    imageUrl: optional(fields.imageUrl),
+  }
 }
 
-interface ScheduleSnapshot {
+async function readPublishedVenues(): Promise<VenueContent[] | null> {
+  const rows = await prisma.venue.findMany({
+    orderBy: { displayOrder: 'asc' },
+    select: { id: true, publishedSnapshot: true },
+  })
+
+  return rows
+    .filter((row) => row.publishedSnapshot !== null)
+    .map((row) => toVenueContent(row.id, row.publishedSnapshot as unknown as VenueFields))
+}
+const readPublishedVenuesCached = cached('venues', readPublishedVenues)
+
+async function readLiveVenues(): Promise<VenueContent[]> {
+  const rows = await prisma.venue.findMany({ orderBy: { displayOrder: 'asc' } })
+  return rows.map((row) => toVenueContent(row.id, row))
+}
+
+export function readVenues(): Promise<VenueContent[]> {
+  return readWithFallback('salles', async () => {
+    if (await isPreviewEnabled()) return readLiveVenues()
+    return readPublishedVenuesCached()
+  }, fallbackVenues)
+}
+
+interface ScheduleFields {
   name: string
   day: string
   time: string
@@ -295,62 +455,95 @@ interface ScheduleSnapshot {
   level: string
 }
 
-export function readSchedule(): Promise<ScheduleEntryContent[]> {
-  return readWithFallback('planning', cached('schedule', async () => {
-    const rows = await prisma.scheduleEntry.findMany({
-      select: { id: true, publishedSnapshot: true },
-    })
-
-    const published = rows
-      .filter((row) => row.publishedSnapshot !== null)
-      .map((row) => {
-        const snapshot = row.publishedSnapshot as unknown as ScheduleSnapshot
-        return {
-          _id: row.id,
-          name: snapshot.name,
-          day: snapshot.day,
-          time: snapshot.time,
-          venue: optional(snapshot.venue),
-          level: snapshot.level,
-        }
-      })
-
-    return [...published].sort(
-      (a, b) => dayRank(a.day) - dayRank(b.day) || startMinutes(a.time) - startMinutes(b.time)
-    )
-  }), fallbackSchedule)
+function toScheduleContent(id: string, fields: ScheduleFields): ScheduleEntryContent {
+  return {
+    _id: id,
+    name: fields.name,
+    day: fields.day,
+    time: fields.time,
+    venue: optional(fields.venue),
+    level: fields.level,
+  }
 }
 
-interface NewsSnapshot {
+function sortSchedule(entries: ScheduleEntryContent[]): ScheduleEntryContent[] {
+  return [...entries].sort(
+    (a, b) => dayRank(a.day) - dayRank(b.day) || startMinutes(a.time) - startMinutes(b.time)
+  )
+}
+
+async function readPublishedSchedule(): Promise<ScheduleEntryContent[] | null> {
+  const rows = await prisma.scheduleEntry.findMany({
+    select: { id: true, publishedSnapshot: true },
+  })
+
+  const published = rows
+    .filter((row) => row.publishedSnapshot !== null)
+    .map((row) => toScheduleContent(row.id, row.publishedSnapshot as unknown as ScheduleFields))
+
+  return sortSchedule(published)
+}
+const readPublishedScheduleCached = cached('schedule', readPublishedSchedule)
+
+async function readLiveSchedule(): Promise<ScheduleEntryContent[]> {
+  const rows = await prisma.scheduleEntry.findMany()
+  return sortSchedule(rows.map((row) => toScheduleContent(row.id, row)))
+}
+
+export function readSchedule(): Promise<ScheduleEntryContent[]> {
+  return readWithFallback('planning', async () => {
+    if (await isPreviewEnabled()) return readLiveSchedule()
+    return readPublishedScheduleCached()
+  }, fallbackSchedule)
+}
+
+interface NewsFields {
   title: string
-  date: string
+  date: Date | string
   imageUrl: string | null
   excerpt: string
   link: string | null
 }
 
+function toNewsContent(id: string, fields: NewsFields): NewsContent {
+  const isoDate = typeof fields.date === 'string' ? fields.date : fields.date.toISOString()
+  return {
+    _id: id,
+    title: fields.title,
+    date: isoDate.slice(0, 10),
+    imageUrl: optional(fields.imageUrl),
+    excerpt: fields.excerpt,
+    link: optional(fields.link),
+  }
+}
+
+function sortNews(entries: NewsContent[]): NewsContent[] {
+  return [...entries].sort((a, b) => a.date.localeCompare(b.date))
+}
+
+async function readPublishedNews(): Promise<NewsContent[] | null> {
+  const rows = await prisma.news.findMany({
+    select: { id: true, publishedSnapshot: true },
+  })
+
+  const published = rows
+    .filter((row) => row.publishedSnapshot !== null)
+    .map((row) => toNewsContent(row.id, row.publishedSnapshot as unknown as NewsFields))
+
+  return sortNews(published)
+}
+const readPublishedNewsCached = cached('news', readPublishedNews)
+
+async function readLiveNews(): Promise<NewsContent[]> {
+  const rows = await prisma.news.findMany()
+  return sortNews(rows.map((row) => toNewsContent(row.id, row)))
+}
+
 export function readNews(): Promise<NewsContent[]> {
-  return readWithFallback('actualités', cached('news', async () => {
-    const rows = await prisma.news.findMany({
-      select: { id: true, publishedSnapshot: true },
-    })
-
-    const published = rows
-      .filter((row) => row.publishedSnapshot !== null)
-      .map((row) => {
-        const snapshot = row.publishedSnapshot as unknown as NewsSnapshot
-        return {
-          _id: row.id,
-          title: snapshot.title,
-          date: snapshot.date.slice(0, 10),
-          imageUrl: optional(snapshot.imageUrl),
-          excerpt: snapshot.excerpt,
-          link: optional(snapshot.link),
-        }
-      })
-
-    return [...published].sort((a, b) => a.date.localeCompare(b.date))
-  }), fallbackNews)
+  return readWithFallback('actualités', async () => {
+    if (await isPreviewEnabled()) return readLiveNews()
+    return readPublishedNewsCached()
+  }, fallbackNews)
 }
 
 export function readHomepageSections(): Promise<ResolvedSection[]> {
