@@ -4,6 +4,8 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { DeleteForm } from './delete-form'
 import { HistoryLink } from '../_shared/history-link'
+import { PublishStatus } from '../_shared/publish-status'
+import { resolvePublishState } from '../_shared/resolve-publish-state'
 
 export const dynamic = 'force-dynamic'
 
@@ -18,6 +20,9 @@ export default async function NewsListPage() {
   if (!account) redirect('/admin/login')
 
   const entries = await prisma.news.findMany({ orderBy: { date: 'asc' } })
+  const publishStates = Object.fromEntries(
+    await Promise.all(entries.map(async (e) => [e.id, await resolvePublishState('news', e.id, e.publishedAt)]))
+  )
 
   return (
     <div>
@@ -60,6 +65,11 @@ export default async function NewsListPage() {
                 <p className="mt-1 text-sm text-neutral-500">{dateFormatter.format(entry.date)}</p>
               </div>
               <div className="flex shrink-0 items-center gap-4">
+                <PublishStatus
+                  contentType="news"
+                  entityId={entry.id}
+                  state={publishStates[entry.id] ?? 'upToDate'}
+                />
                 <HistoryLink contentType="news" entityId={entry.id} />
                 <DeleteForm id={entry.id} title={entry.title} />
               </div>

@@ -4,6 +4,8 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { DeleteForm } from '../_shared/delete-form'
 import { HistoryLink } from '../_shared/history-link'
+import { PublishStatus } from '../_shared/publish-status'
+import { resolvePublishState } from '../_shared/resolve-publish-state'
 import { deleteCourse } from './actions'
 import { dayRank, startMinutes } from './validation'
 
@@ -20,6 +22,10 @@ export default async function PlanningPage() {
   )
 
   const days = [...new Set(sorted.map((course) => course.day))]
+
+  const publishStates = Object.fromEntries(
+    await Promise.all(sorted.map(async (c) => [c.id, await resolvePublishState('schedule', c.id, c.publishedAt)]))
+  )
 
   return (
     <div>
@@ -71,6 +77,11 @@ export default async function PlanningPage() {
                         </p>
                       </div>
                       <div className="flex shrink-0 items-center gap-4">
+                        <PublishStatus
+                          contentType="schedule"
+                          entityId={course.id}
+                          state={publishStates[course.id] ?? 'upToDate'}
+                        />
                         <HistoryLink contentType="schedule" entityId={course.id} />
                         <DeleteForm id={course.id} label={course.name} action={deleteCourse} />
                       </div>

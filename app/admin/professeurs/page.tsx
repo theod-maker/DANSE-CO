@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { InstructorList } from './instructor-list'
+import { resolvePublishState } from '../_shared/resolve-publish-state'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,6 +12,11 @@ export default async function InstructorsPage() {
   if (!account) redirect('/admin/login')
 
   const instructors = await prisma.instructor.findMany({ orderBy: { displayOrder: 'asc' } })
+  const publishStates = Object.fromEntries(
+    await Promise.all(
+      instructors.map(async (i) => [i.id, await resolvePublishState('instructors', i.id, i.publishedAt)])
+    )
+  )
 
   return (
     <div>
@@ -42,6 +48,7 @@ export default async function InstructorsPage() {
       ) : (
         <InstructorList
           entries={instructors.map((instructor) => ({ id: instructor.id, label: instructor.name }))}
+          publishStates={publishStates}
         />
       )}
     </div>

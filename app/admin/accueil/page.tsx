@@ -3,6 +3,8 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { SINGLETON_ID } from '../_shared/singleton-id'
 import { HistoryLink } from '../_shared/history-link'
+import { PublishStatus } from '../_shared/publish-status'
+import { resolvePublishState } from '../_shared/resolve-publish-state'
 import { HOMEPAGE_FIELDS } from './validation'
 import { HomepageForm } from './homepage-form'
 import type { HomepageInput } from './validation'
@@ -17,6 +19,7 @@ export default async function HomepageAdminPage() {
   const mediaOptions = await listMediaOptions()
 
   const stored = await prisma.homepage.findUnique({ where: { id: SINGLETON_ID } })
+  const publishState = await resolvePublishState('homepage', SINGLETON_ID, stored?.publishedAt ?? null)
 
   const initialValues = Object.fromEntries(
     HOMEPAGE_FIELDS.map((field) => [field, stored ? (stored[field] ?? '') : ''])
@@ -31,7 +34,10 @@ export default async function HomepageAdminPage() {
         >
           Page d&apos;accueil
         </h1>
-        <HistoryLink contentType="homepage" entityId={SINGLETON_ID} />
+        <div className="flex items-center gap-4">
+          <PublishStatus contentType="homepage" entityId={SINGLETON_ID} state={publishState} />
+          <HistoryLink contentType="homepage" entityId={SINGLETON_ID} />
+        </div>
       </div>
 
       <p className="mt-3 text-sm text-neutral-500">

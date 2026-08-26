@@ -3,6 +3,8 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { SINGLETON_ID } from '../_shared/singleton-id'
 import { HistoryLink } from '../_shared/history-link'
+import { PublishStatus } from '../_shared/publish-status'
+import { resolvePublishState } from '../_shared/resolve-publish-state'
 import { SiteInfoForm } from './site-info-form'
 
 export const dynamic = 'force-dynamic'
@@ -24,6 +26,7 @@ export default async function SiteInfoPage() {
   if (!account) redirect('/admin/login')
 
   const siteInfo = await prisma.siteInfo.findUnique({ where: { id: SINGLETON_ID } })
+  const publishState = await resolvePublishState('siteInfo', SINGLETON_ID, siteInfo?.publishedAt ?? null)
 
   return (
     <div>
@@ -34,7 +37,10 @@ export default async function SiteInfoPage() {
         >
           Informations du site
         </h1>
-        <HistoryLink contentType="siteInfo" entityId={SINGLETON_ID} />
+        <div className="flex items-center gap-4">
+          <PublishStatus contentType="siteInfo" entityId={SINGLETON_ID} state={publishState} />
+          <HistoryLink contentType="siteInfo" entityId={SINGLETON_ID} />
+        </div>
       </div>
 
       <p className="mt-3 text-sm text-neutral-500">

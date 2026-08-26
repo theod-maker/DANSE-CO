@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { VenueList } from './venue-list'
+import { resolvePublishState } from '../_shared/resolve-publish-state'
 
 export const dynamic = 'force-dynamic'
 
@@ -11,6 +12,9 @@ export default async function VenuesPage() {
   if (!account) redirect('/admin/login')
 
   const venues = await prisma.venue.findMany({ orderBy: { displayOrder: 'asc' } })
+  const publishStates = Object.fromEntries(
+    await Promise.all(venues.map(async (v) => [v.id, await resolvePublishState('venues', v.id, v.publishedAt)]))
+  )
 
   return (
     <div>
@@ -40,7 +44,10 @@ export default async function VenuesPage() {
           Utilisez « Nouvelle salle » pour en ajouter une.
         </p>
       ) : (
-        <VenueList entries={venues.map((venue) => ({ id: venue.id, label: venue.name }))} />
+        <VenueList
+          entries={venues.map((venue) => ({ id: venue.id, label: venue.name }))}
+          publishStates={publishStates}
+        />
       )}
     </div>
   )
