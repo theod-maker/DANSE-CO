@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { DeleteForm } from '../_shared/delete-form'
+import { HistoryLink } from '../_shared/history-link'
 import { deleteCourse } from './actions'
 import { dayRank, startMinutes } from './validation'
 
@@ -69,7 +70,10 @@ export default async function PlanningPage() {
                           {course.venue ? ` · ${course.venue}` : ''}
                         </p>
                       </div>
-                      <DeleteForm id={course.id} label={course.name} action={deleteCourse} />
+                      <div className="flex shrink-0 items-center gap-4">
+                        <HistoryLink contentType="schedule" entityId={course.id} />
+                        <DeleteForm id={course.id} label={course.name} action={deleteCourse} />
+                      </div>
                     </li>
                   ))}
               </ul>

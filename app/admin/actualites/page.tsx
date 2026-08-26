@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { DeleteForm } from './delete-form'
+import { HistoryLink } from '../_shared/history-link'
 
 export const dynamic = 'force-dynamic'
 
@@ -58,7 +59,10 @@ export default async function NewsListPage() {
                 </Link>
                 <p className="mt-1 text-sm text-neutral-500">{dateFormatter.format(entry.date)}</p>
               </div>
-              <DeleteForm id={entry.id} title={entry.title} />
+              <div className="flex shrink-0 items-center gap-4">
+                <HistoryLink contentType="news" entityId={entry.id} />
+                <DeleteForm id={entry.id} title={entry.title} />
+              </div>
             </li>
           ))}
         </ul>

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { OrderableList, type OrderableEntry } from '../_shared/orderable-list'
 import { DeleteForm } from '../_shared/delete-form'
+import { HistoryLink } from '../_shared/history-link'
 import { deleteVenue, reorderVenues } from './actions'
 
 export function VenueList({ entries }: { entries: OrderableEntry[] }) {
@@ -19,7 +20,10 @@ export function VenueList({ entries }: { entries: OrderableEntry[] }) {
         </Link>
       )}
       renderActions={(entry) => (
-        <DeleteForm id={entry.id} label={entry.label} action={deleteVenue} />
+        <div className="flex shrink-0 items-center gap-4">
+          <HistoryLink contentType="venues" entityId={entry.id} />
+          <DeleteForm id={entry.id} label={entry.label} action={deleteVenue} />
+        </div>
       )}
     />
   )
