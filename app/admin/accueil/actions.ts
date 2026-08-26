@@ -11,6 +11,7 @@ import {
   type HomepageInput,
 } from './validation'
 import { revalidateContent } from '../_shared/revalidate-after-save'
+import { recordHistory } from '../../../src/lib/content/history'
 
 const PATH = '/admin/accueil'
 
@@ -37,6 +38,19 @@ export async function saveHomepage(
   const { data, errors } = validateHomepageInput(values)
   if (errors || !data) {
     return { status: 'error', errors, values }
+  }
+
+  const existing = await prisma.homepage.findUnique({ where: { id: SINGLETON_ID } })
+  if (existing) {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    await recordHistory({
+      contentType: 'homepage',
+      entityId: SINGLETON_ID,
+      action: 'update',
+      label: "Page d'accueil",
+      snapshot: existingData,
+      adminUsername: account.username,
+    })
   }
 
   await prisma.homepage.upsert({

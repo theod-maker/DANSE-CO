@@ -6,6 +6,7 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateDisciplineInput, type DisciplineFieldErrors } from './validation'
 import { revalidateContent } from '../_shared/revalidate-after-save'
+import { recordHistory } from '../../../src/lib/content/history'
 
 const LIST_PATH = '/admin/disciplines'
 
@@ -45,13 +46,30 @@ export async function saveDiscipline(
   const id = String(formData.get('id') ?? '')
 
   if (id) {
-    const existing = await prisma.discipline.findUnique({ where: { id }, select: { id: true } })
+    const existing = await prisma.discipline.findUnique({ where: { id } })
     if (!existing) return { generalError: 'Cette discipline n’existe plus.', values }
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    await recordHistory({
+      contentType: 'disciplines',
+      entityId: id,
+      action: 'update',
+      label: existing.title,
+      snapshot: existingData,
+      adminUsername: account.username,
+    })
     await prisma.discipline.update({ where: { id }, data })
   } else {
     const last = await prisma.discipline.findFirst({ orderBy: { displayOrder: 'desc' } })
-    await prisma.discipline.create({
+    const created = await prisma.discipline.create({
       data: { ...data, displayOrder: (last?.displayOrder ?? -1) + 1 },
+    })
+    await recordHistory({
+      contentType: 'disciplines',
+      entityId: created.id,
+      action: 'create',
+      label: created.title,
+      snapshot: null,
+      adminUsername: account.username,
     })
   }
 
@@ -67,6 +85,19 @@ export async function deleteDiscipline(formData: FormData): Promise<void> {
 
   const id = String(formData.get('id') ?? '')
   if (!id) return
+
+  const existing = await prisma.discipline.findUnique({ where: { id } })
+  if (existing) {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    await recordHistory({
+      contentType: 'disciplines',
+      entityId: id,
+      action: 'delete',
+      label: existing.title,
+      snapshot: existingData,
+      adminUsername: account.username,
+    })
+  }
 
   await prisma.discipline.deleteMany({ where: { id } })
 

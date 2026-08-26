@@ -6,6 +6,7 @@ import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { SINGLETON_ID } from '../_shared/singleton-id'
 import { validateSiteInfoInput, type SiteInfoFieldErrors, type SiteInfoInput } from './validation'
 import { revalidateContent } from '../_shared/revalidate-after-save'
+import { recordHistory } from '../../../src/lib/content/history'
 
 const PATH = '/admin/informations'
 
@@ -44,6 +45,19 @@ export async function saveSiteInfo(
   const { data, errors } = validateSiteInfoInput(values)
   if (errors || !data) {
     return { status: 'error', errors, values }
+  }
+
+  const existing = await prisma.siteInfo.findUnique({ where: { id: SINGLETON_ID } })
+  if (existing) {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    await recordHistory({
+      contentType: 'siteInfo',
+      entityId: SINGLETON_ID,
+      action: 'update',
+      label: 'Informations du site',
+      snapshot: existingData,
+      adminUsername: account.username,
+    })
   }
 
   await prisma.siteInfo.upsert({

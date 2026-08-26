@@ -11,6 +11,7 @@ import {
   type PageTextsInput,
 } from './validation'
 import { revalidateContent } from '../_shared/revalidate-after-save'
+import { recordHistory } from '../../../src/lib/content/history'
 
 const PATH = '/admin/textes'
 
@@ -37,6 +38,19 @@ export async function savePageTexts(
   const { data, errors } = validatePageTextsInput(values)
   if (errors || !data) {
     return { status: 'error', errors, values }
+  }
+
+  const existing = await prisma.pageTexts.findUnique({ where: { id: SINGLETON_ID } })
+  if (existing) {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    await recordHistory({
+      contentType: 'pageTexts',
+      entityId: SINGLETON_ID,
+      action: 'update',
+      label: 'Textes des pages',
+      snapshot: existingData,
+      adminUsername: account.username,
+    })
   }
 
   await prisma.pageTexts.upsert({

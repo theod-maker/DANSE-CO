@@ -6,6 +6,7 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateInstructorInput, type InstructorFieldErrors } from './validation'
 import { revalidateContent } from '../_shared/revalidate-after-save'
+import { recordHistory } from '../../../src/lib/content/history'
 
 const LIST_PATH = '/admin/professeurs'
 
@@ -45,13 +46,30 @@ export async function saveInstructor(
   const id = String(formData.get('id') ?? '')
 
   if (id) {
-    const existing = await prisma.instructor.findUnique({ where: { id }, select: { id: true } })
+    const existing = await prisma.instructor.findUnique({ where: { id } })
     if (!existing) return { generalError: 'Ce professeur n’existe plus.', values }
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    await recordHistory({
+      contentType: 'instructors',
+      entityId: id,
+      action: 'update',
+      label: existing.name,
+      snapshot: existingData,
+      adminUsername: account.username,
+    })
     await prisma.instructor.update({ where: { id }, data })
   } else {
     const last = await prisma.instructor.findFirst({ orderBy: { displayOrder: 'desc' } })
-    await prisma.instructor.create({
+    const created = await prisma.instructor.create({
       data: { ...data, displayOrder: (last?.displayOrder ?? -1) + 1 },
+    })
+    await recordHistory({
+      contentType: 'instructors',
+      entityId: created.id,
+      action: 'create',
+      label: created.name,
+      snapshot: null,
+      adminUsername: account.username,
     })
   }
 
@@ -67,6 +85,19 @@ export async function deleteInstructor(formData: FormData): Promise<void> {
 
   const id = String(formData.get('id') ?? '')
   if (!id) return
+
+  const existing = await prisma.instructor.findUnique({ where: { id } })
+  if (existing) {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    await recordHistory({
+      contentType: 'instructors',
+      entityId: id,
+      action: 'delete',
+      label: existing.name,
+      snapshot: existingData,
+      adminUsername: account.username,
+    })
+  }
 
   await prisma.instructor.deleteMany({ where: { id } })
 

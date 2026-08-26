@@ -6,6 +6,7 @@ import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { SINGLETON_ID } from '../_shared/singleton-id'
 import { validatePricingInput, type PricingFieldErrors } from './validation'
 import { revalidateContent } from '../_shared/revalidate-after-save'
+import { recordHistory } from '../../../src/lib/content/history'
 
 const PATH = '/admin/tarifs'
 
@@ -56,6 +57,31 @@ export async function savePricing(
   const { data, errors } = validatePricingInput(values)
   if (errors || !data) {
     return { status: 'error', errors, values }
+  }
+
+  const existing = await prisma.pricing.findUnique({
+    where: { id: SINGLETON_ID },
+    include: { rows: { orderBy: { displayOrder: 'asc' } } },
+  })
+  if (existing) {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, rows, ...existingData } = existing
+    await recordHistory({
+      contentType: 'pricing',
+      entityId: SINGLETON_ID,
+      action: 'update',
+      label: 'Tarifs',
+      snapshot: {
+        ...existingData,
+        rows: rows.map(({ label, price, detail, highlight, displayOrder }) => ({
+          label,
+          price,
+          detail,
+          highlight,
+          displayOrder,
+        })),
+      },
+      adminUsername: account.username,
+    })
   }
 
   await prisma.$transaction([

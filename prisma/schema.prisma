@@ -201,6 +201,19 @@ model MediaAsset {
   @@index([createdAt])
 }
 
+model ContentHistoryEntry {
+  id             String   @id @default(uuid())
+  contentType    String
+  entityId       String
+  action         String
+  label          String
+  snapshot       Json?
+  adminUsername  String
+  createdAt      DateTime @default(now())
+
+  @@index([contentType, entityId, createdAt])
+}
+
 model News {
   id        String   @id @default(uuid())
   title     String

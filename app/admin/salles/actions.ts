@@ -6,6 +6,7 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateVenueInput, type VenueFieldErrors } from './validation'
 import { revalidateContent } from '../_shared/revalidate-after-save'
+import { recordHistory } from '../../../src/lib/content/history'
 
 const LIST_PATH = '/admin/salles'
 
@@ -49,12 +50,31 @@ export async function saveVenue(
   const id = String(formData.get('id') ?? '')
 
   if (id) {
-    const existing = await prisma.venue.findUnique({ where: { id }, select: { id: true } })
+    const existing = await prisma.venue.findUnique({ where: { id } })
     if (!existing) return { generalError: 'Cette salle n’existe plus.', values }
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    await recordHistory({
+      contentType: 'venues',
+      entityId: id,
+      action: 'update',
+      label: existing.name,
+      snapshot: existingData,
+      adminUsername: account.username,
+    })
     await prisma.venue.update({ where: { id }, data })
   } else {
     const last = await prisma.venue.findFirst({ orderBy: { displayOrder: 'desc' } })
-    await prisma.venue.create({ data: { ...data, displayOrder: (last?.displayOrder ?? -1) + 1 } })
+    const created = await prisma.venue.create({
+      data: { ...data, displayOrder: (last?.displayOrder ?? -1) + 1 },
+    })
+    await recordHistory({
+      contentType: 'venues',
+      entityId: created.id,
+      action: 'create',
+      label: created.name,
+      snapshot: null,
+      adminUsername: account.username,
+    })
   }
 
   revalidatePath(LIST_PATH)
@@ -69,6 +89,19 @@ export async function deleteVenue(formData: FormData): Promise<void> {
 
   const id = String(formData.get('id') ?? '')
   if (!id) return
+
+  const existing = await prisma.venue.findUnique({ where: { id } })
+  if (existing) {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    await recordHistory({
+      contentType: 'venues',
+      entityId: id,
+      action: 'delete',
+      label: existing.name,
+      snapshot: existingData,
+      adminUsername: account.username,
+    })
+  }
 
   await prisma.venue.deleteMany({ where: { id } })
 

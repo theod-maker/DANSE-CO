@@ -6,6 +6,7 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateNewsInput, type NewsFieldErrors } from './validation'
 import { revalidateContent } from '../_shared/revalidate-after-save'
+import { recordHistory } from '../../../src/lib/content/history'
 
 const LIST_PATH = '/admin/actualites'
 
@@ -50,13 +51,30 @@ export async function saveNews(
   const id = String(formData.get('id') ?? '')
 
   if (id) {
-    const existing = await prisma.news.findUnique({ where: { id }, select: { id: true } })
+    const existing = await prisma.news.findUnique({ where: { id } })
     if (!existing) {
       return { generalError: 'Cette actualité n’existe plus.', values }
     }
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, date: existingDate, ...existingData } = existing
+    await recordHistory({
+      contentType: 'news',
+      entityId: id,
+      action: 'update',
+      label: existing.title,
+      snapshot: { ...existingData, date: existingDate.toISOString() },
+      adminUsername: account.username,
+    })
     await prisma.news.update({ where: { id }, data })
   } else {
-    await prisma.news.create({ data })
+    const created = await prisma.news.create({ data })
+    await recordHistory({
+      contentType: 'news',
+      entityId: created.id,
+      action: 'create',
+      label: created.title,
+      snapshot: null,
+      adminUsername: account.username,
+    })
   }
 
   revalidatePath(LIST_PATH)
@@ -71,6 +89,19 @@ export async function deleteNews(formData: FormData): Promise<void> {
 
   const id = String(formData.get('id') ?? '')
   if (!id) return
+
+  const existing = await prisma.news.findUnique({ where: { id } })
+  if (existing) {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, date: existingDate, ...existingData } = existing
+    await recordHistory({
+      contentType: 'news',
+      entityId: id,
+      action: 'delete',
+      label: existing.title,
+      snapshot: { ...existingData, date: existingDate.toISOString() },
+      adminUsername: account.username,
+    })
+  }
 
   await prisma.news.deleteMany({ where: { id } })
 

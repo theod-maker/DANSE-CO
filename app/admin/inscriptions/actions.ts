@@ -6,6 +6,7 @@ import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { SINGLETON_ID } from '../_shared/singleton-id'
 import { validateRegistrationInput, type RegistrationFieldErrors } from './validation'
 import { revalidateContent } from '../_shared/revalidate-after-save'
+import { recordHistory } from '../../../src/lib/content/history'
 
 const PATH = '/admin/inscriptions'
 
@@ -50,6 +51,19 @@ export async function saveRegistrationInfo(
   const { data, errors } = validateRegistrationInput(values)
   if (errors || !data) {
     return { status: 'error', errors, values }
+  }
+
+  const existing = await prisma.registrationInfo.findUnique({ where: { id: SINGLETON_ID } })
+  if (existing) {
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    await recordHistory({
+      contentType: 'registrationInfo',
+      entityId: SINGLETON_ID,
+      action: 'update',
+      label: 'Inscriptions',
+      snapshot: existingData,
+      adminUsername: account.username,
+    })
   }
 
   await prisma.registrationInfo.upsert({
