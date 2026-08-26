@@ -6,6 +6,7 @@ import { DeleteForm } from '../_shared/delete-form'
 import { HistoryLink } from '../_shared/history-link'
 import { PublishStatus } from '../_shared/publish-status'
 import { resolvePublishState } from '../_shared/resolve-publish-state'
+import { PreviewLink } from '../_shared/preview-link'
 import { deleteCourse } from './actions'
 import { dayRank, startMinutes } from './validation'
 
@@ -44,9 +45,12 @@ export default async function PlanningPage() {
         </Link>
       </div>
 
-      <p className="mt-3 text-sm text-neutral-500">
-        Les cours se classent automatiquement par jour puis par heure. Rien à ranger.
-      </p>
+      <div className="mt-3 flex items-center justify-between">
+        <p className="text-sm text-neutral-500">
+          Les cours se classent automatiquement par jour puis par heure. Rien à ranger.
+        </p>
+        <PreviewLink publicPath="/planning" />
+      </div>
 
       {sorted.length === 0 ? (
         <p className="mt-10 rounded-md border border-dashed border-neutral-300 px-6 py-10 text-center text-neutral-500">

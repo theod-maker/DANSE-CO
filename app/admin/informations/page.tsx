@@ -5,6 +5,7 @@ import { SINGLETON_ID } from '../_shared/singleton-id'
 import { HistoryLink } from '../_shared/history-link'
 import { PublishStatus } from '../_shared/publish-status'
 import { resolvePublishState } from '../_shared/resolve-publish-state'
+import { PreviewLink } from '../_shared/preview-link'
 import { SiteInfoForm } from './site-info-form'
 
 export const dynamic = 'force-dynamic'
@@ -40,6 +41,7 @@ export default async function SiteInfoPage() {
         <div className="flex items-center gap-4">
           <PublishStatus contentType="siteInfo" entityId={SINGLETON_ID} state={publishState} />
           <HistoryLink contentType="siteInfo" entityId={SINGLETON_ID} />
+          <PreviewLink publicPath="/" />
         </div>
       </div>
 

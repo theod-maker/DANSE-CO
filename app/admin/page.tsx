@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getCurrentAdmin } from '../../src/lib/adminAuth'
+import { PreviewLink } from './_shared/preview-link'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,6 +16,10 @@ export default async function AdminHomePage() {
       >
         Bonjour {account.displayName}
       </h1>
+
+      <div className="mt-3">
+        <PreviewLink publicPath="/" />
+      </div>
 
       <p className="mt-4 max-w-2xl text-neutral-600">
         Cet espace vous permettra de modifier le contenu du site sans passer par personne.

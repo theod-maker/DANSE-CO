@@ -5,6 +5,7 @@ import { SINGLETON_ID } from '../_shared/singleton-id'
 import { HistoryLink } from '../_shared/history-link'
 import { PublishStatus } from '../_shared/publish-status'
 import { resolvePublishState } from '../_shared/resolve-publish-state'
+import { PreviewLink } from '../_shared/preview-link'
 import { RegistrationForm } from './registration-form'
 
 export const dynamic = 'force-dynamic'
@@ -39,6 +40,7 @@ export default async function RegistrationPage() {
         <div className="flex items-center gap-4">
           <PublishStatus contentType="registrationInfo" entityId={SINGLETON_ID} state={publishState} />
           <HistoryLink contentType="registrationInfo" entityId={SINGLETON_ID} />
+          <PreviewLink publicPath="/planning" />
         </div>
       </div>
 

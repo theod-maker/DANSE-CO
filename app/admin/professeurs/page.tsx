@@ -4,6 +4,7 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { InstructorList } from './instructor-list'
 import { resolvePublishState } from '../_shared/resolve-publish-state'
+import { PreviewLink } from '../_shared/preview-link'
 
 export const dynamic = 'force-dynamic'
 
@@ -35,9 +36,12 @@ export default async function InstructorsPage() {
         </Link>
       </div>
 
-      <p className="mt-3 text-sm text-neutral-500">
-        Glissez un professeur pour le déplacer, ou utilisez les flèches. L&apos;ordre est celui du site.
-      </p>
+      <div className="mt-3 flex items-center justify-between">
+        <p className="text-sm text-neutral-500">
+          Glissez un professeur pour le déplacer, ou utilisez les flèches. L&apos;ordre est celui du site.
+        </p>
+        <PreviewLink publicPath="/instructors" />
+      </div>
 
       {instructors.length === 0 ? (
         <p className="mt-10 rounded-md border border-dashed border-neutral-300 px-6 py-10 text-center text-neutral-500">

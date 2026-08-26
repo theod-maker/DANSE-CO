@@ -6,6 +6,7 @@ import { DeleteForm } from './delete-form'
 import { HistoryLink } from '../_shared/history-link'
 import { PublishStatus } from '../_shared/publish-status'
 import { resolvePublishState } from '../_shared/resolve-publish-state'
+import { PreviewLink } from '../_shared/preview-link'
 
 export const dynamic = 'force-dynamic'
 
@@ -41,9 +42,12 @@ export default async function NewsListPage() {
         </Link>
       </div>
 
-      <p className="mt-3 text-sm text-neutral-500">
-        Classées par date d&apos;événement, la plus proche en premier.
-      </p>
+      <div className="mt-3 flex items-center justify-between">
+        <p className="text-sm text-neutral-500">
+          Classées par date d&apos;événement, la plus proche en premier.
+        </p>
+        <PreviewLink publicPath="/actualites" />
+      </div>
 
       {entries.length === 0 ? (
         <p className="mt-10 rounded-md border border-dashed border-neutral-300 px-6 py-10 text-center text-neutral-500">

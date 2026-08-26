@@ -5,6 +5,7 @@ import { SINGLETON_ID } from '../_shared/singleton-id'
 import { HistoryLink } from '../_shared/history-link'
 import { PublishStatus } from '../_shared/publish-status'
 import { resolvePublishState } from '../_shared/resolve-publish-state'
+import { PreviewLink } from '../_shared/preview-link'
 import { PageTextsForm } from './page-texts-form'
 import { PAGE_TEXT_FIELDS, type PageTextsInput } from './validation'
 
@@ -33,6 +34,7 @@ export default async function PageTextsPage() {
         <div className="flex items-center gap-4">
           <PublishStatus contentType="pageTexts" entityId={SINGLETON_ID} state={publishState} />
           <HistoryLink contentType="pageTexts" entityId={SINGLETON_ID} />
+          <PreviewLink publicPath="/planning" />
         </div>
       </div>
 

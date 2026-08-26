@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { SanityLive } from '@/sanity/lib/live'
 import VisualEditingWrapper from '@/src/components/layout/VisualEditingWrapper'
+import { isPreviewEnabled } from '../src/lib/content/preview'
+import { PreviewBanner } from './preview-banner'
 import './globals.css'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://danse-co.vercel.app'
@@ -61,6 +63,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const { isEnabled: isDraftMode } = await draftMode()
+  const isOurPreview = await isPreviewEnabled()
 
   return (
     <html lang="fr">
@@ -71,9 +74,10 @@ export default async function RootLayout({
         />
       </head>
       <body>
+        {isOurPreview && <PreviewBanner />}
         {children}
         <SanityLive />
-        {isDraftMode && <VisualEditingWrapper />}
+        {isDraftMode && !isOurPreview && <VisualEditingWrapper />}
       </body>
     </html>
   )
