@@ -5,7 +5,6 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { SINGLETON_ID } from '../_shared/singleton-id'
 import { validateSiteInfoInput, type SiteInfoFieldErrors, type SiteInfoInput } from './validation'
-import { revalidateContent } from '../_shared/revalidate-after-save'
 import { recordHistory } from '../../../src/lib/content/history'
 
 const PATH = '/admin/informations'
@@ -49,7 +48,7 @@ export async function saveSiteInfo(
 
   const existing = await prisma.siteInfo.findUnique({ where: { id: SINGLETON_ID } })
   if (existing) {
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...existingData } = existing
     await recordHistory({
       contentType: 'siteInfo',
       entityId: SINGLETON_ID,
@@ -68,6 +67,5 @@ export async function saveSiteInfo(
 
   revalidatePath(PATH)
 
-  await revalidateContent('siteInfo')
   return { status: 'success', message: 'Informations enregistrées.' }
 }

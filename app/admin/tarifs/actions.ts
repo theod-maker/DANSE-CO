@@ -5,7 +5,6 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { SINGLETON_ID } from '../_shared/singleton-id'
 import { validatePricingInput, type PricingFieldErrors } from './validation'
-import { revalidateContent } from '../_shared/revalidate-after-save'
 import { recordHistory } from '../../../src/lib/content/history'
 
 const PATH = '/admin/tarifs'
@@ -64,7 +63,7 @@ export async function savePricing(
     include: { rows: { orderBy: { displayOrder: 'asc' } } },
   })
   if (existing) {
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, rows, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, rows, ...existingData } = existing
     await recordHistory({
       contentType: 'pricing',
       entityId: SINGLETON_ID,
@@ -114,6 +113,5 @@ export async function savePricing(
 
   revalidatePath(PATH)
 
-  await revalidateContent('pricing')
   return { status: 'success', message: 'Tarifs enregistrés.' }
 }

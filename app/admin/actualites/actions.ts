@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateNewsInput, type NewsFieldErrors } from './validation'
-import { revalidateContent } from '../_shared/revalidate-after-save'
 import { recordHistory } from '../../../src/lib/content/history'
 
 const LIST_PATH = '/admin/actualites'
@@ -55,7 +54,7 @@ export async function saveNews(
     if (!existing) {
       return { generalError: 'Cette actualité n’existe plus.', values }
     }
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, date: existingDate, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, date: existingDate, ...existingData } = existing
     await recordHistory({
       contentType: 'news',
       entityId: id,
@@ -79,7 +78,6 @@ export async function saveNews(
 
   revalidatePath(LIST_PATH)
 
-  await revalidateContent('news')
   redirect(LIST_PATH)
 }
 
@@ -92,7 +90,7 @@ export async function deleteNews(formData: FormData): Promise<void> {
 
   const existing = await prisma.news.findUnique({ where: { id } })
   if (existing) {
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, date: existingDate, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, date: existingDate, ...existingData } = existing
     await recordHistory({
       contentType: 'news',
       entityId: id,
@@ -107,6 +105,5 @@ export async function deleteNews(formData: FormData): Promise<void> {
 
   revalidatePath(LIST_PATH)
 
-  await revalidateContent('news')
   redirect(LIST_PATH)
 }

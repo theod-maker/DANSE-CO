@@ -10,7 +10,6 @@ import {
   type HomepageFieldErrors,
   type HomepageInput,
 } from './validation'
-import { revalidateContent } from '../_shared/revalidate-after-save'
 import { recordHistory } from '../../../src/lib/content/history'
 
 const PATH = '/admin/accueil'
@@ -42,7 +41,7 @@ export async function saveHomepage(
 
   const existing = await prisma.homepage.findUnique({ where: { id: SINGLETON_ID } })
   if (existing) {
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...existingData } = existing
     await recordHistory({
       contentType: 'homepage',
       entityId: SINGLETON_ID,
@@ -61,6 +60,5 @@ export async function saveHomepage(
 
   revalidatePath(PATH)
 
-  await revalidateContent('homepage')
   return { status: 'success', message: "Page d'accueil enregistrée." }
 }

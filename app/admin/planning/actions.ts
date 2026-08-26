@@ -5,7 +5,6 @@ import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { validateCourseInput, type CourseFieldErrors } from './validation'
-import { revalidateContent } from '../_shared/revalidate-after-save'
 import { recordHistory } from '../../../src/lib/content/history'
 
 const LIST_PATH = '/admin/planning'
@@ -50,7 +49,7 @@ export async function saveCourse(
   if (id) {
     const existing = await prisma.scheduleEntry.findUnique({ where: { id } })
     if (!existing) return { generalError: 'Ce cours n’existe plus.', values }
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...existingData } = existing
     await recordHistory({
       contentType: 'schedule',
       entityId: id,
@@ -74,7 +73,6 @@ export async function saveCourse(
 
   revalidatePath(LIST_PATH)
 
-  await revalidateContent('schedule')
   redirect(LIST_PATH)
 }
 
@@ -87,7 +85,7 @@ export async function deleteCourse(formData: FormData): Promise<void> {
 
   const existing = await prisma.scheduleEntry.findUnique({ where: { id } })
   if (existing) {
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...existingData } = existing
     await recordHistory({
       contentType: 'schedule',
       entityId: id,
@@ -102,6 +100,5 @@ export async function deleteCourse(formData: FormData): Promise<void> {
 
   revalidatePath(LIST_PATH)
 
-  await revalidateContent('schedule')
   redirect(LIST_PATH)
 }

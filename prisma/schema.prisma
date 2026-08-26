@@ -17,7 +17,7 @@ enum DisciplineIcon {
 }
 
 model Homepage {
-  id                       String   @id @default("singleton")
+  id                       String    @id @default("singleton")
   heroImageUrl             String?
   heroTagline              String?
   heroTitle                String
@@ -38,18 +38,22 @@ model Homepage {
   servicesCard1ImageUrl    String?
   servicesCard2Description String
   servicesCard2ImageUrl    String?
-  createdAt                DateTime @default(now())
-  updatedAt                DateTime @updatedAt
+  publishedSnapshot        Json?
+  publishedAt              DateTime?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
 }
 
 model Pricing {
-  id            String       @id @default("singleton")
-  season        String
-  membershipFee String
-  infoItems     String[]
-  rows          PricingRow[]
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  id                String       @id @default("singleton")
+  season            String
+  membershipFee     String
+  infoItems         String[]
+  rows              PricingRow[]
+  publishedSnapshot Json?
+  publishedAt       DateTime?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
 }
 
 model PricingRow {
@@ -68,22 +72,24 @@ model PricingRow {
 }
 
 model SiteInfo {
-  id             String   @id @default("singleton")
-  phone          String
-  email          String
-  mailingAddress String
-  instagramUrl   String
-  facebookUrl    String
-  twitterUrl     String
-  websiteUrl     String
-  season         String
-  footerTagline  String
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                String    @id @default("singleton")
+  phone             String
+  email             String
+  mailingAddress    String
+  instagramUrl      String
+  facebookUrl       String
+  twitterUrl        String
+  websiteUrl        String
+  season            String
+  footerTagline     String
+  publishedSnapshot Json?
+  publishedAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
 model RegistrationInfo {
-  id                String   @id @default("singleton")
+  id                String    @id @default("singleton")
   permanence1Days   String
   permanence1Hours  String
   permanence1Venue  String
@@ -92,76 +98,88 @@ model RegistrationInfo {
   permanence2Venue  String
   requiredDocuments String[]
   photoNote         String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  publishedSnapshot Json?
+  publishedAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 }
 
 model PageTexts {
-  id                  String   @id @default("singleton")
+  id                  String    @id @default("singleton")
   planningSubtitle    String
   disciplinesSubtitle String
   locationsSubtitle   String
   contactSubtitle     String
   instructorsSubtitle String
   pricingSubtitle     String
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  publishedSnapshot   Json?
+  publishedAt         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
 }
 
 model Instructor {
-  id           String   @id @default(uuid())
-  name         String
-  specialty    String
-  bio          String
-  experience   String
-  photoUrl     String?
-  displayOrder Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                String    @id @default(uuid())
+  name              String
+  specialty         String
+  bio               String
+  experience        String
+  photoUrl          String?
+  displayOrder      Int       @default(0)
+  publishedSnapshot Json?
+  publishedAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   @@index([displayOrder])
 }
 
 model ScheduleEntry {
-  id           String   @id @default(uuid())
-  name         String
-  day          String
-  time         String
-  venue        String?
-  level        String
-  displayOrder Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id                String    @id @default(uuid())
+  name              String
+  day               String
+  time              String
+  venue             String?
+  level             String
+  displayOrder      Int       @default(0)
+  publishedSnapshot Json?
+  publishedAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   @@index([day, displayOrder])
 }
 
 model Discipline {
-  id           String         @id @default(uuid())
-  title        String
-  iconName     DisciplineIcon
-  description  String
-  benefits     String[]
-  imageUrl     String?
-  displayOrder Int            @default(0)
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
+  id                String         @id @default(uuid())
+  title             String
+  iconName          DisciplineIcon
+  description       String
+  benefits          String[]
+  imageUrl          String?
+  displayOrder      Int            @default(0)
+  publishedSnapshot Json?
+  publishedAt       DateTime?
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
 
   @@index([displayOrder])
 }
 
 model Venue {
-  id            String   @id @default(uuid())
-  name          String
-  address       String
-  description   String
-  amenities     String[]
-  mapEmbedUrl   String
-  googleMapsUrl String
-  imageUrl      String?
-  displayOrder  Int      @default(0)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                String    @id @default(uuid())
+  name              String
+  address           String
+  description       String
+  amenities         String[]
+  mapEmbedUrl       String
+  googleMapsUrl     String
+  imageUrl          String?
+  displayOrder      Int       @default(0)
+  publishedSnapshot Json?
+  publishedAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   @@index([displayOrder])
 }
@@ -202,27 +220,29 @@ model MediaAsset {
 }
 
 model ContentHistoryEntry {
-  id             String   @id @default(uuid())
-  contentType    String
-  entityId       String
-  action         String
-  label          String
-  snapshot       Json?
-  adminUsername  String
-  createdAt      DateTime @default(now())
+  id            String   @id @default(uuid())
+  contentType   String
+  entityId      String
+  action        String
+  label         String
+  snapshot      Json?
+  adminUsername String
+  createdAt     DateTime @default(now())
 
   @@index([contentType, entityId, createdAt])
 }
 
 model News {
-  id        String   @id @default(uuid())
-  title     String
-  date      DateTime
-  imageUrl  String?
-  excerpt   String
-  link      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                String    @id @default(uuid())
+  title             String
+  date              DateTime
+  imageUrl          String?
+  excerpt           String
+  link              String?
+  publishedSnapshot Json?
+  publishedAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
 
   @@index([date])
 }

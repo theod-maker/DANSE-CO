@@ -48,7 +48,7 @@ export async function saveDiscipline(
   if (id) {
     const existing = await prisma.discipline.findUnique({ where: { id } })
     if (!existing) return { generalError: 'Cette discipline n’existe plus.', values }
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...existingData } = existing
     await recordHistory({
       contentType: 'disciplines',
       entityId: id,
@@ -75,7 +75,6 @@ export async function saveDiscipline(
 
   revalidatePath(LIST_PATH)
 
-  await revalidateContent('disciplines')
   redirect(LIST_PATH)
 }
 
@@ -88,7 +87,7 @@ export async function deleteDiscipline(formData: FormData): Promise<void> {
 
   const existing = await prisma.discipline.findUnique({ where: { id } })
   if (existing) {
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...existingData } = existing
     await recordHistory({
       contentType: 'disciplines',
       entityId: id,
@@ -103,7 +102,6 @@ export async function deleteDiscipline(formData: FormData): Promise<void> {
 
   revalidatePath(LIST_PATH)
 
-  await revalidateContent('disciplines')
   redirect(LIST_PATH)
 }
 

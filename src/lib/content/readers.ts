@@ -43,12 +43,8 @@ const DAY_ORDER = [
   'Samedi (Stages)',
 ]
 
-function optional(value: string | null): string | undefined {
+function optional(value: string | null | undefined): string | undefined {
   return value ?? undefined
-}
-
-function toIsoDate(date: Date): string {
-  return date.toISOString().slice(0, 10)
 }
 
 function dayRank(day: string): number {
@@ -65,185 +61,295 @@ function startMinutes(time: string): number {
 
 export function readHomepage(): Promise<HomepageContent> {
   return readWithFallback('accueil', cached('homepage', async () => {
-    const row = await prisma.homepage.findUnique({ where: { id: SINGLETON_ID } })
-    if (!row) return null
+    const row = await prisma.homepage.findUnique({
+      where: { id: SINGLETON_ID },
+      select: { publishedSnapshot: true },
+    })
+    const snapshot = row?.publishedSnapshot as HomepageContent | undefined
+    if (!snapshot) return null
 
     return {
-      heroImageUrl: optional(row.heroImageUrl),
-      heroTagline: optional(row.heroTagline),
-      heroTitle: row.heroTitle,
-      heroDescription: row.heroDescription,
-      aboutTitle: row.aboutTitle,
-      philosophyTitle: row.philosophyTitle,
-      philosophyBlock1Label: row.philosophyBlock1Label,
-      philosophyBlock1Text: row.philosophyBlock1Text,
-      philosophyBlock2Label: row.philosophyBlock2Label,
-      philosophyBlock2Text: row.philosophyBlock2Text,
-      philosophyImageUrl: optional(row.philosophyImageUrl),
-      featuredVideoDescription: row.featuredVideoDescription,
-      featuredImageUrl: optional(row.featuredImageUrl),
-      featuredSectionLabel: optional(row.featuredSectionLabel),
-      servicesSectionTitle: row.servicesSectionTitle,
-      servicesSectionSubtitle: row.servicesSectionSubtitle,
-      servicesCard1Description: row.servicesCard1Description,
-      servicesCard1ImageUrl: optional(row.servicesCard1ImageUrl),
-      servicesCard2Description: row.servicesCard2Description,
-      servicesCard2ImageUrl: optional(row.servicesCard2ImageUrl),
+      heroImageUrl: optional(snapshot.heroImageUrl),
+      heroTagline: optional(snapshot.heroTagline),
+      heroTitle: snapshot.heroTitle,
+      heroDescription: snapshot.heroDescription,
+      aboutTitle: snapshot.aboutTitle,
+      philosophyTitle: snapshot.philosophyTitle,
+      philosophyBlock1Label: snapshot.philosophyBlock1Label,
+      philosophyBlock1Text: snapshot.philosophyBlock1Text,
+      philosophyBlock2Label: snapshot.philosophyBlock2Label,
+      philosophyBlock2Text: snapshot.philosophyBlock2Text,
+      philosophyImageUrl: optional(snapshot.philosophyImageUrl),
+      featuredVideoDescription: snapshot.featuredVideoDescription,
+      featuredImageUrl: optional(snapshot.featuredImageUrl),
+      featuredSectionLabel: optional(snapshot.featuredSectionLabel),
+      servicesSectionTitle: snapshot.servicesSectionTitle,
+      servicesSectionSubtitle: snapshot.servicesSectionSubtitle,
+      servicesCard1Description: snapshot.servicesCard1Description,
+      servicesCard1ImageUrl: optional(snapshot.servicesCard1ImageUrl),
+      servicesCard2Description: snapshot.servicesCard2Description,
+      servicesCard2ImageUrl: optional(snapshot.servicesCard2ImageUrl),
     }
   }), fallbackHomepage)
 }
 
 export function readSiteInfo(): Promise<SiteInfoContent> {
   return readWithFallback('informations du site', cached('siteInfo', async () => {
-    const row = await prisma.siteInfo.findUnique({ where: { id: SINGLETON_ID } })
-    if (!row) return null
+    const row = await prisma.siteInfo.findUnique({
+      where: { id: SINGLETON_ID },
+      select: { publishedSnapshot: true },
+    })
+    const snapshot = row?.publishedSnapshot as SiteInfoContent | undefined
+    if (!snapshot) return null
 
     return {
-      phone: row.phone,
-      email: row.email,
-      mailingAddress: row.mailingAddress,
-      instagramUrl: row.instagramUrl,
-      facebookUrl: row.facebookUrl,
-      twitterUrl: row.twitterUrl,
-      websiteUrl: row.websiteUrl,
-      season: row.season,
-      footerTagline: row.footerTagline,
+      phone: snapshot.phone,
+      email: snapshot.email,
+      mailingAddress: snapshot.mailingAddress,
+      instagramUrl: snapshot.instagramUrl,
+      facebookUrl: snapshot.facebookUrl,
+      twitterUrl: snapshot.twitterUrl,
+      websiteUrl: snapshot.websiteUrl,
+      season: snapshot.season,
+      footerTagline: snapshot.footerTagline,
     }
   }), fallbackSiteInfo)
 }
 
 export function readPageTexts(): Promise<PageTextsContent> {
   return readWithFallback('textes des pages', cached('pageTexts', async () => {
-    const row = await prisma.pageTexts.findUnique({ where: { id: SINGLETON_ID } })
-    if (!row) return null
+    const row = await prisma.pageTexts.findUnique({
+      where: { id: SINGLETON_ID },
+      select: { publishedSnapshot: true },
+    })
+    const snapshot = row?.publishedSnapshot as PageTextsContent | undefined
+    if (!snapshot) return null
 
     return {
-      planningSubtitle: row.planningSubtitle,
-      disciplinesSubtitle: row.disciplinesSubtitle,
-      locationsSubtitle: row.locationsSubtitle,
-      contactSubtitle: row.contactSubtitle,
-      instructorsSubtitle: row.instructorsSubtitle,
-      pricingSubtitle: row.pricingSubtitle,
+      planningSubtitle: snapshot.planningSubtitle,
+      disciplinesSubtitle: snapshot.disciplinesSubtitle,
+      locationsSubtitle: snapshot.locationsSubtitle,
+      contactSubtitle: snapshot.contactSubtitle,
+      instructorsSubtitle: snapshot.instructorsSubtitle,
+      pricingSubtitle: snapshot.pricingSubtitle,
     }
   }), fallbackPageTexts)
 }
 
 export function readRegistrationInfo(): Promise<RegistrationInfoContent> {
   return readWithFallback('inscriptions', cached('registrationInfo', async () => {
-    const row = await prisma.registrationInfo.findUnique({ where: { id: SINGLETON_ID } })
-    if (!row) return null
+    const row = await prisma.registrationInfo.findUnique({
+      where: { id: SINGLETON_ID },
+      select: { publishedSnapshot: true },
+    })
+    const snapshot = row?.publishedSnapshot as RegistrationInfoContent | undefined
+    if (!snapshot) return null
 
     return {
-      permanence1Days: row.permanence1Days,
-      permanence1Hours: row.permanence1Hours,
-      permanence1Venue: row.permanence1Venue,
-      permanence2Days: row.permanence2Days,
-      permanence2Hours: row.permanence2Hours,
-      permanence2Venue: row.permanence2Venue,
-      requiredDocuments: row.requiredDocuments,
-      photoNote: row.photoNote,
+      permanence1Days: snapshot.permanence1Days,
+      permanence1Hours: snapshot.permanence1Hours,
+      permanence1Venue: snapshot.permanence1Venue,
+      permanence2Days: snapshot.permanence2Days,
+      permanence2Hours: snapshot.permanence2Hours,
+      permanence2Venue: snapshot.permanence2Venue,
+      requiredDocuments: snapshot.requiredDocuments,
+      photoNote: snapshot.photoNote,
     }
   }), fallbackRegistrationInfo)
+}
+
+interface PricingSnapshot {
+  season: string
+  membershipFee: string
+  infoItems: string[]
+  rows: { label: string; price: string; detail: string; highlight: boolean; displayOrder: number }[]
 }
 
 export function readPricing(): Promise<PricingContent> {
   return readWithFallback('tarifs', cached('pricing', async () => {
     const row = await prisma.pricing.findUnique({
       where: { id: SINGLETON_ID },
-      include: { rows: { orderBy: { displayOrder: 'asc' } } },
+      select: { publishedSnapshot: true },
     })
-    if (!row) return null
+    const snapshot = row?.publishedSnapshot as PricingSnapshot | undefined
+    if (!snapshot) return null
 
     return {
-      season: row.season,
-      membershipFee: row.membershipFee,
-      infoItems: row.infoItems,
-      rows: row.rows.map((entry) => ({
-        label: entry.label,
-        price: entry.price,
-        detail: entry.detail,
-        highlight: entry.highlight || undefined,
-      })),
+      season: snapshot.season,
+      membershipFee: snapshot.membershipFee,
+      infoItems: snapshot.infoItems,
+      rows: [...snapshot.rows]
+        .sort((a, b) => a.displayOrder - b.displayOrder)
+        .map((entry) => ({
+          label: entry.label,
+          price: entry.price,
+          detail: entry.detail,
+          highlight: entry.highlight || undefined,
+        })),
     }
   }), fallbackPricing)
 }
 
+interface InstructorSnapshot {
+  name: string
+  specialty: string
+  bio: string
+  experience: string
+  photoUrl: string | null
+}
+
 export function readInstructors(): Promise<InstructorContent[]> {
   return readWithFallback('professeurs', cached('instructors', async () => {
-    const rows = await prisma.instructor.findMany({ orderBy: { displayOrder: 'asc' } })
+    const rows = await prisma.instructor.findMany({
+      orderBy: { displayOrder: 'asc' },
+      select: { id: true, publishedSnapshot: true },
+    })
 
-    return rows.map((row) => ({
-      _id: row.id,
-      name: row.name,
-      specialty: row.specialty,
-      bio: row.bio,
-      experience: row.experience,
-      photoUrl: optional(row.photoUrl),
-    }))
+    return rows
+      .filter((row) => row.publishedSnapshot !== null)
+      .map((row) => {
+        const snapshot = row.publishedSnapshot as unknown as InstructorSnapshot
+        return {
+          _id: row.id,
+          name: snapshot.name,
+          specialty: snapshot.specialty,
+          bio: snapshot.bio,
+          experience: snapshot.experience,
+          photoUrl: optional(snapshot.photoUrl),
+        }
+      })
   }), fallbackInstructors)
+}
+
+interface DisciplineSnapshot {
+  title: string
+  iconName: 'Zap' | 'Star' | 'Heart' | 'Music' | 'Users'
+  description: string
+  benefits: string[]
+  imageUrl: string | null
 }
 
 export function readDisciplines(): Promise<DisciplineContent[]> {
   return readWithFallback('disciplines', cached('disciplines', async () => {
-    const rows = await prisma.discipline.findMany({ orderBy: { displayOrder: 'asc' } })
+    const rows = await prisma.discipline.findMany({
+      orderBy: { displayOrder: 'asc' },
+      select: { id: true, publishedSnapshot: true },
+    })
 
-    return rows.map((row) => ({
-      _id: row.id,
-      title: row.title,
-      iconName: row.iconName,
-      description: row.description,
-      benefits: row.benefits,
-      imageUrl: optional(row.imageUrl),
-    }))
+    return rows
+      .filter((row) => row.publishedSnapshot !== null)
+      .map((row) => {
+        const snapshot = row.publishedSnapshot as unknown as DisciplineSnapshot
+        return {
+          _id: row.id,
+          title: snapshot.title,
+          iconName: snapshot.iconName,
+          description: snapshot.description,
+          benefits: snapshot.benefits,
+          imageUrl: optional(snapshot.imageUrl),
+        }
+      })
   }), fallbackDisciplines)
+}
+
+interface VenueSnapshot {
+  name: string
+  address: string
+  description: string
+  amenities: string[]
+  mapEmbedUrl: string
+  googleMapsUrl: string
+  imageUrl: string | null
 }
 
 export function readVenues(): Promise<VenueContent[]> {
   return readWithFallback('salles', cached('venues', async () => {
-    const rows = await prisma.venue.findMany({ orderBy: { displayOrder: 'asc' } })
+    const rows = await prisma.venue.findMany({
+      orderBy: { displayOrder: 'asc' },
+      select: { id: true, publishedSnapshot: true },
+    })
 
-    return rows.map((row) => ({
-      _id: row.id,
-      name: row.name,
-      address: row.address,
-      description: row.description,
-      amenities: row.amenities,
-      mapEmbedUrl: row.mapEmbedUrl,
-      googleMapsUrl: row.googleMapsUrl,
-      imageUrl: optional(row.imageUrl),
-    }))
+    return rows
+      .filter((row) => row.publishedSnapshot !== null)
+      .map((row) => {
+        const snapshot = row.publishedSnapshot as unknown as VenueSnapshot
+        return {
+          _id: row.id,
+          name: snapshot.name,
+          address: snapshot.address,
+          description: snapshot.description,
+          amenities: snapshot.amenities,
+          mapEmbedUrl: snapshot.mapEmbedUrl,
+          googleMapsUrl: snapshot.googleMapsUrl,
+          imageUrl: optional(snapshot.imageUrl),
+        }
+      })
   }), fallbackVenues)
+}
+
+interface ScheduleSnapshot {
+  name: string
+  day: string
+  time: string
+  venue: string | null
+  level: string
 }
 
 export function readSchedule(): Promise<ScheduleEntryContent[]> {
   return readWithFallback('planning', cached('schedule', async () => {
-    const rows = await prisma.scheduleEntry.findMany()
+    const rows = await prisma.scheduleEntry.findMany({
+      select: { id: true, publishedSnapshot: true },
+    })
 
-    return [...rows]
-      .sort((a, b) => dayRank(a.day) - dayRank(b.day) || startMinutes(a.time) - startMinutes(b.time))
-      .map((row) => ({
-        _id: row.id,
-        name: row.name,
-        day: row.day,
-        time: row.time,
-        venue: optional(row.venue),
-        level: row.level,
-      }))
+    const published = rows
+      .filter((row) => row.publishedSnapshot !== null)
+      .map((row) => {
+        const snapshot = row.publishedSnapshot as unknown as ScheduleSnapshot
+        return {
+          _id: row.id,
+          name: snapshot.name,
+          day: snapshot.day,
+          time: snapshot.time,
+          venue: optional(snapshot.venue),
+          level: snapshot.level,
+        }
+      })
+
+    return [...published].sort(
+      (a, b) => dayRank(a.day) - dayRank(b.day) || startMinutes(a.time) - startMinutes(b.time)
+    )
   }), fallbackSchedule)
+}
+
+interface NewsSnapshot {
+  title: string
+  date: string
+  imageUrl: string | null
+  excerpt: string
+  link: string | null
 }
 
 export function readNews(): Promise<NewsContent[]> {
   return readWithFallback('actualités', cached('news', async () => {
-    const rows = await prisma.news.findMany({ orderBy: { date: 'asc' } })
+    const rows = await prisma.news.findMany({
+      select: { id: true, publishedSnapshot: true },
+    })
 
-    return rows.map((row) => ({
-      _id: row.id,
-      title: row.title,
-      date: toIsoDate(row.date),
-      imageUrl: optional(row.imageUrl),
-      excerpt: row.excerpt,
-      link: optional(row.link),
-    }))
+    const published = rows
+      .filter((row) => row.publishedSnapshot !== null)
+      .map((row) => {
+        const snapshot = row.publishedSnapshot as unknown as NewsSnapshot
+        return {
+          _id: row.id,
+          title: snapshot.title,
+          date: snapshot.date.slice(0, 10),
+          imageUrl: optional(snapshot.imageUrl),
+          excerpt: snapshot.excerpt,
+          link: optional(snapshot.link),
+        }
+      })
+
+    return [...published].sort((a, b) => a.date.localeCompare(b.date))
   }), fallbackNews)
 }
 

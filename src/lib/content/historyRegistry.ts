@@ -21,7 +21,7 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
     async fetchCurrent(entityId) {
       const row = await prisma.homepage.findUnique({ where: { id: entityId } })
       if (!row) return null
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = row
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...data } = row
       return { data, label: "Page d'accueil" }
     },
     async applySnapshot(entityId, snapshot) {
@@ -39,7 +39,7 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
     async fetchCurrent(entityId) {
       const row = await prisma.siteInfo.findUnique({ where: { id: entityId } })
       if (!row) return null
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = row
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...data } = row
       return { data, label: 'Informations du site' }
     },
     async applySnapshot(entityId, snapshot) {
@@ -57,7 +57,7 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
     async fetchCurrent(entityId) {
       const row = await prisma.pageTexts.findUnique({ where: { id: entityId } })
       if (!row) return null
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = row
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...data } = row
       return { data, label: 'Textes des pages' }
     },
     async applySnapshot(entityId, snapshot) {
@@ -75,7 +75,7 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
     async fetchCurrent(entityId) {
       const row = await prisma.registrationInfo.findUnique({ where: { id: entityId } })
       if (!row) return null
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = row
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...data } = row
       return { data, label: 'Inscriptions' }
     },
     async applySnapshot(entityId, snapshot) {
@@ -96,7 +96,7 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
         include: { rows: { orderBy: { displayOrder: 'asc' } } },
       })
       if (!row) return null
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, rows, ...data } = row
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, rows, ...data } = row
       return {
         data: {
           ...data,
@@ -135,7 +135,7 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
     async fetchCurrent(entityId) {
       const row = await prisma.instructor.findUnique({ where: { id: entityId } })
       if (!row) return null
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = row
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...data } = row
       return { data, label: row.name }
     },
     async applySnapshot(entityId, snapshot) {
@@ -153,7 +153,7 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
     async fetchCurrent(entityId) {
       const row = await prisma.discipline.findUnique({ where: { id: entityId } })
       if (!row) return null
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = row
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...data } = row
       return { data, label: row.title }
     },
     async applySnapshot(entityId, snapshot) {
@@ -171,7 +171,7 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
     async fetchCurrent(entityId) {
       const row = await prisma.venue.findUnique({ where: { id: entityId } })
       if (!row) return null
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = row
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...data } = row
       return { data, label: row.name }
     },
     async applySnapshot(entityId, snapshot) {
@@ -189,7 +189,7 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
     async fetchCurrent(entityId) {
       const row = await prisma.scheduleEntry.findUnique({ where: { id: entityId } })
       if (!row) return null
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...data } = row
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...data } = row
       return { data, label: row.name }
     },
     async applySnapshot(entityId, snapshot) {
@@ -207,7 +207,7 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
     async fetchCurrent(entityId) {
       const row = await prisma.news.findUnique({ where: { id: entityId } })
       if (!row) return null
-      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, date, ...data } = row
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, date, ...data } = row
       return { data: { ...data, date: date.toISOString() }, label: row.title }
     },
     async applySnapshot(entityId, snapshot) {

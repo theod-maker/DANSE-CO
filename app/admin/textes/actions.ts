@@ -10,7 +10,6 @@ import {
   type PageTextsFieldErrors,
   type PageTextsInput,
 } from './validation'
-import { revalidateContent } from '../_shared/revalidate-after-save'
 import { recordHistory } from '../../../src/lib/content/history'
 
 const PATH = '/admin/textes'
@@ -42,7 +41,7 @@ export async function savePageTexts(
 
   const existing = await prisma.pageTexts.findUnique({ where: { id: SINGLETON_ID } })
   if (existing) {
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...existingData } = existing
     await recordHistory({
       contentType: 'pageTexts',
       entityId: SINGLETON_ID,
@@ -61,6 +60,5 @@ export async function savePageTexts(
 
   revalidatePath(PATH)
 
-  await revalidateContent('pageTexts')
   return { status: 'success', message: 'Textes enregistrés.' }
 }

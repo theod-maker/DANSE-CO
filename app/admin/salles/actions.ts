@@ -52,7 +52,7 @@ export async function saveVenue(
   if (id) {
     const existing = await prisma.venue.findUnique({ where: { id } })
     if (!existing) return { generalError: 'Cette salle n’existe plus.', values }
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...existingData } = existing
     await recordHistory({
       contentType: 'venues',
       entityId: id,
@@ -79,7 +79,6 @@ export async function saveVenue(
 
   revalidatePath(LIST_PATH)
 
-  await revalidateContent('venues')
   redirect(LIST_PATH)
 }
 
@@ -92,7 +91,7 @@ export async function deleteVenue(formData: FormData): Promise<void> {
 
   const existing = await prisma.venue.findUnique({ where: { id } })
   if (existing) {
-    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, ...existingData } = existing
+    const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...existingData } = existing
     await recordHistory({
       contentType: 'venues',
       entityId: id,
@@ -107,7 +106,6 @@ export async function deleteVenue(formData: FormData): Promise<void> {
 
   revalidatePath(LIST_PATH)
 
-  await revalidateContent('venues')
   redirect(LIST_PATH)
 }
 
