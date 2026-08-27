@@ -13,3 +13,20 @@ export const CONTENT_TAGS = {
 } as const
 
 export type ContentTag = keyof typeof CONTENT_TAGS
+
+export const PAGE_BLOCK_PAGE_KEYS = [
+  'disciplines',
+  'professeurs',
+  'salles',
+  'planning',
+  'contact',
+  'actualites',
+  'tarifs',
+  'histoire',
+] as const
+
+export type PageBlockPageKey = (typeof PAGE_BLOCK_PAGE_KEYS)[number]
+
+export function pageBlocksTag(pageKey: PageBlockPageKey): string {
+  return `pageblocks-${pageKey}`
+}

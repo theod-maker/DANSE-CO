@@ -112,10 +112,27 @@ model PageTexts {
   contactSubtitle     String
   instructorsSubtitle String
   pricingSubtitle     String
+  histoireSubtitle    String    @default("")
   publishedSnapshot   Json?
   publishedAt         DateTime?
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
+}
+
+model PageBlock {
+  id                String    @id @default(uuid())
+  pageKey           String
+  kind              String
+  fixedKey          String?
+  content           Json?
+  publishedSnapshot Json?
+  publishedAt       DateTime?
+  displayOrder      Int       @default(0)
+  visible           Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([pageKey, displayOrder])
 }
 
 model Instructor {

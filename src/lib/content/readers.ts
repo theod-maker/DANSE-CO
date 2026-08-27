@@ -26,6 +26,8 @@ import { readWithFallback } from './source.ts'
 import { CONTENT_TAGS, type ContentTag } from './revalidate.ts'
 import { HOMEPAGE_KEY, defaultSections, resolveSections, type ResolvedSection } from './sections.ts'
 import { isPreviewEnabled } from './preview.ts'
+import { resolvePageBlocks, type ResolvedBlock } from './pageBlocks.ts'
+import { pageBlocksTag, type PageBlockPageKey } from './revalidate.ts'
 
 function cached<T>(tag: ContentTag, read: () => Promise<T | null>): () => Promise<T | null> {
   return unstable_cache(read, [CONTENT_TAGS[tag]], { tags: [CONTENT_TAGS[tag]] })
@@ -185,6 +187,7 @@ interface PageTextsFields {
   contactSubtitle: string
   instructorsSubtitle: string
   pricingSubtitle: string
+  histoireSubtitle: string
 }
 
 function toPageTextsContent(fields: PageTextsFields): PageTextsContent {
@@ -195,6 +198,7 @@ function toPageTextsContent(fields: PageTextsFields): PageTextsContent {
     contactSubtitle: fields.contactSubtitle,
     instructorsSubtitle: fields.instructorsSubtitle,
     pricingSubtitle: fields.pricingSubtitle,
+    histoireSubtitle: fields.histoireSubtitle,
   }
 }
 
@@ -544,6 +548,23 @@ export function readNews(): Promise<NewsContent[]> {
     if (await isPreviewEnabled()) return readLiveNews()
     return readPublishedNewsCached()
   }, fallbackNews)
+}
+
+export function readPageBlocks(pageKey: PageBlockPageKey): Promise<ResolvedBlock[]> {
+  const readPublishedCached = unstable_cache(
+    () => resolvePageBlocks(pageKey, 'published'),
+    [pageBlocksTag(pageKey)],
+    { tags: [pageBlocksTag(pageKey)] }
+  )
+
+  return readWithFallback(
+    `blocs de la page ${pageKey}`,
+    async () => {
+      if (await isPreviewEnabled()) return resolvePageBlocks(pageKey, 'live')
+      return readPublishedCached()
+    },
+    []
+  )
 }
 
 export function readHomepageSections(): Promise<ResolvedSection[]> {

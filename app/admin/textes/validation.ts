@@ -7,6 +7,7 @@ export const PAGE_TEXT_FIELDS = [
   { key: 'locationsSubtitle', label: 'Sous-titre de la page Salles' },
   { key: 'pricingSubtitle', label: 'Sous-titre de la page Tarifs' },
   { key: 'contactSubtitle', label: 'Sous-titre de la page Contact' },
+  { key: 'histoireSubtitle', label: 'Sous-titre de la page Histoire' },
 ] as const
 
 export type PageTextKey = (typeof PAGE_TEXT_FIELDS)[number]['key']
