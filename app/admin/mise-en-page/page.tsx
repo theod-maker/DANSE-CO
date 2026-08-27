@@ -1,34 +1,14 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
-import {
-  FIXED_SECTIONS,
-  HOMEPAGE_KEY,
-  HOMEPAGE_SECTIONS,
-  resolveSections,
-} from '../../../src/lib/content/sections'
-import { SectionList } from './section-list'
+import { PAGE_BLOCK_PAGE_KEYS } from '../../../src/lib/content/revalidate'
+import { PAGE_LABELS } from '../../../src/lib/content/pageBlockLabels'
 
 export const dynamic = 'force-dynamic'
 
-export default async function LayoutPage() {
+export default async function MiseEnPagePicker() {
   const account = await getCurrentAdmin()
   if (!account) redirect('/admin/login')
-
-  const stored = await prisma.pageSection.findMany({
-    where: { pageKey: HOMEPAGE_KEY },
-    orderBy: { displayOrder: 'asc' },
-  })
-
-  const resolved = resolveSections(stored)
-  const byKey = new Map(HOMEPAGE_SECTIONS.map((section) => [section.key, section]))
-
-  const sections = resolved.map((section) => ({
-    key: section.key,
-    label: section.label,
-    description: byKey.get(section.key)?.description ?? '',
-    visible: section.visible,
-  }))
 
   return (
     <div>
@@ -40,15 +20,30 @@ export default async function LayoutPage() {
       </h1>
 
       <p className="mt-3 max-w-2xl text-sm text-neutral-500">
-        L&apos;ordre des sections sur votre page d&apos;accueil. Déplacez-les pour changer
-        leur ordre, ou masquez-en une sans perdre son contenu.
+        Choisissez une page pour réorganiser ses blocs, en masquer, ou en ajouter de
+        nouveaux.
       </p>
 
-      <SectionList
-        sections={sections}
-        fixedTop={FIXED_SECTIONS.filter((s) => s.position === 'top')}
-        fixedBottom={FIXED_SECTIONS.filter((s) => s.position === 'bottom')}
-      />
+      <ul className="mt-8 divide-y divide-neutral-200 border-t border-neutral-200">
+        <li className="py-4">
+          <Link
+            href="/admin/mise-en-page/accueil"
+            className="text-neutral-900 underline-offset-4 hover:text-[#6C5CA8] hover:underline"
+          >
+            Accueil
+          </Link>
+        </li>
+        {PAGE_BLOCK_PAGE_KEYS.map((pageKey) => (
+          <li key={pageKey} className="py-4">
+            <Link
+              href={`/admin/mise-en-page/pages/${pageKey}`}
+              className="text-neutral-900 underline-offset-4 hover:text-[#6C5CA8] hover:underline"
+            >
+              {PAGE_LABELS[pageKey]}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
