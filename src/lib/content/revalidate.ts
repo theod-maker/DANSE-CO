@@ -10,6 +10,7 @@ export const CONTENT_TAGS = {
   schedule: 'contenu-planning',
   news: 'contenu-actualites',
   sections: 'contenu-sections',
+  pageSeo: 'contenu-seo',
 } as const
 
 export type ContentTag = keyof typeof CONTENT_TAGS

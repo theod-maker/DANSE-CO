@@ -70,6 +70,24 @@ export const historyRegistry: Record<HistoryContentType, HistoryRegistryEntry> =
     },
   },
 
+  pageSeo: {
+    listPath: '/admin/seo',
+    async fetchCurrent(entityId) {
+      const row = await prisma.pageSeo.findUnique({ where: { id: entityId } })
+      if (!row) return null
+      const { id: _id, createdAt: _createdAt, updatedAt: _updatedAt, publishedSnapshot: _publishedSnapshot, publishedAt: _publishedAt, ...data } = row
+      return { data, label: 'Référencement' }
+    },
+    async applySnapshot(entityId, snapshot) {
+      const data = snapshot as Prisma.PageSeoUncheckedCreateInput
+      await prisma.pageSeo.upsert({
+        where: { id: entityId },
+        update: data,
+        create: { ...data, id: entityId },
+      })
+    },
+  },
+
   registrationInfo: {
     listPath: '/admin/inscriptions',
     async fetchCurrent(entityId) {

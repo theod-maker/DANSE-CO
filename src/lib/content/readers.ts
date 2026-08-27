@@ -28,6 +28,7 @@ import { HOMEPAGE_KEY, defaultSections, resolveSections, type ResolvedSection } 
 import { isPreviewEnabled } from './preview.ts'
 import { resolvePageBlocks, type ResolvedBlock } from './pageBlocks.ts'
 import { pageBlocksTag, type PageBlockPageKey } from './revalidate.ts'
+import { defaultSeoMap, type PageSeoFields } from './seoPages.ts'
 
 function cached<T>(tag: ContentTag, read: () => Promise<T | null>): () => Promise<T | null> {
   return unstable_cache(read, [CONTENT_TAGS[tag]], { tags: [CONTENT_TAGS[tag]] })
@@ -564,6 +565,46 @@ export function readPageBlocks(pageKey: PageBlockPageKey): Promise<ResolvedBlock
       return readPublishedCached()
     },
     []
+  )
+}
+
+function resolvePageSeo(
+  stored: Record<string, Partial<PageSeoFields>> | null | undefined,
+  pageKey: string
+): PageSeoFields {
+  const defaults = defaultSeoMap()[pageKey]
+  const entry = stored?.[pageKey]
+
+  const title = entry?.title?.trim() ? entry.title.trim() : defaults.title
+  const description = entry?.description?.trim() ? entry.description.trim() : defaults.description
+  const imageUrl = entry?.imageUrl?.trim() ? entry.imageUrl.trim() : defaults.imageUrl
+
+  return { title, description, imageUrl }
+}
+
+async function readPublishedPageSeoMap(): Promise<Record<string, PageSeoFields> | null> {
+  const row = await prisma.pageSeo.findUnique({
+    where: { id: SINGLETON_ID },
+    select: { publishedSnapshot: true },
+  })
+  const snapshot = row?.publishedSnapshot as { pages?: Record<string, PageSeoFields> } | undefined
+  return snapshot?.pages ?? null
+}
+const readPublishedPageSeoMapCached = cached('pageSeo', readPublishedPageSeoMap)
+
+async function readLivePageSeoMap(): Promise<Record<string, PageSeoFields> | null> {
+  const row = await prisma.pageSeo.findUnique({ where: { id: SINGLETON_ID } })
+  return (row?.pages as Record<string, PageSeoFields> | undefined) ?? null
+}
+
+export function readPageSeo(pageKey: string): Promise<PageSeoFields> {
+  return readWithFallback(
+    `SEO de la page ${pageKey}`,
+    async () => {
+      const map = (await isPreviewEnabled()) ? await readLivePageSeoMap() : await readPublishedPageSeoMapCached()
+      return resolvePageSeo(map, pageKey)
+    },
+    resolvePageSeo(null, pageKey)
   )
 }
 

@@ -119,6 +119,15 @@ model PageTexts {
   updatedAt           DateTime  @updatedAt
 }
 
+model PageSeo {
+  id                String    @id @default("singleton")
+  pages             Json
+  publishedSnapshot Json?
+  publishedAt       DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}
+
 model PageBlock {
   id                String    @id @default(uuid())
   pageKey           String

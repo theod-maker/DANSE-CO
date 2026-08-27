@@ -23,6 +23,9 @@ async function updatePublishedFields(
     case 'pageTexts':
       await prisma.pageTexts.update({ where: { id: entityId }, data })
       return
+    case 'pageSeo':
+      await prisma.pageSeo.update({ where: { id: entityId }, data })
+      return
     case 'registrationInfo':
       await prisma.registrationInfo.update({ where: { id: entityId }, data })
       return
@@ -64,6 +67,11 @@ async function readPublishedFields(
       })
     case 'pageTexts':
       return prisma.pageTexts.findUnique({
+        where: { id: entityId },
+        select: { publishedSnapshot: true, publishedAt: true },
+      })
+    case 'pageSeo':
+      return prisma.pageSeo.findUnique({
         where: { id: entityId },
         select: { publishedSnapshot: true, publishedAt: true },
       })
