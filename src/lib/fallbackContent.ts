@@ -284,6 +284,13 @@ export const fallbackPageTexts: PageTextsContent = {
 
 const rawNews: NewsContent[] = [
   {
+    _id: 'news-portes-ouvertes',
+    title: 'Portes ouvertes — 3 et 6 septembre',
+    date: '2026-09-03',
+    imageUrl: '/images/portes-ouvertes-2026.png',
+    excerpt: 'Initiations gratuites les 3 et 6 septembre à Saint-Michel-Chef-Chef. Toutes les infos au 06 17 09 93 49 ou dansandco@outlook.fr.',
+  },
+  {
     _id: 'news-1',
     title: 'Reprise des cours — 21 septembre',
     date: '2026-09-21',
@@ -316,15 +323,17 @@ export const fallbackNews: NewsContent[] = [...rawNews].sort(
 export const fallbackPricing: PricingContent = {
   season: '2026 - 2027',
   rows: [
-    { label: '1h de cours — Solo', price: '220 €', detail: '' },
-    { label: '1h de cours — Couple', price: '380 €', detail: '' },
-    { label: '2h de cours — Solo', price: '370 €', detail: '' },
-    { label: '2h de cours — Couple', price: '630 €', detail: '', highlight: true },
-    { label: 'Full Pass — Solo', price: '460 €', detail: '' },
-    { label: 'Full Pass — Couple', price: '740 €', detail: '' },
-    { label: 'Cours enfants', price: '190 €', detail: '' },
-    { label: 'Solo Samedi', price: '190 €', detail: '' },
+    { label: '1h de cours — Individuel', price: '220 €', detail: '100 € par cours supplémentaire · réinscription -10 €' },
+    { label: '2h de cours — Individuel', price: '370 €', detail: '100 € par cours supplémentaire · réinscription -10 €' },
+    { label: '1h de cours — Couple', price: '380 €', detail: '200 € par cours supplémentaire · réinscription -20 €' },
+    { label: '2h de cours — Couple', price: '690 €', detail: '200 € par cours supplémentaire · réinscription -20 €', highlight: true },
+    { label: 'Cours enfants — Danse sportive', price: '200 €', detail: '100 € par cours supplémentaire · réinscription -10 €' },
+    { label: 'Cours enfants — Danse en ligne', price: '190 €', detail: '100 € par cours supplémentaire · réinscription -10 €' },
   ],
-  infoItems: [],
+  infoItems: [
+    'Tarifs adhésion incluse, basés sur 30 semaines de cours',
+    'Remise famille : -10% sur le total des inscriptions pour un couple et 1 enfant, non cumulable avec la remise réinscription',
+    'Paiement comptant ou échelonné en plusieurs chèques (octobre à mars)',
+  ],
   membershipFee: '',
 }

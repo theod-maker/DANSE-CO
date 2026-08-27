@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { AlertCircle, FileText, Camera } from 'lucide-react';
+import { AlertCircle, FileText, Camera, Download } from 'lucide-react';
 import { fallbackRegistrationInfo, fallbackSiteInfo } from '../../lib/fallbackContent';
 
 const RegistrationInfo = () => {
@@ -86,6 +86,22 @@ const RegistrationInfo = () => {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.45 }}
+          className="mt-6"
+        >
+          <a
+            href="/documents/bulletin-adhesion-2026-2027.pdf"
+            download
+            className="inline-flex items-center gap-2 bg-[#6C5CA8] text-white text-sm font-medium px-6 py-3 rounded-full hover:bg-[#524490] transition-colors"
+          >
+            <Download size={16} />
+            Télécharger le bulletin d'adhésion 2026-2027
+          </a>
+        </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
