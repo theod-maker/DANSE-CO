@@ -10,6 +10,23 @@ function pagePath(pageKey: PageBlockPageKey): string {
   return `/admin/mise-en-page/pages/${pageKey}`
 }
 
+const PUBLIC_PATH: Record<PageBlockPageKey, string> = {
+  disciplines: '/disciplines',
+  professeurs: '/instructors',
+  salles: '/locations',
+  planning: '/planning',
+  contact: '/contact',
+  actualites: '/actualites',
+  tarifs: '/pricing',
+  histoire: '/histoire',
+}
+
+function revalidatePageAndPublic(pageKey: PageBlockPageKey): void {
+  revalidatePath(pagePath(pageKey))
+  revalidatePath(PUBLIC_PATH[pageKey])
+  revalidateTag(pageBlocksTag(pageKey))
+}
+
 export async function reorderBlocks(pageKey: PageBlockPageKey, orderedIds: string[]): Promise<void> {
   const account = await getCurrentAdmin()
   if (!account) return
@@ -21,8 +38,7 @@ export async function reorderBlocks(pageKey: PageBlockPageKey, orderedIds: strin
     )
   )
 
-  revalidatePath(pagePath(pageKey))
-  revalidateTag(pageBlocksTag(pageKey))
+  revalidatePageAndPublic(pageKey)
 }
 
 export async function toggleBlockVisibility(pageKey: PageBlockPageKey, blockId: string): Promise<void> {
@@ -34,8 +50,7 @@ export async function toggleBlockVisibility(pageKey: PageBlockPageKey, blockId: 
 
   await prisma.pageBlock.update({ where: { id: blockId }, data: { visible: !block.visible } })
 
-  revalidatePath(pagePath(pageKey))
-  revalidateTag(pageBlocksTag(pageKey))
+  revalidatePageAndPublic(pageKey)
 }
 
 export async function addBlock(formData: FormData): Promise<void> {
@@ -60,8 +75,7 @@ export async function addBlock(formData: FormData): Promise<void> {
     },
   })
 
-  revalidatePath(pagePath(pageKey))
-  revalidateTag(pageBlocksTag(pageKey))
+  revalidatePageAndPublic(pageKey)
 }
 
 export async function deleteBlock(formData: FormData): Promise<void> {
@@ -74,6 +88,5 @@ export async function deleteBlock(formData: FormData): Promise<void> {
 
   await prisma.pageBlock.deleteMany({ where: { id: blockId, kind: { not: 'fixed' } } })
 
-  revalidatePath(pagePath(pageKey))
-  revalidateTag(pageBlocksTag(pageKey))
+  revalidatePageAndPublic(pageKey)
 }

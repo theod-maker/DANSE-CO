@@ -8,15 +8,17 @@ import {
   readPageTexts,
   readSchedule,
   readRegistrationInfo,
+  readPageBlocks,
 } from '@/src/lib/content/readers'
 import PlanningContent from '@/src/components/pages/PlanningContent'
 
 export default async function Planning() {
-  const [siteinfo, pagetexts, schedule, registrationInfo] = await Promise.all([
+  const [siteinfo, pagetexts, schedule, registrationInfo, blocks] = await Promise.all([
     readSiteInfo(),
     readPageTexts(),
     readSchedule(),
     readRegistrationInfo(),
+    readPageBlocks('planning'),
   ])
 
   return (
@@ -25,7 +27,7 @@ export default async function Planning() {
       pageTexts={pagetexts}
       schedule={schedule}
       registrationInfo={registrationInfo}
-      pageData={null}
+      blocks={blocks}
     />
   )
 }

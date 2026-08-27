@@ -7,6 +7,17 @@ import { FREE_BLOCK_LABELS } from './pageBlockLabels.ts'
 
 const BLOCK_HISTORY_TYPE = 'pageBlock'
 
+const PUBLIC_PATH: Record<string, string> = {
+  disciplines: '/disciplines',
+  professeurs: '/instructors',
+  salles: '/locations',
+  planning: '/planning',
+  contact: '/contact',
+  actualites: '/actualites',
+  tarifs: '/pricing',
+  histoire: '/histoire',
+}
+
 export type FreeBlockKind = 'text' | 'image' | 'gallery' | 'cta' | 'timelineEvent'
 export type BlockKind = 'fixed' | FreeBlockKind
 
@@ -221,6 +232,7 @@ export async function publishBlock(blockId: string): Promise<BlockActionResult> 
 
   revalidatePath(`/admin/mise-en-page/pages/${block.pageKey}`)
   revalidatePath(`/admin/mise-en-page/blocs/${block.id}`)
+  if (PUBLIC_PATH[block.pageKey]) revalidatePath(PUBLIC_PATH[block.pageKey])
   revalidateTag(pageBlocksTag(block.pageKey as PageBlockPageKey))
 
   return { ok: true }

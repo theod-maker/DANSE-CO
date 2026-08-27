@@ -5,9 +5,9 @@ import { Phone, Mail, MapPin } from 'lucide-react'
 import { ContactForm } from '@/src/components/contact/ContactForm'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
-import BlockRenderer from '@/src/components/blocks/BlockRenderer'
+import FreeBlockRenderer from '@/src/components/page-blocks/FreeBlockRenderer'
 import type { SiteInfoContent, PageTextsContent, VenueContent } from '@/src/lib/fallbackContent'
-import type { PageContent } from '@/src/lib/pageBuilderTypes'
+import type { ResolvedBlock } from '@/src/lib/content/pageBlocks'
 
 const InstagramIcon = ({ size = 18 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -27,10 +27,10 @@ interface Props {
   siteInfo: SiteInfoContent
   pageTexts: PageTextsContent
   venues: VenueContent[]
-  pageData: PageContent | null
+  blocks: ResolvedBlock[]
 }
 
-export default function ContactContent({ siteInfo, pageTexts, venues, pageData }: Props) {
+export default function ContactContent({ siteInfo, pageTexts, venues, blocks }: Props) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
   const formRef = useRef(null)
@@ -43,16 +43,6 @@ export default function ContactContent({ siteInfo, pageTexts, venues, pageData }
     { icon: <Mail size={18} />, label: 'Email', value: siteInfo.email, href: `mailto:${siteInfo.email}` },
     { icon: <MapPin size={18} />, label: 'Adresse Courrier', value: siteInfo.mailingAddress, href: null },
   ]
-
-  if (pageData) {
-    return (
-      <div className="min-h-screen overflow-x-hidden">
-        <AppNavbar />
-        <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter siteInfo={siteInfo} />
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -68,6 +58,7 @@ export default function ContactContent({ siteInfo, pageTexts, venues, pageData }
           </h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={headerInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.35, ease: EASING }} className="text-[#18102E]/50 text-base md:text-lg leading-relaxed max-w-xl">{pageTexts.contactSubtitle}</motion.p>
         </div>
+        {blocks.some((block) => block.kind === 'fixed' && block.fixedKey === 'contactMain') && (
         <div className="grid md:grid-cols-2 gap-8 items-start relative z-10">
           <motion.div ref={formRef} initial={{ opacity: 0, x: -30 }} animate={formInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.7, delay: 0.1, ease: EASING }}>
             <ContactForm />
@@ -116,7 +107,8 @@ export default function ContactContent({ siteInfo, pageTexts, venues, pageData }
             </div>
           </motion.div>
         </div>
-        {venues.length > 0 && (
+        )}
+        {venues.length > 0 && blocks.some((block) => block.kind === 'fixed' && block.fixedKey === 'venuesMap') && (
           <div className="mt-16 relative z-10">
             <p className="text-[#18102E]/40 text-xs tracking-widest uppercase font-ui mb-6">NOS SALLES</p>
             <div className="grid md:grid-cols-2 gap-6">
@@ -135,6 +127,9 @@ export default function ContactContent({ siteInfo, pageTexts, venues, pageData }
             </div>
           </div>
         )}
+        {blocks
+          .filter((block) => block.kind !== 'fixed')
+          .map((block) => <FreeBlockRenderer key={block.id} block={block} />)}
       </main>
       <AppFooter siteInfo={siteInfo} />
     </div>

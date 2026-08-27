@@ -4,9 +4,9 @@ import { motion, useInView } from 'framer-motion'
 import VenueCard from '@/src/components/locations/VenueCard'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
-import BlockRenderer from '@/src/components/blocks/BlockRenderer'
+import FreeBlockRenderer from '@/src/components/page-blocks/FreeBlockRenderer'
 import type { VenueContent, PageTextsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
-import type { PageContent } from '@/src/lib/pageBuilderTypes'
+import type { ResolvedBlock } from '@/src/lib/content/pageBlocks'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
@@ -14,22 +14,12 @@ interface Props {
   siteInfo: SiteInfoContent
   venues: VenueContent[]
   pageTexts: PageTextsContent
-  pageData: PageContent | null
+  blocks: ResolvedBlock[]
 }
 
-export default function LocationsContent({ siteInfo, venues, pageTexts, pageData }: Props) {
+export default function LocationsContent({ siteInfo, venues, pageTexts, blocks }: Props) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
-
-  if (pageData) {
-    return (
-      <div className="min-h-screen overflow-x-hidden">
-        <AppNavbar />
-        <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter siteInfo={siteInfo} />
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -51,11 +41,19 @@ export default function LocationsContent({ siteInfo, venues, pageTexts, pageData
             {pageTexts.locationsSubtitle}
           </motion.p>
         </div>
-        <div className="relative z-10">
-          {venues.map((venue, index) => (
-            <VenueCard key={venue._id} {...venue} index={index} />
-          ))}
-        </div>
+        {blocks.map((block) => {
+          if (block.kind === 'fixed' && block.fixedKey === 'venuesGrid') {
+            return (
+              <div key={block.id} className="relative z-10">
+                {venues.map((venue, index) => (
+                  <VenueCard key={venue._id} {...venue} index={index} />
+                ))}
+              </div>
+            )
+          }
+          if (block.kind === 'fixed') return null
+          return <FreeBlockRenderer key={block.id} block={block} />
+        })}
       </main>
       <AppFooter siteInfo={siteInfo} />
     </div>

@@ -5,14 +5,14 @@ import { ScheduleGrid } from '@/src/components/planning/ScheduleGrid'
 import RegistrationInfo from '@/src/components/planning/RegistrationInfo'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
-import BlockRenderer from '@/src/components/blocks/BlockRenderer'
+import FreeBlockRenderer from '@/src/components/page-blocks/FreeBlockRenderer'
 import type {
   SiteInfoContent,
   PageTextsContent,
   ScheduleEntryContent,
   RegistrationInfoContent,
 } from '@/src/lib/fallbackContent'
-import type { PageContent } from '@/src/lib/pageBuilderTypes'
+import type { ResolvedBlock } from '@/src/lib/content/pageBlocks'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
@@ -100,22 +100,12 @@ interface Props {
   pageTexts: PageTextsContent
   schedule: ScheduleEntryContent[]
   registrationInfo: RegistrationInfoContent
-  pageData: PageContent | null
+  blocks: ResolvedBlock[]
 }
 
-export default function PlanningContent({ siteInfo, pageTexts, schedule, registrationInfo, pageData }: Props) {
+export default function PlanningContent({ siteInfo, pageTexts, schedule, registrationInfo, blocks }: Props) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
-
-  if (pageData) {
-    return (
-      <div className="min-h-screen overflow-x-hidden">
-        <AppNavbar />
-        <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter siteInfo={siteInfo} />
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -138,9 +128,19 @@ export default function PlanningContent({ siteInfo, pageTexts, schedule, registr
           </motion.p>
         </div>
         <div className="relative z-10">
-          <ScheduleGrid schedule={schedule} />
-          <RegistrationInfo registrationInfo={registrationInfo} siteInfo={siteInfo} />
-          <SpecialFormulas />
+          {blocks.map((block) => {
+            if (block.kind === 'fixed' && block.fixedKey === 'scheduleGrid') {
+              return <ScheduleGrid key={block.id} schedule={schedule} />
+            }
+            if (block.kind === 'fixed' && block.fixedKey === 'registrationInfo') {
+              return <RegistrationInfo key={block.id} registrationInfo={registrationInfo} siteInfo={siteInfo} />
+            }
+            if (block.kind === 'fixed' && block.fixedKey === 'specialFormulas') {
+              return <SpecialFormulas key={block.id} />
+            }
+            if (block.kind === 'fixed') return null
+            return <FreeBlockRenderer key={block.id} block={block} />
+          })}
         </div>
       </main>
       <AppFooter siteInfo={siteInfo} />

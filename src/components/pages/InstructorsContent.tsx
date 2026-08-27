@@ -3,9 +3,9 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
-import BlockRenderer from '@/src/components/blocks/BlockRenderer'
+import FreeBlockRenderer from '@/src/components/page-blocks/FreeBlockRenderer'
 import type { InstructorContent, PageTextsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
-import type { PageContent } from '@/src/lib/pageBuilderTypes'
+import type { ResolvedBlock } from '@/src/lib/content/pageBlocks'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
@@ -68,22 +68,12 @@ interface Props {
   siteInfo: SiteInfoContent
   team: InstructorContent[]
   pageTexts: PageTextsContent
-  pageData: PageContent | null
+  blocks: ResolvedBlock[]
 }
 
-export default function InstructorsContent({ siteInfo, team, pageTexts, pageData }: Props) {
+export default function InstructorsContent({ siteInfo, team, pageTexts, blocks }: Props) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
-
-  if (pageData) {
-    return (
-      <div className="min-h-screen overflow-x-hidden">
-        <AppNavbar />
-        <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter siteInfo={siteInfo} />
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -101,10 +91,23 @@ export default function InstructorsContent({ siteInfo, team, pageTexts, pageData
             {pageTexts.instructorsSubtitle}
           </motion.p>
         </div>
-        <div className={`grid gap-6 relative z-10 ${team.length === 1 ? 'max-w-3xl' : 'md:grid-cols-2 lg:grid-cols-3'}`}>
-          {team.map((prof, index) => <InstructorCard key={prof._id} {...prof} index={index} />)}
-        </div>
-        <CompetitionSection />
+        {blocks.map((block) => {
+          if (block.kind === 'fixed' && block.fixedKey === 'instructorsGrid') {
+            return (
+              <div
+                key={block.id}
+                className={`grid gap-6 relative z-10 ${team.length === 1 ? 'max-w-3xl' : 'md:grid-cols-2 lg:grid-cols-3'}`}
+              >
+                {team.map((prof, index) => <InstructorCard key={prof._id} {...prof} index={index} />)}
+              </div>
+            )
+          }
+          if (block.kind === 'fixed' && block.fixedKey === 'competition') {
+            return <CompetitionSection key={block.id} />
+          }
+          if (block.kind === 'fixed') return null
+          return <FreeBlockRenderer key={block.id} block={block} />
+        })}
       </main>
       <AppFooter siteInfo={siteInfo} />
     </div>

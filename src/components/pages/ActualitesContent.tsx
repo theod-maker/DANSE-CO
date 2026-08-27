@@ -4,7 +4,9 @@ import { motion, useInView } from 'framer-motion'
 import { Music, Star, Trophy, Heart, Sparkles } from 'lucide-react'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
+import FreeBlockRenderer from '@/src/components/page-blocks/FreeBlockRenderer'
 import type { NewsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
+import type { ResolvedBlock } from '@/src/lib/content/pageBlocks'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
@@ -134,9 +136,10 @@ function EmptyState() {
 interface ActualitesContentProps {
   siteInfo: SiteInfoContent
   news: NewsContent[]
+  blocks: ResolvedBlock[]
 }
 
-export default function ActualitesContent({ siteInfo, news }: ActualitesContentProps) {
+export default function ActualitesContent({ siteInfo, news, blocks }: ActualitesContentProps) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
 
@@ -185,21 +188,33 @@ export default function ActualitesContent({ siteInfo, news }: ActualitesContentP
           </motion.p>
         </div>
 
-        <div className="relative z-10 rounded-3xl p-8 md:p-12 pt-12" style={{ background: 'rgba(107,92,168,0.04)', border: '1px solid rgba(107,92,168,0.08)' }}>
-          {news.length === 0 ? (
-            <EmptyState />
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 items-start">
-              {[0, 1, 2].map(col => (
-                <div key={col} className="flex flex-col gap-8 pt-4">
-                  {news.filter((_, i) => i % 3 === col).map((item, i) => (
-                    <PinnedCard key={item._id} item={item} index={col + i * 3} />
-                  ))}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+        {blocks.map((block) => {
+          if (block.kind === 'fixed' && block.fixedKey === 'newsGrid') {
+            return (
+              <div
+                key={block.id}
+                className="relative z-10 rounded-3xl p-8 md:p-12 pt-12"
+                style={{ background: 'rgba(107,92,168,0.04)', border: '1px solid rgba(107,92,168,0.08)' }}
+              >
+                {news.length === 0 ? (
+                  <EmptyState />
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 items-start">
+                    {[0, 1, 2].map(col => (
+                      <div key={col} className="flex flex-col gap-8 pt-4">
+                        {news.filter((_, i) => i % 3 === col).map((item, i) => (
+                          <PinnedCard key={item._id} item={item} index={col + i * 3} />
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          }
+          if (block.kind === 'fixed') return null
+          return <FreeBlockRenderer key={block.id} block={block} />
+        })}
       </main>
       <AppFooter siteInfo={siteInfo} />
     </div>

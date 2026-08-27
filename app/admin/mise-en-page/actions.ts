@@ -6,7 +6,7 @@ import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { HOMEPAGE_KEY } from '../../../src/lib/content/sections'
 import { revalidateContent } from '../_shared/revalidate-after-save'
 
-const PATH = '/admin/mise-en-page'
+const PATH = '/admin/mise-en-page/accueil'
 
 export interface SectionUpdate {
   key: string
@@ -34,5 +34,6 @@ export async function saveSectionLayout(updates: SectionUpdate[]): Promise<void>
   )
 
   revalidatePath(PATH)
+  revalidatePath('/')
   await revalidateContent('sections')
 }
