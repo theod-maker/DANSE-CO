@@ -23,6 +23,7 @@ const PAGES: NavEntry[] = [
   { label: 'Inscriptions', href: '/admin/inscriptions', available: true },
   { label: 'Textes des pages', href: '/admin/textes', available: true },
   { label: 'Informations du site', href: '/admin/informations', available: true },
+  { label: 'Référencement', href: '/admin/seo', available: true },
 ]
 
 const LAYOUT: NavEntry[] = [{ label: 'Mise en page', href: '/admin/mise-en-page', available: true }]
