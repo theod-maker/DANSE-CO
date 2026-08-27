@@ -1,10 +1,23 @@
 import type { Metadata } from 'next'
-export const metadata: Metadata = {
-  title: 'Actualités',
-  description: 'Actualités et événements de Dans&CO. Stages, compétitions, nouveautés de votre studio de danse à Saint-Michel-Chef-Chef.',
-}
-import { readNews, readSiteInfo, readPageBlocks } from '@/src/lib/content/readers'
+import { readNews, readSiteInfo, readPageBlocks, readPageSeo } from '@/src/lib/content/readers'
 import ActualitesContent from '@/src/components/pages/ActualitesContent'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await readPageSeo('actualites')
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.title,
+      description: seo.description,
+      images: [
+        seo.imageUrl
+          ? { url: seo.imageUrl }
+          : { url: '/og-image.jpg', width: 1200, height: 630, alt: 'Dans&CO — Studio de danse à Saint-Michel-Chef-Chef' },
+      ],
+    },
+  }
+}
 
 export default async function Actualites() {
   const [news, siteinfo, blocks] = await Promise.all([

@@ -1,16 +1,30 @@
 import type { Metadata } from 'next'
-export const metadata: Metadata = {
-  title: 'Planning des Cours',
-  description: 'Consultez le planning des cours de danse Dans&CO. Horaires, jours et salles pour tous les niveaux à Saint-Michel-Chef-Chef.',
-}
 import {
   readSiteInfo,
   readPageTexts,
   readSchedule,
   readRegistrationInfo,
   readPageBlocks,
+  readPageSeo,
 } from '@/src/lib/content/readers'
 import PlanningContent from '@/src/components/pages/PlanningContent'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await readPageSeo('planning')
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.title,
+      description: seo.description,
+      images: [
+        seo.imageUrl
+          ? { url: seo.imageUrl }
+          : { url: '/og-image.jpg', width: 1200, height: 630, alt: 'Dans&CO — Studio de danse à Saint-Michel-Chef-Chef' },
+      ],
+    },
+  }
+}
 
 export default async function Planning() {
   const [siteinfo, pagetexts, schedule, registrationInfo, blocks] = await Promise.all([

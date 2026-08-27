@@ -1,10 +1,23 @@
 import type { Metadata } from 'next'
-export const metadata: Metadata = {
-  title: 'Contact',
-  description: 'Contactez Dans&CO. Téléphone, email, adresse courrier. Nous répondons rapidement à toutes vos questions sur les cours de danse.',
-}
-import { readSiteInfo, readPageTexts, readVenues, readPageBlocks } from '@/src/lib/content/readers'
+import { readSiteInfo, readPageTexts, readVenues, readPageBlocks, readPageSeo } from '@/src/lib/content/readers'
 import ContactContent from '@/src/components/pages/ContactContent'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const seo = await readPageSeo('contact')
+  return {
+    title: seo.title,
+    description: seo.description,
+    openGraph: {
+      title: seo.title,
+      description: seo.description,
+      images: [
+        seo.imageUrl
+          ? { url: seo.imageUrl }
+          : { url: '/og-image.jpg', width: 1200, height: 630, alt: 'Dans&CO — Studio de danse à Saint-Michel-Chef-Chef' },
+      ],
+    },
+  }
+}
 
 export default async function Contact() {
   const [siteinfo, pagetexts, venues, blocks] = await Promise.all([
