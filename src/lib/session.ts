@@ -1,4 +1,10 @@
-export const SESSION_COOKIE_NAME = 'danseco_admin_session'
+const PRODUCTION_COOKIE_NAME = '__Host-danseco_admin_session'
+const DEVELOPMENT_COOKIE_NAME = 'danseco_admin_session'
+
+export function sessionCookieName(): string {
+  return process.env.NODE_ENV === 'production' ? PRODUCTION_COOKIE_NAME : DEVELOPMENT_COOKIE_NAME
+}
+
 export const SESSION_DURATION_SECONDS = 60 * 60 * 8
 
 interface SessionPayload {

@@ -5,7 +5,7 @@ import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
 import { hashPassword, validatePasswordChange, verifyPassword } from '../../../src/lib/password'
 import {
-  SESSION_COOKIE_NAME,
+  sessionCookieName,
   SESSION_DURATION_SECONDS,
   createSessionToken,
 } from '../../../src/lib/session'
@@ -55,9 +55,9 @@ export async function changePassword(
   })
 
   const cookieStore = await cookies()
-  cookieStore.set(SESSION_COOKIE_NAME, await createSessionToken(account.id), {
+  cookieStore.set(sessionCookieName(), await createSessionToken(account.id), {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: SESSION_DURATION_SECONDS,

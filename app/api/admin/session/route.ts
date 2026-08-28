@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { prisma } from '../../../../src/lib/db'
 import { hashPassword, verifyPassword } from '../../../../src/lib/password'
 import {
-  SESSION_COOKIE_NAME,
+  sessionCookieName,
   SESSION_DURATION_SECONDS,
   createSessionToken,
 } from '../../../../src/lib/session'
@@ -10,6 +10,7 @@ import {
 export const runtime = 'nodejs'
 
 const GENERIC_ERROR = 'Identifiant ou mot de passe incorrect'
+const RATE_LIMIT_ERROR = 'Trop de tentatives. Réessayez dans quelques minutes.'
 
 let decoyHashPromise: Promise<string> | null = null
 
@@ -18,7 +19,39 @@ function getDecoyHash(): Promise<string> {
   return decoyHashPromise
 }
 
+const MAX_LOGIN_ATTEMPTS = 5
+const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000
+
+interface RateLimitEntry {
+  count: number
+  resetAt: number
+}
+
+const loginAttemptsByIp = new Map<string, RateLimitEntry>()
+
+function clientIp(request: Request): string {
+  const forwardedFor = request.headers.get('x-forwarded-for')
+  return forwardedFor?.split(',')[0]?.trim() ?? 'unknown'
+}
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const entry = loginAttemptsByIp.get(ip)
+
+  if (!entry || entry.resetAt <= now) {
+    loginAttemptsByIp.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS })
+    return false
+  }
+
+  entry.count += 1
+  return entry.count > MAX_LOGIN_ATTEMPTS
+}
+
 export async function POST(request: Request) {
+  if (isRateLimited(clientIp(request))) {
+    return NextResponse.json({ error: RATE_LIMIT_ERROR }, { status: 429 })
+  }
+
   let username: unknown
   let password: unknown
 
@@ -52,9 +85,9 @@ export async function POST(request: Request) {
   })
 
   const response = NextResponse.json({ displayName: account.displayName })
-  response.cookies.set(SESSION_COOKIE_NAME, await createSessionToken(account.id), {
+  response.cookies.set(sessionCookieName(), await createSessionToken(account.id), {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: SESSION_DURATION_SECONDS,
@@ -65,9 +98,9 @@ export async function POST(request: Request) {
 
 export async function DELETE() {
   const response = NextResponse.json({ ok: true })
-  response.cookies.set(SESSION_COOKIE_NAME, '', {
+  response.cookies.set(sessionCookieName(), '', {
     httpOnly: true,
-    sameSite: 'lax',
+    sameSite: 'strict',
     secure: process.env.NODE_ENV === 'production',
     path: '/',
     maxAge: 0,
