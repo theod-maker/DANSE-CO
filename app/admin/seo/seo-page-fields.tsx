@@ -19,6 +19,10 @@ function previewTitle(page: SeoPageDefinition, title: string): string {
   return page.isHomePage ? base : `${base}${BRAND_SUFFIX}`
 }
 
+function titleAdvisory(page: SeoPageDefinition): number {
+  return page.isHomePage ? SEO_TITLE_ADVISORY : SEO_TITLE_ADVISORY - BRAND_SUFFIX.length
+}
+
 function CharacterCount({ length, advisory }: { length: number; advisory: number }) {
   const isOverAdvisory = length > advisory
   return (
@@ -53,7 +57,7 @@ export function SeoPageFields({ page, values, errors, mediaOptions }: SeoPageFie
             <label htmlFor={`${page.key}.title`} className="text-sm text-neutral-700">
               Titre <span className="text-neutral-400">(facultatif)</span>
             </label>
-            <CharacterCount length={title.length} advisory={SEO_TITLE_ADVISORY} />
+            <CharacterCount length={title.length} advisory={titleAdvisory(page)} />
           </div>
           <input
             id={`${page.key}.title`}
