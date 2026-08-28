@@ -4,7 +4,7 @@ import { SanityLive } from '@/sanity/lib/live'
 import VisualEditingWrapper from '@/src/components/layout/VisualEditingWrapper'
 import './globals.css'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://danse-co.vercel.app'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dansandco.fr'
 
 const jsonLd = {
   '@context': 'https://schema.org',
