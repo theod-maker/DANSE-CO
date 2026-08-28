@@ -12,6 +12,8 @@ const jsonLd = {
   name: 'Dans&CO',
   description: 'Studio de danse sportif à Saint-Michel-Chef-Chef. Cours de Lindy Hop, West Coast Swing, danses de salon et plus.',
   url: siteUrl,
+  logo: `${siteUrl}/icon.png`,
+  image: `${siteUrl}/og-image.jpg`,
   telephone: '',
   address: {
     '@type': 'PostalAddress',

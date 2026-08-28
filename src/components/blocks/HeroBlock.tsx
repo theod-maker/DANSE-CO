@@ -56,7 +56,7 @@ const HeroBlock: React.FC<HeroBlockType> = ({ tagline, title, description, image
       />
 
       <img
-        src={imageUrl || 'https://images.unsplash.com/photo-1586015555751-63bb77f4322a?w=1600&q=85'}
+        src={imageUrl || '/images/disciplines/danses-de-salon.jpeg'}
         alt="Danse"
         className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-15"
       />
