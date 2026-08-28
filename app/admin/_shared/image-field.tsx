@@ -12,6 +12,7 @@ interface ImageFieldProps {
   mediaOptions: MediaOption[]
   error?: string
   optional?: boolean
+  onChange?: (path: string) => void
 }
 
 export function ImageField({
@@ -21,10 +22,16 @@ export function ImageField({
   mediaOptions,
   error,
   optional = true,
+  onChange,
 }: ImageFieldProps) {
   const [path, setPath] = useState(defaultValue)
   const [isPickerOpen, setIsPickerOpen] = useState(false)
   const [isManualOpen, setIsManualOpen] = useState(false)
+
+  function applyPath(next: string) {
+    setPath(next)
+    onChange?.(next)
+  }
 
   return (
     <div>
@@ -55,7 +62,7 @@ export function ImageField({
         {path && (
           <button
             type="button"
-            onClick={() => setPath('')}
+            onClick={() => applyPath('')}
             className="text-sm text-neutral-500 underline underline-offset-4 hover:text-red-700"
           >
             Retirer
@@ -75,7 +82,7 @@ export function ImageField({
         <input
           type="text"
           value={path}
-          onChange={(event) => setPath(event.target.value)}
+          onChange={(event) => applyPath(event.target.value)}
           aria-label={`Adresse de ${label}`}
           placeholder="/images/photo.jpg ou https://…"
           className={`${FIELD_CLASSNAME} mt-2`}
@@ -93,7 +100,7 @@ export function ImageField({
       {isPickerOpen && (
         <MediaPicker
           options={mediaOptions}
-          onSelect={setPath}
+          onSelect={applyPath}
           onClose={() => setIsPickerOpen(false)}
         />
       )}

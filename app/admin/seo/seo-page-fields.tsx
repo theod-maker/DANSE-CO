@@ -6,6 +6,18 @@ import { ImageField } from '../_shared/image-field'
 import type { MediaOption } from '../medias/queries'
 import type { SeoPageDefinition, PageSeoFields } from '../../../src/lib/content/seoPages'
 import { SEO_TITLE_ADVISORY, SEO_DESCRIPTION_ADVISORY } from './validation'
+import { SeoPreview } from './seo-preview'
+
+const BRAND_SUFFIX = ' | Dans&CO'
+
+function resolved(value: string, fallback: string): string {
+  return value.trim() ? value.trim() : fallback
+}
+
+function previewTitle(page: SeoPageDefinition, title: string): string {
+  const base = resolved(title, page.defaults.title)
+  return page.isHomePage ? base : `${base}${BRAND_SUFFIX}`
+}
 
 function CharacterCount({ length, advisory }: { length: number; advisory: number }) {
   const isOverAdvisory = length > advisory
@@ -26,6 +38,7 @@ interface SeoPageFieldsProps {
 export function SeoPageFields({ page, values, errors, mediaOptions }: SeoPageFieldsProps) {
   const [title, setTitle] = useState(values.title)
   const [description, setDescription] = useState(values.description)
+  const [imageUrl, setImageUrl] = useState(values.imageUrl ?? '')
 
   return (
     <fieldset className="rounded-lg border border-neutral-200 p-5">
@@ -80,8 +93,16 @@ export function SeoPageFields({ page, values, errors, mediaOptions }: SeoPageFie
           mediaOptions={mediaOptions}
           error={errors?.imageUrl}
           optional
+          onChange={setImageUrl}
         />
       </div>
+
+      <SeoPreview
+        page={page}
+        title={previewTitle(page, title)}
+        description={resolved(description, page.defaults.description)}
+        imageUrl={resolved(imageUrl, page.defaults.imageUrl ?? '')}
+      />
     </fieldset>
   )
 }
