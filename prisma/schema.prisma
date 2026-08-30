@@ -237,6 +237,7 @@ model PageSection {
 model MediaAsset {
   id           String   @id @default(uuid())
   storedName   String   @unique
+  url          String   @default("")
   originalName String
   mimeType     String
   sizeBytes    Int

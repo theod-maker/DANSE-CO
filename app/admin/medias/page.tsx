@@ -1,7 +1,6 @@
 import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
-import { publicPathFor } from '../../../src/lib/mediaStorage'
 import { UploadForm } from './upload-form'
 import { MediaGrid } from './media-grid'
 
@@ -40,7 +39,7 @@ export default async function MediaPage() {
           entries={assets.map((asset) => ({
             id: asset.id,
             originalName: asset.originalName,
-            publicPath: publicPathFor(asset.storedName),
+            publicPath: asset.url,
             sizeBytes: asset.sizeBytes,
           }))}
         />

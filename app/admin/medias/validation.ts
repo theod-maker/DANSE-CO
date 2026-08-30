@@ -1,4 +1,4 @@
-export const MAXIMUM_FILE_BYTES = 5 * 1024 * 1024
+export const MAXIMUM_FILE_BYTES = 4 * 1024 * 1024
 
 export const ACCEPTED_MIME_TYPES = [
   'image/jpeg',

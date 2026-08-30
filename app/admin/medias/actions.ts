@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
-import { buildStoredName, deleteMediaFile, writeMediaFile } from '../../../src/lib/mediaStorage'
+import { buildStoredName, deleteMediaFile, uploadMediaFile } from '../../../src/lib/mediaStorage'
 import { validateUpload } from './validation'
 
 const PATH = '/admin/medias'
@@ -41,19 +41,20 @@ export async function uploadMedia(
 
   const storedName = buildStoredName(file.name, result.mimeType)
 
-  await writeMediaFile(storedName, bytes)
+  const url = await uploadMediaFile(storedName, bytes, result.mimeType)
 
   try {
     await prisma.mediaAsset.create({
       data: {
         storedName,
+        url,
         originalName: file.name,
         mimeType: result.mimeType,
         sizeBytes: file.size,
       },
     })
   } catch (error) {
-    await deleteMediaFile(storedName)
+    await deleteMediaFile(url)
     throw error
   }
 
@@ -72,7 +73,7 @@ export async function deleteMedia(formData: FormData): Promise<void> {
   if (!asset) return
 
   await prisma.mediaAsset.delete({ where: { id } })
-  await deleteMediaFile(asset.storedName)
+  await deleteMediaFile(asset.url)
 
   revalidatePath(PATH)
   redirect(PATH)

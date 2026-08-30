@@ -1,5 +1,4 @@
 import { prisma } from '../../../src/lib/db'
-import { publicPathFor } from '../../../src/lib/mediaStorage'
 
 export interface MediaOption {
   id: string
@@ -13,6 +12,6 @@ export async function listMediaOptions(): Promise<MediaOption[]> {
   return assets.map((asset) => ({
     id: asset.id,
     label: asset.originalName,
-    path: publicPathFor(asset.storedName),
+    path: asset.url,
   }))
 }
