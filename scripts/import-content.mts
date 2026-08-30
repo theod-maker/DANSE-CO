@@ -5,7 +5,7 @@ import { config } from 'dotenv'
 config({ path: '.env.local' })
 
 const { prisma } = await import('../src/lib/db.ts')
-const { buildStoredName, writeMediaFile, publicPathFor } = await import('../src/lib/mediaStorage.ts')
+const { buildStoredName, uploadMediaFile } = await import('../src/lib/mediaStorage.ts')
 const F = await import('../src/lib/fallbackContent.ts')
 
 const SINGLETON_ID = 'singleton'
@@ -87,7 +87,7 @@ async function importImages(): Promise<Map<string, string>> {
 
     const existing = await prisma.mediaAsset.findFirst({ where: { originalName } })
     if (existing) {
-      mapping.set(sourcePath, publicPathFor(existing.storedName))
+      mapping.set(sourcePath, existing.url)
       continue
     }
 
@@ -100,12 +100,12 @@ async function importImages(): Promise<Map<string, string>> {
     }
 
     const storedName = buildStoredName(originalName, mimeType)
-    await writeMediaFile(storedName, new Uint8Array(bytes))
+    const url = await uploadMediaFile(storedName, new Uint8Array(bytes), mimeType)
     await prisma.mediaAsset.create({
-      data: { storedName, originalName, mimeType, sizeBytes: bytes.length },
+      data: { storedName, url, originalName, mimeType, sizeBytes: bytes.length },
     })
 
-    mapping.set(sourcePath, publicPathFor(storedName))
+    mapping.set(sourcePath, url)
   }
 
   return mapping

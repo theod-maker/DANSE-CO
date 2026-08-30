@@ -72,8 +72,8 @@ export async function deleteMedia(formData: FormData): Promise<void> {
   const asset = await prisma.mediaAsset.findUnique({ where: { id } })
   if (!asset) return
 
-  await prisma.mediaAsset.delete({ where: { id } })
   await deleteMediaFile(asset.url)
+  await prisma.mediaAsset.delete({ where: { id } })
 
   revalidatePath(PATH)
   redirect(PATH)
