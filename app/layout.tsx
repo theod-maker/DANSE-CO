@@ -6,7 +6,7 @@ import { isPreviewEnabled } from '../src/lib/content/preview'
 import { PreviewBanner } from './preview-banner'
 import './globals.css'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://danse-co.vercel.app'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dansandco.fr'
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -14,6 +14,8 @@ const jsonLd = {
   name: 'Dans&CO',
   description: 'Studio de danse sportif à Saint-Michel-Chef-Chef. Cours de Lindy Hop, West Coast Swing, danses de salon et plus.',
   url: siteUrl,
+  logo: `${siteUrl}/icon.png`,
+  image: `${siteUrl}/og-image.jpg`,
   telephone: '',
   address: {
     '@type': 'PostalAddress',

@@ -75,19 +75,13 @@ function PinnedCard({ item, index }: { item: NewsContent; index: number }) {
     >
       <Pin />
       <div className="bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(24,16,46,0.12)] border border-white/60">
-        {item.imageUrl ? (
-          <div className="relative h-44 overflow-hidden">
-            <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover object-top" />
+        <div className={`relative h-36 overflow-hidden flex items-center justify-center ${theme.bg}`}>
+          {theme.accent}
+          <div className="flex flex-col items-center gap-2 relative z-10">
+            {theme.icon}
+            <span style={{ fontFamily: "'Instrument Serif', serif" }} className="text-sm text-[#6C5CA8]/30 italic tracking-wide">Dans'&Co</span>
           </div>
-        ) : (
-          <div className={`relative h-36 overflow-hidden flex items-center justify-center ${theme.bg}`}>
-            {theme.accent}
-            <div className="flex flex-col items-center gap-2 relative z-10">
-              {theme.icon}
-              <span style={{ fontFamily: "'Instrument Serif', serif" }} className="text-sm text-[#6C5CA8]/30 italic tracking-wide">Dans'&Co</span>
-            </div>
-          </div>
-        )}
+        </div>
         <div className="p-5 flex flex-col gap-2">
           <p className="text-[#6C5CA8] text-xs tracking-widest uppercase font-ui">{formatDate(item.date)}</p>
           <h2 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[#18102E] text-lg md:text-xl tracking-tight leading-snug">
@@ -105,11 +99,45 @@ function PinnedCard({ item, index }: { item: NewsContent; index: number }) {
   )
 }
 
+function FeaturedCard({ item }: { item: NewsContent }) {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, margin: '-40px' })
+
+  return (
+    <motion.article
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, ease: EASING }}
+      className="mb-8 bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-[0_8px_32px_rgba(24,16,46,0.12)] border border-white/60 flex flex-col sm:flex-row"
+    >
+      <div className="sm:w-2/5 bg-[#F5F0EA] flex items-center justify-center p-4">
+        <img src={item.imageUrl} alt={item.title} className="max-h-[420px] w-full object-contain" />
+      </div>
+      <div className="p-6 sm:w-3/5 flex flex-col justify-center gap-2">
+        <p className="text-[#6C5CA8] text-xs tracking-widest uppercase font-ui">{formatDate(item.date)}</p>
+        <h2 style={{ fontFamily: "'Instrument Serif', serif" }} className="text-[#18102E] text-xl md:text-2xl tracking-tight leading-snug">
+          {item.title}
+        </h2>
+        <p className="text-[#18102E]/55 text-sm leading-relaxed">{item.excerpt}</p>
+        {item.link && (
+          <a href={item.link} target="_blank" rel="noopener noreferrer" className="mt-2 self-start text-xs text-[#6C5CA8] border border-[#6C5CA8]/30 rounded-full px-4 py-1.5 hover:bg-[#6C5CA8]/10 transition-colors">
+            En savoir plus
+          </a>
+        )}
+      </div>
+    </motion.article>
+  )
+}
+
 const NewsSection: React.FC<Props> = ({ news }) => {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
 
   if (news.length === 0) return null
+
+  const featured = news.filter((item) => item.imageUrl)
+  const compact = news.filter((item) => !item.imageUrl)
 
   return (
     <section ref={ref} className="bg-[#F5F0EA] py-16 md:py-24 px-6 relative overflow-hidden">
@@ -140,15 +168,21 @@ const NewsSection: React.FC<Props> = ({ news }) => {
         </motion.div>
 
         <div className="rounded-3xl p-8 md:p-12 pt-12" style={{ background: 'rgba(107,92,168,0.04)', border: '1px solid rgba(107,92,168,0.08)' }}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 items-start">
-            {[0, 1, 2].map(col => (
-              <div key={col} className="flex flex-col gap-8 pt-4">
-                {news.filter((_, i) => i % 3 === col).map((item, i) => (
-                  <PinnedCard key={item._id} item={item} index={col + i * 3} />
-                ))}
-              </div>
-            ))}
-          </div>
+          {featured.map((item) => (
+            <FeaturedCard key={item._id} item={item} />
+          ))}
+
+          {compact.length > 0 && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 items-start">
+              {[0, 1, 2].map(col => (
+                <div key={col} className="flex flex-col gap-8 pt-4">
+                  {compact.filter((_, i) => i % 3 === col).map((item, i) => (
+                    <PinnedCard key={item._id} item={item} index={col + i * 3} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

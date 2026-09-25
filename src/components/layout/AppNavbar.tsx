@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const navLinks = [
   { label: 'Planning', href: '/planning' },
+  { label: 'Tarifs', href: '/pricing' },
   { label: 'Les membres', href: '/instructors' },
   { label: 'Actualités', href: '/actualites' },
   { label: 'Les danses', href: '/disciplines' },

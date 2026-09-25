@@ -1,12 +1,13 @@
 import type { MetadataRoute } from 'next'
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://danse-co.vercel.app'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dansandco.fr'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const pages = [
     { path: '/', priority: 1.0, changeFrequency: 'weekly' as const },
     { path: '/planning', priority: 0.9, changeFrequency: 'weekly' as const },
     { path: '/disciplines', priority: 0.8, changeFrequency: 'monthly' as const },
+    { path: '/pricing', priority: 0.8, changeFrequency: 'monthly' as const },
     { path: '/instructors', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/locations', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/contact', priority: 0.7, changeFrequency: 'monthly' as const },
