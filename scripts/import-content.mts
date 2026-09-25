@@ -60,6 +60,7 @@ function collectImagePaths(): string[] {
   for (const discipline of F.fallbackDisciplines) if (discipline.imageUrl) paths.add(discipline.imageUrl)
   for (const instructor of F.fallbackInstructors) if (instructor.photoUrl) paths.add(instructor.photoUrl)
   for (const venue of F.fallbackVenues) if (venue.imageUrl) paths.add(venue.imageUrl)
+  for (const news of F.fallbackNews) if (news.imageUrl) paths.add(news.imageUrl)
 
   const homepageImageKeys = [
     'heroImageUrl',
