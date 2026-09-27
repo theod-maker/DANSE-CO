@@ -88,7 +88,9 @@ function decodeEntities(value: string): string {
 
 function shareTags(html: string): string[] {
   const metaTags = [
-    ...html.matchAll(/<meta\s+(?:name|property)="(description|og:[^"]+|twitter:[^"]+)"\s+content="([^"]*)"/gi),
+    ...html.matchAll(
+      /<meta\s+(?:name|property)="(description|robots|keywords|og:[^"]+|twitter:[^"]+)"\s+content="([^"]*)"/gi
+    ),
   ].map((match) => `${match[1]} = ${decodeEntities(match[2])}`)
   const structuredData = [
     ...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi),
@@ -98,6 +100,22 @@ function shareTags(html: string): string[] {
 
 function linkTargets(html: string): string[] {
   return [...html.matchAll(/<a\s[^>]*href="([^"]*)"/gi)].map((match) => decodeEntities(match[1]))
+}
+
+function embeddedSources(html: string): string[] {
+  const images = [...html.matchAll(/<img[^>]+src="([^"]+)"/gi)].map(
+    (match) => `image ${imageFileName(decodeEntities(match[1]))}`
+  )
+  const frames = [...html.matchAll(/<iframe[^>]+src="([^"]+)"/gi)].map(
+    (match) => `iframe ${decodeEntities(match[1])}`
+  )
+  return [...images, ...frames]
+}
+
+function imageFileName(source: string): string {
+  const path = new URL(source, 'https://reference.invalid').pathname
+  const fileName = path.split('/').pop() ?? path
+  return fileName.replace(/-[0-9a-f]{8}(\.[a-z0-9]+)$/i, '$1').replace(/\.jpeg$/i, '.jpg')
 }
 
 function countOccurrences(values: string[]): Map<string, number> {
@@ -173,6 +191,14 @@ async function checkPublicPages(options: CliOptions): Promise<CheckResult[]> {
     if (options.referenceUrl) {
       const referenceResponse = await fetchPage(`${options.referenceUrl}${path}`)
       const referenceHtml = await referenceResponse.text()
+      if (referenceResponse.status !== 200) {
+        results.push({
+          name: `référence ${path}`,
+          isPassing: false,
+          detail: `la référence répond ${referenceResponse.status}, comparaison impossible`,
+        })
+        continue
+      }
       results.push(
         compareResult(
           `texte ${path}`,
@@ -180,7 +206,8 @@ async function checkPublicPages(options: CliOptions): Promise<CheckResult[]> {
           pageText.split('\n')
         ),
         compareResult(`titre et partage ${path}`, shareTags(referenceHtml), shareTags(html)),
-        compareResult(`liens ${path}`, linkTargets(referenceHtml), linkTargets(html))
+        compareResult(`liens ${path}`, linkTargets(referenceHtml), linkTargets(html)),
+        compareResult(`images et cartes ${path}`, embeddedSources(referenceHtml), embeddedSources(html))
       )
     }
   }
