@@ -232,12 +232,22 @@ async function expectRedirectToLogin(baseUrl: string, path: string): Promise<Che
 
 async function checkAdminProtection(baseUrl: string): Promise<CheckResult[]> {
   const loginPage = await fetchPage(`${baseUrl}/admin/login`)
+  const unknownInvitation = await fetchPage(`${baseUrl}/admin/invitation/${'A'.repeat(43)}`, 'manual')
+  const unknownInvitationText = await unknownInvitation.text()
   const removedDraftRoute = await fetchPage(`${baseUrl}/api/draft/enable?sanity-preview-secret=x`, 'manual')
   return [
     await expectRedirectToLogin(baseUrl, '/admin'),
     await expectRedirectToLogin(baseUrl, '/admin/actualites'),
     await expectRedirectToLogin(baseUrl, '/api/apercu/activer?path=/'),
     { name: '/admin/login accessible', isPassing: loginPage.status === 200, detail: `${loginPage.status}` },
+    {
+      name: 'lien d’invitation inconnu refusé',
+      isPassing:
+        unknownInvitation.status === 200 &&
+        unknownInvitationText.includes('plus valide') &&
+        !unknownInvitationText.includes('name="newPassword"'),
+      detail: `${unknownInvitation.status}`,
+    },
     {
       name: '/api/draft/enable supprimée',
       isPassing: removedDraftRoute.status === 404,
