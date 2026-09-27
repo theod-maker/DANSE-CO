@@ -1,7 +1,4 @@
 import type { Metadata } from 'next'
-import { draftMode } from 'next/headers'
-import { SanityLive } from '@/sanity/lib/live'
-import VisualEditingWrapper from '@/src/components/layout/VisualEditingWrapper'
 import { isPreviewEnabled } from '../src/lib/content/preview'
 import { PreviewBanner } from './preview-banner'
 import './globals.css'
@@ -64,7 +61,6 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { isEnabled: isDraftMode } = await draftMode()
   const isOurPreview = await isPreviewEnabled()
 
   return (
@@ -78,8 +74,6 @@ export default async function RootLayout({
       <body>
         {isOurPreview && <PreviewBanner />}
         {children}
-        <SanityLive />
-        {isDraftMode && !isOurPreview && <VisualEditingWrapper />}
       </body>
     </html>
   )
