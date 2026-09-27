@@ -138,7 +138,35 @@ async function publishNews(): Promise<number> {
   return count
 }
 
+const IS_FORCED = process.argv.includes('--force')
+
+async function countPublishedContent(): Promise<number> {
+  const published = { publishedAt: { not: null } }
+  const counts = await Promise.all([
+    prisma.homepage.count({ where: published }),
+    prisma.siteInfo.count({ where: published }),
+    prisma.pageTexts.count({ where: published }),
+    prisma.registrationInfo.count({ where: published }),
+    prisma.pricing.count({ where: published }),
+    prisma.instructor.count({ where: published }),
+    prisma.discipline.count({ where: published }),
+    prisma.venue.count({ where: published }),
+    prisma.scheduleEntry.count({ where: published }),
+    prisma.news.count({ where: published }),
+  ])
+  return counts.reduce((total, count) => total + count, 0)
+}
+
 console.log(`Rattrapage de publication — base : ${databaseHost()}`)
+
+const alreadyPublished = await countPublishedContent()
+if (alreadyPublished > 0 && !IS_FORCED) {
+  console.log(`\n${alreadyPublished} contenu(s) déjà publié(s) sur cette base.`)
+  console.log('Ce script publie la version en cours de TOUS les contenus, brouillons compris.')
+  console.log('Annulé. Relancer avec --force uniquement juste après un import, avant toute édition.')
+  await prisma.$disconnect()
+  process.exit(1)
+}
 
 console.log(`  homepage: ${(await publishHomepage()) ? 'publié' : 'absent, rien à publier'}`)
 console.log(`  siteInfo: ${(await publishSiteInfo()) ? 'publié' : 'absent, rien à publier'}`)

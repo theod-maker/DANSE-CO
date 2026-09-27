@@ -28,6 +28,10 @@ export const PAGE_BLOCK_PAGE_KEYS = [
 
 export type PageBlockPageKey = (typeof PAGE_BLOCK_PAGE_KEYS)[number]
 
+export function isPageBlockPageKey(value: string): value is PageBlockPageKey {
+  return (PAGE_BLOCK_PAGE_KEYS as readonly string[]).includes(value)
+}
+
 export function pageBlocksTag(pageKey: PageBlockPageKey): string {
   return `pageblocks-${pageKey}`
 }

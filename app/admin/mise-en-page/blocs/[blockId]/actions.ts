@@ -31,11 +31,25 @@ function requiredLink(raw: string): { value: string } | { error: string } {
   return { value: result.value }
 }
 
-function readImageUrls(formData: FormData): string[] {
-  return formData
+const MAXIMUM_IMAGES_PER_BLOCK = 30
+
+function readImageUrls(formData: FormData): { value: string[] } | { error: string } {
+  const entries = formData
     .getAll('imageUrls')
     .map((entry) => String(entry).trim())
     .filter((entry) => entry.length > 0)
+
+  if (entries.length > MAXIMUM_IMAGES_PER_BLOCK) {
+    return { error: `${MAXIMUM_IMAGES_PER_BLOCK} images maximum par bloc.` }
+  }
+
+  const imageUrls: string[] = []
+  for (const entry of entries) {
+    const result = optionalImagePath(entry)
+    if ('error' in result) return { error: result.error }
+    if (result.value) imageUrls.push(result.value)
+  }
+  return { value: imageUrls }
 }
 
 function parseContent(kind: FreeBlockKind, formData: FormData): FreeBlockContent | { error: string } {
@@ -63,7 +77,9 @@ function parseContent(kind: FreeBlockKind, formData: FormData): FreeBlockContent
     if ('error' in title) return { error: title.error }
     const columnsRaw = String(formData.get('columns') ?? '3')
     const columns = columnsRaw === '2' ? 2 : 3
-    return { title: title.value || null, imageUrls: readImageUrls(formData), columns }
+    const imageUrls = readImageUrls(formData)
+    if ('error' in imageUrls) return { error: imageUrls.error }
+    return { title: title.value || null, imageUrls: imageUrls.value, columns }
   }
 
   if (kind === 'cta') {
@@ -89,7 +105,9 @@ function parseContent(kind: FreeBlockKind, formData: FormData): FreeBlockContent
   if ('error' in label) return { error: label.error }
   const text = requiredText(String(formData.get('text') ?? ''), 'Le texte', MAXIMUM_LONG_TEXT)
   if ('error' in text) return { error: text.error }
-  return { year: year.value, label: label.value, text: text.value, imageUrls: readImageUrls(formData) }
+  const imageUrls = readImageUrls(formData)
+  if ('error' in imageUrls) return { error: imageUrls.error }
+  return { year: year.value, label: label.value, text: text.value, imageUrls: imageUrls.value }
 }
 
 export async function saveBlockContent(

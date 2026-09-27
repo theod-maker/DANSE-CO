@@ -12,11 +12,3 @@ export async function isPreviewEnabled(): Promise<boolean> {
 
   return (await getCurrentAdmin()) !== null
 }
-
-export function sanitizeInternalPath(rawPath: string | null): string {
-  if (!rawPath) return '/'
-  if (!rawPath.startsWith('/')) return '/'
-  if (rawPath.startsWith('//')) return '/'
-  if (rawPath.includes('://')) return '/'
-  return rawPath
-}

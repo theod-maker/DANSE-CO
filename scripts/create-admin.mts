@@ -61,7 +61,7 @@ async function main(): Promise<void> {
 
   const account = await prisma.adminUser.upsert({
     where: { username },
-    update: { passwordHash, displayName },
+    update: { passwordHash, displayName, passwordChangedAt: new Date() },
     create: { username, passwordHash, displayName },
   })
 

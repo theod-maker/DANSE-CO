@@ -100,6 +100,10 @@ export async function restoreHistoryEntry(entryId: string): Promise<RestoreResul
     return { ok: false, error: 'Rien à restaurer depuis une entrée de création.' }
   }
 
+  if (!Object.hasOwn(historyRegistry, entry.contentType)) {
+    return { ok: false, error: 'Cette entrée d’historique ne se restaure pas depuis cet écran.' }
+  }
+
   const contentType = entry.contentType as HistoryContentType
   const registryEntry = historyRegistry[contentType]
 

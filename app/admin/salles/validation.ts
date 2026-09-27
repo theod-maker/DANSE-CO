@@ -3,6 +3,7 @@ import {
   MAXIMUM_SHORT_TEXT,
   cleanStringList,
   optionalImagePath,
+  optionalMapEmbedUrl,
   optionalUrl,
   requiredText,
 } from '../_shared/validation'
@@ -51,7 +52,7 @@ export function validateVenueInput(raw: {
   const description = requiredText(raw.description, 'La description', MAXIMUM_LONG_TEXT)
   if ('error' in description) errors.description = description.error
 
-  const mapEmbedUrl = optionalUrl(raw.mapEmbedUrl)
+  const mapEmbedUrl = optionalMapEmbedUrl(raw.mapEmbedUrl)
   if ('error' in mapEmbedUrl) errors.mapEmbedUrl = mapEmbedUrl.error
 
   const googleMapsUrl = optionalUrl(raw.googleMapsUrl)

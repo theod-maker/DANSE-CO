@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 import { prisma } from '../../../src/lib/db'
 import { getCurrentAdmin } from '../../../src/lib/adminAuth'
-import { HOMEPAGE_KEY } from '../../../src/lib/content/sections'
+import { HOMEPAGE_KEY, HOMEPAGE_SECTIONS } from '../../../src/lib/content/sections'
 import { revalidateContent } from '../_shared/revalidate-after-save'
 
 const PATH = '/admin/mise-en-page/accueil'
@@ -16,7 +16,13 @@ export interface SectionUpdate {
 export async function saveSectionLayout(updates: SectionUpdate[]): Promise<void> {
   const account = await getCurrentAdmin()
   if (!account) return
-  if (updates.length === 0) return
+  if (!Array.isArray(updates) || updates.length === 0) return
+
+  const knownKeys = new Set(HOMEPAGE_SECTIONS.map((section) => section.key))
+  const isValid = updates.every(
+    (update) => knownKeys.has(update?.key) && typeof update.visible === 'boolean'
+  )
+  if (!isValid) return
 
   await prisma.$transaction(
     updates.map((update, index) =>

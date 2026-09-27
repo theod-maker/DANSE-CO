@@ -71,7 +71,7 @@ export function optionalImagePath(raw: string): { value: string | null } | { err
     return { value: trimmed }
   }
 
-  if (!isSafeUrl(trimmed)) {
+  if (!isSafeUrl(trimmed) || new URL(trimmed).protocol !== 'https:') {
     return {
       error:
         'Adresse invalide. Utilisez un chemin interne comme /images/photo.jpg, ou une adresse commençant par https://',
@@ -79,6 +79,19 @@ export function optionalImagePath(raw: string): { value: string | null } | { err
   }
 
   return { value: new URL(trimmed).href }
+}
+
+const MAP_EMBED_PREFIX = 'https://www.google.com/maps/embed'
+
+export function optionalMapEmbedUrl(raw: string): { value: string | null } | { error: string } {
+  const result = optionalUrl(raw)
+  if ('error' in result || !result.value) return result
+  if (!result.value.startsWith(MAP_EMBED_PREFIX)) {
+    return {
+      error: `Adresse de carte invalide. Collez le lien d'intégration Google Maps (${MAP_EMBED_PREFIX}…).`,
+    }
+  }
+  return result
 }
 
 export function cleanStringList(values: string[], maximumLength: number): string[] {

@@ -3,8 +3,12 @@
 import { revalidatePath, revalidateTag } from 'next/cache'
 import { prisma } from '../../../../../src/lib/db'
 import { getCurrentAdmin } from '../../../../../src/lib/adminAuth'
-import { pageBlocksTag, type PageBlockPageKey } from '../../../../../src/lib/content/revalidate'
-import type { FreeBlockKind } from '../../../../../src/lib/content/pageBlocks'
+import {
+  isPageBlockPageKey,
+  pageBlocksTag,
+  type PageBlockPageKey,
+} from '../../../../../src/lib/content/revalidate'
+import { isFreeBlockKind } from '../../../../../src/lib/content/pageBlocks'
 
 function pagePath(pageKey: PageBlockPageKey): string {
   return `/admin/mise-en-page/pages/${pageKey}`
@@ -30,11 +34,13 @@ function revalidatePageAndPublic(pageKey: PageBlockPageKey): void {
 export async function reorderBlocks(pageKey: PageBlockPageKey, orderedIds: string[]): Promise<void> {
   const account = await getCurrentAdmin()
   if (!account) return
-  if (orderedIds.length === 0) return
+  if (!isPageBlockPageKey(pageKey)) return
+  if (!Array.isArray(orderedIds) || orderedIds.length === 0) return
+  if (!orderedIds.every((id) => typeof id === 'string')) return
 
   await prisma.$transaction(
     orderedIds.map((id, index) =>
-      prisma.pageBlock.update({ where: { id }, data: { displayOrder: index } })
+      prisma.pageBlock.updateMany({ where: { id, pageKey }, data: { displayOrder: index } })
     )
   )
 
@@ -44,8 +50,12 @@ export async function reorderBlocks(pageKey: PageBlockPageKey, orderedIds: strin
 export async function toggleBlockVisibility(pageKey: PageBlockPageKey, blockId: string): Promise<void> {
   const account = await getCurrentAdmin()
   if (!account) return
+  if (!isPageBlockPageKey(pageKey) || typeof blockId !== 'string') return
 
-  const block = await prisma.pageBlock.findUnique({ where: { id: blockId }, select: { visible: true } })
+  const block = await prisma.pageBlock.findFirst({
+    where: { id: blockId, pageKey },
+    select: { visible: true },
+  })
   if (!block) return
 
   await prisma.pageBlock.update({ where: { id: blockId }, data: { visible: !block.visible } })
@@ -57,9 +67,9 @@ export async function addBlock(formData: FormData): Promise<void> {
   const account = await getCurrentAdmin()
   if (!account) return
 
-  const pageKey = String(formData.get('pageKey') ?? '') as PageBlockPageKey
-  const kind = String(formData.get('kind') ?? '') as FreeBlockKind
-  if (!pageKey || !kind) return
+  const pageKey = String(formData.get('pageKey') ?? '')
+  const kind = String(formData.get('kind') ?? '')
+  if (!isPageBlockPageKey(pageKey) || !isFreeBlockKind(kind)) return
 
   const last = await prisma.pageBlock.findFirst({
     where: { pageKey },
@@ -83,10 +93,10 @@ export async function deleteBlock(formData: FormData): Promise<void> {
   if (!account) return
 
   const blockId = String(formData.get('blockId') ?? '')
-  const pageKey = String(formData.get('pageKey') ?? '') as PageBlockPageKey
-  if (!blockId || !pageKey) return
+  const pageKey = String(formData.get('pageKey') ?? '')
+  if (!blockId || !isPageBlockPageKey(pageKey)) return
 
-  await prisma.pageBlock.deleteMany({ where: { id: blockId, kind: { not: 'fixed' } } })
+  await prisma.pageBlock.deleteMany({ where: { id: blockId, pageKey, kind: { not: 'fixed' } } })
 
   revalidatePageAndPublic(pageKey)
 }
