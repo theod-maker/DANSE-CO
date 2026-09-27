@@ -1,29 +1,16 @@
 import type { Metadata } from 'next'
+import { buildPageMetadata } from '@/src/lib/content/pageMetadata'
 import {
   readSiteInfo,
   readPageTexts,
   readSchedule,
   readRegistrationInfo,
   readPageBlocks,
-  readPageSeo,
 } from '@/src/lib/content/readers'
 import PlanningContent from '@/src/components/pages/PlanningContent'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await readPageSeo('planning')
-  return {
-    title: seo.title,
-    description: seo.description,
-    openGraph: {
-      title: seo.title,
-      description: seo.description,
-      images: [
-        seo.imageUrl
-          ? { url: seo.imageUrl }
-          : { url: '/og-image.jpg', width: 1200, height: 630, alt: 'Dans&CO — Studio de danse à Saint-Michel-Chef-Chef' },
-      ],
-    },
-  }
+  return buildPageMetadata('planning')
 }
 
 export default async function Planning() {
