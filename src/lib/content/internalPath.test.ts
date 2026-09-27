@@ -14,7 +14,17 @@ test('falls back to home for missing or relative values', () => {
 })
 
 test('rejects every known way to escape to another site', () => {
-  const escapes = ['//evil.example', '/\\evil.example', '/\t/evil.example', '/\n/evil.example']
+  const escapes = [
+    '//evil.example',
+    '/\\evil.example',
+    '/\t/evil.example',
+    '/\n/evil.example',
+    '/.//evil.example',
+    '/..//evil.example',
+    '/a/..//evil.example',
+    '/%2e//evil.example',
+    '/%2e%2e//evil.example',
+  ]
   for (const escape of escapes) {
     assert.equal(sanitizeInternalPath(escape), '/', JSON.stringify(escape))
   }

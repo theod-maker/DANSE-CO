@@ -60,7 +60,7 @@ export function optionalImagePath(raw: string): { value: string | null } | { err
     return { error: `Adresse trop longue (${MAXIMUM_URL_LENGTH} caractères maximum).` }
   }
 
-  if (trimmed.startsWith('//')) {
+  if (trimmed.startsWith('//') || trimmed.includes('\\')) {
     return { error: 'Adresse invalide. Un chemin interne commence par une seule barre oblique.' }
   }
 

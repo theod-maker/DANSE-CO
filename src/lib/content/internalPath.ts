@@ -6,5 +6,6 @@ export function sanitizeInternalPath(rawPath: string | null): string {
 
   const resolved = new URL(rawPath, INTERNAL_ORIGIN)
   if (resolved.origin !== INTERNAL_ORIGIN) return '/'
+  if (resolved.pathname.startsWith('//')) return '/'
   return `${resolved.pathname}${resolved.search}`
 }
