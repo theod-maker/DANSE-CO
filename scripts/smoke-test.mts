@@ -31,7 +31,10 @@ function parseArguments(): CliOptions {
   }
   const compareIndex = rest.indexOf('--compare')
   const referenceUrl = compareIndex >= 0 ? rest[compareIndex + 1] ?? null : null
-  return { baseUrl: baseUrl.replace(/\/$/, ''), referenceUrl: referenceUrl?.replace(/\/$/, '') ?? null }
+  return {
+    baseUrl: baseUrl.replace(/\/$/, ''),
+    referenceUrl: referenceUrl?.replace(/\/$/, '') ?? null,
+  }
 }
 
 function requestHeaders(): Record<string, string> {
@@ -74,16 +77,67 @@ function imageSources(html: string, pageUrl: string): string[] {
   return [...sources]
 }
 
-function firstDifference(expected: string, actual: string): string {
-  const expectedLines = expected.split('\n')
-  const actualLines = actual.split('\n')
-  const length = Math.max(expectedLines.length, actualLines.length)
-  for (let index = 0; index < length; index += 1) {
-    if (expectedLines[index] !== actualLines[index]) {
-      return `ligne ${index + 1} : attendu « ${expectedLines[index] ?? '(rien)'} », obtenu « ${actualLines[index] ?? '(rien)'} »`
-    }
+const MAXIMUM_REPORTED_DIFFERENCES = 8
+
+function decodeEntities(value: string): string {
+  return value
+    .replace(/&amp;/g, '&')
+    .replace(/&#x27;|&#39;/g, "'")
+    .replace(/&quot;/g, '"')
+}
+
+function shareTags(html: string): string[] {
+  const metaTags = [
+    ...html.matchAll(/<meta\s+(?:name|property)="(description|og:[^"]+|twitter:[^"]+)"\s+content="([^"]*)"/gi),
+  ].map((match) => `${match[1]} = ${decodeEntities(match[2])}`)
+  const structuredData = [
+    ...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi),
+  ].map((match) => `json-ld = ${match[1]}`)
+  return [`title = ${decodeEntities(pageTitle(html))}`, ...metaTags, ...structuredData].sort()
+}
+
+function linkTargets(html: string): string[] {
+  return [...html.matchAll(/<a\s[^>]*href="([^"]*)"/gi)].map((match) => decodeEntities(match[1]))
+}
+
+function countOccurrences(values: string[]): Map<string, number> {
+  const counts = new Map<string, number>()
+  for (const value of values) counts.set(value, (counts.get(value) ?? 0) + 1)
+  return counts
+}
+
+function listDifferences(expected: string[], actual: string[]): string[] {
+  const expectedCounts = countOccurrences(expected)
+  const actualCounts = countOccurrences(actual)
+  const differences: string[] = []
+
+  for (const [value, count] of expectedCounts) {
+    const missing = count - (actualCounts.get(value) ?? 0)
+    if (missing > 0) differences.push(`manquant « ${value} »`)
   }
-  return ''
+  for (const [value, count] of actualCounts) {
+    const extra = count - (expectedCounts.get(value) ?? 0)
+    if (extra > 0) differences.push(`en trop « ${value} »`)
+  }
+
+  if (differences.length === 0 && expected.join('\n') !== actual.join('\n')) {
+    differences.push('mêmes éléments, ordre différent')
+  }
+  return differences
+}
+
+function compareResult(name: string, expected: string[], actual: string[]): CheckResult {
+  const differences = listDifferences(expected, actual)
+  const shown = differences.slice(0, MAXIMUM_REPORTED_DIFFERENCES)
+  const hidden = differences.length - shown.length
+  return {
+    name,
+    isPassing: differences.length === 0,
+    detail:
+      differences.length === 0
+        ? 'identique'
+        : `${differences.length} différence(s)\n      - ${shown.join('\n      - ')}${hidden > 0 ? `\n      … et ${hidden} autre(s)` : ''}`,
+  }
 }
 
 async function checkPublicPages(options: CliOptions): Promise<CheckResult[]> {
@@ -119,15 +173,15 @@ async function checkPublicPages(options: CliOptions): Promise<CheckResult[]> {
     if (options.referenceUrl) {
       const referenceResponse = await fetchPage(`${options.referenceUrl}${path}`)
       const referenceHtml = await referenceResponse.text()
-      const difference =
-        pageTitle(referenceHtml) === pageTitle(html)
-          ? firstDifference(visibleText(referenceHtml), pageText)
-          : `titre : attendu « ${pageTitle(referenceHtml)} », obtenu « ${pageTitle(html)} »`
-      results.push({
-        name: `contenu ${path} identique à la référence`,
-        isPassing: difference === '',
-        detail: difference || 'identique',
-      })
+      results.push(
+        compareResult(
+          `texte ${path}`,
+          visibleText(referenceHtml).split('\n'),
+          pageText.split('\n')
+        ),
+        compareResult(`titre et partage ${path}`, shareTags(referenceHtml), shareTags(html)),
+        compareResult(`liens ${path}`, linkTargets(referenceHtml), linkTargets(html))
+      )
     }
   }
 
@@ -163,6 +217,22 @@ async function checkAdminProtection(baseUrl: string): Promise<CheckResult[]> {
       detail: `${removedDraftRoute.status}`,
     },
   ]
+}
+
+const REQUIRED_SECURITY_HEADERS = ['x-content-type-options', 'referrer-policy', 'x-frame-options']
+
+async function checkSecurityHeaders(baseUrl: string): Promise<CheckResult[]> {
+  const results: CheckResult[] = []
+  for (const path of ['/', '/admin/login']) {
+    const response = await fetchPage(`${baseUrl}${path}`, 'manual')
+    const missing = REQUIRED_SECURITY_HEADERS.filter((header) => !response.headers.has(header))
+    results.push({
+      name: `en-têtes de sécurité ${path}`,
+      isPassing: missing.length === 0,
+      detail: missing.length === 0 ? 'présents' : `absents : ${missing.join(', ')}`,
+    })
+  }
+  return results
 }
 
 async function checkAdminLogin(baseUrl: string): Promise<CheckResult[]> {
@@ -202,6 +272,7 @@ async function main(): Promise<void> {
   const results = [
     ...(await checkPublicPages(options)),
     ...(await checkAdminProtection(options.baseUrl)),
+    ...(await checkSecurityHeaders(options.baseUrl)),
     ...(await checkAdminLogin(options.baseUrl)),
   ]
 
