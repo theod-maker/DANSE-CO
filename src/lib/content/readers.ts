@@ -26,7 +26,8 @@ import { readWithFallback } from './source.ts'
 import { CONTENT_TAGS, type ContentTag } from './revalidate.ts'
 import { HOMEPAGE_KEY, defaultSections, resolveSections, type ResolvedSection } from './sections.ts'
 import { isPreviewEnabled } from './preview.ts'
-import { resolvePageBlocks, type ResolvedBlock } from './pageBlocks.ts'
+import { resolvePageBlocks, type PageBlockSource, type ResolvedBlock } from './pageBlocks.ts'
+import { defaultPageBlocks } from './defaultBlocks.ts'
 import { pageBlocksTag, type PageBlockPageKey } from './revalidate.ts'
 import { defaultSeoMap, type PageSeoFields } from './seoPages.ts'
 
@@ -551,21 +552,30 @@ export function readNews(): Promise<NewsContent[]> {
   }, fallbackNews)
 }
 
-export function readPageBlocks(pageKey: PageBlockPageKey): Promise<ResolvedBlock[]> {
+async function readStoredPageBlocks(
+  pageKey: PageBlockPageKey,
+  source: PageBlockSource
+): Promise<{ blocks: ResolvedBlock[] } | null> {
+  const blocks = await resolvePageBlocks(pageKey, source)
+  return blocks === null ? null : { blocks }
+}
+
+export async function readPageBlocks(pageKey: PageBlockPageKey): Promise<ResolvedBlock[]> {
   const readPublishedCached = unstable_cache(
-    () => resolvePageBlocks(pageKey, 'published'),
+    () => readStoredPageBlocks(pageKey, 'published'),
     [pageBlocksTag(pageKey)],
     { tags: [pageBlocksTag(pageKey)] }
   )
 
-  return readWithFallback(
+  const stored = await readWithFallback(
     `blocs de la page ${pageKey}`,
     async () => {
-      if (await isPreviewEnabled()) return resolvePageBlocks(pageKey, 'live')
+      if (await isPreviewEnabled()) return readStoredPageBlocks(pageKey, 'live')
       return readPublishedCached()
     },
-    []
+    { blocks: defaultPageBlocks(pageKey) }
   )
+  return stored.blocks
 }
 
 function resolvePageSeo(

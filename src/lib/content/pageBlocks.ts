@@ -18,7 +18,12 @@ const PUBLIC_PATH: Record<string, string> = {
   histoire: '/histoire',
 }
 
-export type FreeBlockKind = 'text' | 'image' | 'gallery' | 'cta' | 'timelineEvent'
+export const FREE_BLOCK_KINDS = ['text', 'image', 'gallery', 'cta', 'timelineEvent'] as const
+export type FreeBlockKind = (typeof FREE_BLOCK_KINDS)[number]
+
+export function isFreeBlockKind(value: string): value is FreeBlockKind {
+  return (FREE_BLOCK_KINDS as readonly string[]).includes(value)
+}
 export type BlockKind = 'fixed' | FreeBlockKind
 
 export interface TextBlockContent {
@@ -77,13 +82,15 @@ export type PageBlockSource = 'published' | 'live'
 export async function resolvePageBlocks(
   pageKey: string,
   source: PageBlockSource
-): Promise<ResolvedBlock[]> {
+): Promise<ResolvedBlock[] | null> {
   const rows = await prisma.pageBlock.findMany({
-    where: { pageKey, visible: true },
+    where: { pageKey },
     orderBy: { displayOrder: 'asc' },
   })
 
-  return rows.map((row): ResolvedBlock => {
+  if (rows.length === 0) return null
+
+  return rows.filter((row) => row.visible).map((row): ResolvedBlock => {
     if (row.kind === 'fixed') {
       return { id: row.id, kind: 'fixed', fixedKey: row.fixedKey as string }
     }
