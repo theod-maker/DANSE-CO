@@ -1,9 +1,9 @@
 'use client'
 
-import { useActionState, useRef } from 'react'
+import { useActionState, useRef, useState } from 'react'
 import { useFormStatus } from 'react-dom'
 import { uploadMedia, type UploadFormState } from './actions'
-import { ACCEPTED_MIME_TYPES, MAXIMUM_FILE_BYTES, formatBytes } from './validation'
+import { ACCEPTED_MIME_TYPES, MAXIMUM_FILE_BYTES, formatBytes, validateUpload } from './validation'
 
 const INITIAL_STATE: UploadFormState = { status: 'idle' }
 
@@ -24,11 +24,23 @@ function UploadButton() {
 export function UploadForm() {
   const [state, formAction] = useActionState(uploadMedia, INITIAL_STATE)
   const formRef = useRef<HTMLFormElement>(null)
+  const [sizeError, setSizeError] = useState<string | null>(null)
 
   return (
     <form
       ref={formRef}
       action={async (formData) => {
+        const file = formData.get('file')
+        if (file instanceof File && file.size > MAXIMUM_FILE_BYTES) {
+          const result = validateUpload({
+            sizeBytes: file.size,
+            declaredType: '',
+            bytes: new Uint8Array(),
+          })
+          setSizeError('error' in result ? result.error : null)
+          return
+        }
+        setSizeError(null)
         await formAction(formData)
         formRef.current?.reset()
       }}
@@ -49,13 +61,19 @@ export function UploadForm() {
         JPEG, PNG, WebP ou AVIF. {formatBytes(MAXIMUM_FILE_BYTES)} maximum.
       </p>
 
-      {state.status === 'error' && (
+      {sizeError && (
+        <p role="alert" className="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+          {sizeError}
+        </p>
+      )}
+
+      {!sizeError && state.status === 'error' && (
         <p role="alert" className="mt-3 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
           {state.message}
         </p>
       )}
 
-      {state.status === 'success' && (
+      {!sizeError && state.status === 'success' && (
         <p role="status" className="mt-3 rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-800">
           {state.message}
         </p>
