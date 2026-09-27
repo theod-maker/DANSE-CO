@@ -8,7 +8,9 @@ import {
   pageBlocksTag,
   type PageBlockPageKey,
 } from '../../../../../src/lib/content/revalidate'
+import type { Prisma } from '../../../../../src/generated/prisma/client'
 import { isFreeBlockKind } from '../../../../../src/lib/content/pageBlocks'
+import { defaultPageBlocks } from '../../../../../src/lib/content/defaultBlocks'
 
 function pagePath(pageKey: PageBlockPageKey): string {
   return `/admin/mise-en-page/pages/${pageKey}`
@@ -63,6 +65,28 @@ export async function toggleBlockVisibility(pageKey: PageBlockPageKey, blockId: 
   revalidatePageAndPublic(pageKey)
 }
 
+async function materializeDefaultBlocks(pageKey: PageBlockPageKey): Promise<void> {
+  const existing = await prisma.pageBlock.count({ where: { pageKey } })
+  if (existing > 0) return
+
+  const now = new Date()
+  await prisma.pageBlock.createMany({
+    data: defaultPageBlocks(pageKey).map((block, index) =>
+      block.kind === 'fixed'
+        ? { pageKey, kind: 'fixed', fixedKey: block.fixedKey, displayOrder: index, visible: true }
+        : {
+            pageKey,
+            kind: block.kind,
+            content: block.content as unknown as Prisma.InputJsonValue,
+            publishedSnapshot: block.content as unknown as Prisma.InputJsonValue,
+            publishedAt: now,
+            displayOrder: index,
+            visible: true,
+          }
+    ),
+  })
+}
+
 export async function addBlock(formData: FormData): Promise<void> {
   const account = await getCurrentAdmin()
   if (!account) return
@@ -70,6 +94,8 @@ export async function addBlock(formData: FormData): Promise<void> {
   const pageKey = String(formData.get('pageKey') ?? '')
   const kind = String(formData.get('kind') ?? '')
   if (!isPageBlockPageKey(pageKey) || !isFreeBlockKind(kind)) return
+
+  await materializeDefaultBlocks(pageKey)
 
   const last = await prisma.pageBlock.findFirst({
     where: { pageKey },

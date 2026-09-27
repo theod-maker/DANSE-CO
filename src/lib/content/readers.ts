@@ -563,7 +563,7 @@ async function readStoredPageBlocks(
 export async function readPageBlocks(pageKey: PageBlockPageKey): Promise<ResolvedBlock[]> {
   const readPublishedCached = unstable_cache(
     () => readStoredPageBlocks(pageKey, 'published'),
-    [pageBlocksTag(pageKey)],
+    [`${pageBlocksTag(pageKey)}-with-defaults`],
     { tags: [pageBlocksTag(pageKey)] }
   )
 
