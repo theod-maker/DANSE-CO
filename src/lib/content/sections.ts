@@ -4,14 +4,40 @@ export interface SectionDefinition {
   key: string
   label: string
   description: string
+  isVisibleByDefault: boolean
 }
 
 export const HOMEPAGE_SECTIONS: SectionDefinition[] = [
-  { key: 'about', label: 'Présentation', description: 'La phrase qui présente le studio' },
-  { key: 'philosophy', label: 'Philosophie', description: 'Votre histoire et votre engagement' },
-  { key: 'services', label: 'Nos cours', description: 'Ce que vous proposez, en deux cartes' },
-  { key: 'featuredVideo', label: 'Mise en avant', description: 'La vidéo et son texte' },
-  { key: 'news', label: 'Actualités', description: 'Les dernières annonces' },
+  {
+    key: 'about',
+    label: 'Présentation',
+    description: 'La phrase qui présente le studio',
+    isVisibleByDefault: false,
+  },
+  {
+    key: 'philosophy',
+    label: 'Philosophie',
+    description: 'Votre histoire et votre engagement',
+    isVisibleByDefault: false,
+  },
+  {
+    key: 'services',
+    label: 'Nos cours',
+    description: 'Ce que vous proposez, en deux cartes',
+    isVisibleByDefault: false,
+  },
+  {
+    key: 'featuredVideo',
+    label: 'Mise en avant',
+    description: 'La vidéo et son texte',
+    isVisibleByDefault: false,
+  },
+  {
+    key: 'news',
+    label: 'Actualités',
+    description: 'Les dernières annonces',
+    isVisibleByDefault: true,
+  },
 ]
 
 export const FIXED_SECTIONS = [
@@ -30,7 +56,7 @@ export function defaultSections(): ResolvedSection[] {
   return HOMEPAGE_SECTIONS.map((section) => ({
     key: section.key,
     label: section.label,
-    visible: true,
+    visible: section.isVisibleByDefault,
   }))
 }
 
@@ -46,7 +72,7 @@ export function resolveSections(
     return {
       key: section.key,
       label: section.label,
-      visible: entry ? entry.visible : true,
+      visible: entry ? entry.visible : section.isVisibleByDefault,
       order: entry ? entry.displayOrder : HOMEPAGE_SECTIONS.length,
     }
   })
