@@ -1,9 +1,23 @@
 import type { NextConfig } from 'next'
 import path from 'path'
 
+const SECURITY_HEADERS = [
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+  { key: 'X-Frame-Options', value: 'DENY' },
+]
+
 const config: NextConfig = {
   outputFileTracingRoot: path.join(__dirname),
   transpilePackages: ['sanity', '@sanity/vision'],
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '4.5mb',
+    },
+  },
+  async headers() {
+    return [{ source: '/:path*', headers: SECURITY_HEADERS }]
+  },
   webpack: (webpackConfig, { isServer }) => {
     if (!isServer) {
       webpackConfig.resolve.alias = {

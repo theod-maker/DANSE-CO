@@ -1,17 +1,26 @@
 import type { Metadata } from 'next'
-export const metadata: Metadata = {
-  title: 'Nos Salles',
-  description: 'Retrouvez Dans&CO au Canopus et à la salle Caraïbes à Saint-Michel-Chef-Chef. Adresses, cartes et accès.',
-}
-import { fallbackVenues, fallbackPageTexts } from '@/src/lib/fallbackContent'
+import { buildPageMetadata } from '@/src/lib/content/pageMetadata'
+import { readVenues, readPageTexts, readSiteInfo, readPageBlocks } from '@/src/lib/content/readers'
 import LocationsContent from '@/src/components/pages/LocationsContent'
 
+export async function generateMetadata(): Promise<Metadata> {
+  return buildPageMetadata('salles')
+}
+
 export default async function Locations() {
+  const [venues, pagetexts, siteinfo, blocks] = await Promise.all([
+    readVenues(),
+    readPageTexts(),
+    readSiteInfo(),
+    readPageBlocks('salles'),
+  ])
+
   return (
     <LocationsContent
-      venues={fallbackVenues}
-      pageTexts={fallbackPageTexts}
-      pageData={null}
+      siteInfo={siteinfo}
+      venues={venues}
+      pageTexts={pagetexts}
+      blocks={blocks}
     />
   )
 }

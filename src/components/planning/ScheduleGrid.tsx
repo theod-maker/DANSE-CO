@@ -1,14 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, MapPin } from 'lucide-react';
-import { fallbackSchedule } from '../../lib/fallbackContent';
+import { fallbackSchedule, type ScheduleEntryContent } from '../../lib/fallbackContent';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
 const DAY_ORDER = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche', 'Samedi (Stages)']
 
-function ScheduleGrid() {
-  const scheduleData = fallbackSchedule;
+function ScheduleGrid({ schedule = fallbackSchedule }: { schedule?: ScheduleEntryContent[] }) {
+  const scheduleData = schedule;
   const days = useMemo(
     () => [...new Set(scheduleData.map(c => c.day))].sort(
       (a, b) => DAY_ORDER.indexOf(a) - DAY_ORDER.indexOf(b)

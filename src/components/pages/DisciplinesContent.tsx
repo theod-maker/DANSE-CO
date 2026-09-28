@@ -4,9 +4,9 @@ import { motion, useInView } from 'framer-motion'
 import { Music, Zap, Heart, Star, Users, type LucideProps } from 'lucide-react'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
-import BlockRenderer from '@/src/components/blocks/BlockRenderer'
-import type { DisciplineContent, PageTextsContent } from '@/src/lib/fallbackContent'
-import type { PageContent } from '@/src/lib/pageBuilderTypes'
+import FreeBlockRenderer from '@/src/components/page-blocks/FreeBlockRenderer'
+import type { DisciplineContent, PageTextsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
+import type { ResolvedBlock } from '@/src/lib/content/pageBlocks'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
@@ -66,24 +66,15 @@ const DisciplineCard = ({ title, iconName, description, benefits, index }: Disci
 }
 
 interface Props {
+  siteInfo: SiteInfoContent
   disciplines: DisciplineContent[]
   pageTexts: PageTextsContent
-  pageData: PageContent | null
+  blocks: ResolvedBlock[]
 }
 
-export default function DisciplinesContent({ disciplines, pageTexts, pageData }: Props) {
+export default function DisciplinesContent({ siteInfo, disciplines, pageTexts, blocks }: Props) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
-
-  if (pageData) {
-    return (
-      <div className="min-h-screen overflow-x-hidden">
-        <AppNavbar />
-        <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter />
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -108,13 +99,21 @@ export default function DisciplinesContent({ disciplines, pageTexts, pageData }:
             {pageTexts.disciplinesSubtitle}
           </motion.p>
         </div>
-        <div className="grid md:grid-cols-2 gap-6 relative z-10">
-          {disciplines.map((item, index) => (
-            <DisciplineCard key={item._id} {...item} index={index} />
-          ))}
-        </div>
+        {blocks.map((block) => {
+          if (block.kind === 'fixed' && block.fixedKey === 'disciplinesGrid') {
+            return (
+              <div key={block.id} className="grid md:grid-cols-2 gap-6 relative z-10">
+                {disciplines.map((item, index) => (
+                  <DisciplineCard key={item._id} {...item} index={index} />
+                ))}
+              </div>
+            )
+          }
+          if (block.kind === 'fixed') return null
+          return <FreeBlockRenderer key={block.id} block={block} />
+        })}
       </main>
-      <AppFooter />
+      <AppFooter siteInfo={siteInfo} />
     </div>
   )
 }

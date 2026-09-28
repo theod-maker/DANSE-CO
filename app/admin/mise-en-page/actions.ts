@@ -1,0 +1,45 @@
+'use server'
+
+import { revalidatePath } from 'next/cache'
+import { prisma } from '../../../src/lib/db'
+import { getCurrentAdmin } from '../../../src/lib/adminAuth'
+import { HOMEPAGE_KEY, HOMEPAGE_SECTIONS } from '../../../src/lib/content/sections'
+import { revalidateContent } from '../_shared/revalidate-after-save'
+
+const PATH = '/admin/mise-en-page/accueil'
+
+export interface SectionUpdate {
+  key: string
+  visible: boolean
+}
+
+export async function saveSectionLayout(updates: SectionUpdate[]): Promise<void> {
+  const account = await getCurrentAdmin()
+  if (!account) return
+  if (!Array.isArray(updates) || updates.length === 0) return
+
+  const knownKeys = new Set(HOMEPAGE_SECTIONS.map((section) => section.key))
+  const isValid = updates.every(
+    (update) => knownKeys.has(update?.key) && typeof update.visible === 'boolean'
+  )
+  if (!isValid) return
+
+  await prisma.$transaction(
+    updates.map((update, index) =>
+      prisma.pageSection.upsert({
+        where: { pageKey_sectionKey: { pageKey: HOMEPAGE_KEY, sectionKey: update.key } },
+        update: { displayOrder: index, visible: update.visible },
+        create: {
+          pageKey: HOMEPAGE_KEY,
+          sectionKey: update.key,
+          displayOrder: index,
+          visible: update.visible,
+        },
+      })
+    )
+  )
+
+  revalidatePath(PATH)
+  revalidatePath('/')
+  await revalidateContent('sections')
+}

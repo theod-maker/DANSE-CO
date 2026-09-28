@@ -1,4 +1,4 @@
-https://danse-co.vercel.apphttps://danse-co.vercel.appimport { motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import styles from './Introduction.module.css';
 
 const Introduction = () => {

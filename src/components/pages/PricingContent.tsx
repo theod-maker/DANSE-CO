@@ -5,9 +5,9 @@ import { Check, Info } from 'lucide-react'
 import Link from 'next/link'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
-import BlockRenderer from '@/src/components/blocks/BlockRenderer'
-import type { PricingContent, PricingRowContent, PageTextsContent } from '@/src/lib/fallbackContent'
-import type { PageContent } from '@/src/lib/pageBuilderTypes'
+import FreeBlockRenderer from '@/src/components/page-blocks/FreeBlockRenderer'
+import type { PricingContent, PricingRowContent, PageTextsContent, SiteInfoContent } from '@/src/lib/fallbackContent'
+import type { ResolvedBlock } from '@/src/lib/content/pageBlocks'
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const
 
@@ -31,26 +31,17 @@ const PricingCard = ({ label, price, detail, highlight, index }: PricingRowConte
 }
 
 interface Props {
+  siteInfo: SiteInfoContent
   pricingData: PricingContent
   pageTexts: PageTextsContent
-  pageData: PageContent | null
+  blocks: ResolvedBlock[]
 }
 
-export default function PricingContent({ pricingData, pageTexts, pageData }: Props) {
+export default function PricingContent({ siteInfo, pricingData, pageTexts, blocks }: Props) {
   const headerRef = useRef(null)
   const headerInView = useInView(headerRef, { once: true })
   const infoRef = useRef(null)
   const infoInView = useInView(infoRef, { once: true, margin: '-60px' })
-
-  if (pageData) {
-    return (
-      <div className="min-h-screen overflow-x-hidden">
-        <AppNavbar />
-        <main className="pb-32"><BlockRenderer blocks={pageData.blocks} /></main>
-        <AppFooter />
-      </div>
-    )
-  }
 
   return (
     <div className="min-h-screen overflow-x-hidden">
@@ -66,27 +57,39 @@ export default function PricingContent({ pricingData, pageTexts, pageData }: Pro
           </h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={headerInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6, delay: 0.35, ease: EASING }} className="text-[#18102E]/50 text-base md:text-lg leading-relaxed max-w-xl">{pageTexts.pricingSubtitle}</motion.p>
         </div>
-        <div className="flex flex-col gap-4 mb-14 relative z-10">
-          {pricingData.rows.map((row, index) => <PricingCard key={index} {...row} index={index} />)}
-        </div>
-        <motion.div ref={infoRef} initial={{ opacity: 0, y: 30 }} animate={infoInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease: EASING }} className="bg-[#F5F0EA] rounded-3xl p-8 md:p-10 flex gap-6 relative z-10">
-          <div className="shrink-0 mt-1"><Info size={22} className="text-[#18102E]/40" /></div>
-          <div className="flex flex-col gap-3">
-            <h3 className="text-[#18102E] text-lg font-medium">À savoir</h3>
-            <ul className="flex flex-col gap-2.5">
-              {pricingData.infoItems.map((info, i) => (
-                <motion.li key={i} initial={{ opacity: 0, x: -16 }} animate={infoInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.5, delay: 0.1 + i * 0.09, ease: EASING }} className="flex items-start gap-3 text-[#18102E]/55 text-sm leading-relaxed">
-                  <Check size={14} className="shrink-0 mt-0.5 text-[#6C5CA8]/50" />{info}
-                </motion.li>
-              ))}
-            </ul>
-            <div className="pt-2">
-              <Link href="/contact" className="text-[#6C5CA8]/60 text-sm hover:text-[#6C5CA8] transition-colors underline underline-offset-4">Une question ? Contactez-nous →</Link>
-            </div>
-          </div>
-        </motion.div>
+        {blocks.map((block) => {
+          if (block.kind === 'fixed' && block.fixedKey === 'pricingRows') {
+            return (
+              <div key={block.id} className="flex flex-col gap-4 mb-14 relative z-10">
+                {pricingData.rows.map((row, index) => <PricingCard key={index} {...row} index={index} />)}
+              </div>
+            )
+          }
+          if (block.kind === 'fixed' && block.fixedKey === 'pricingInfo') {
+            return (
+              <motion.div key={block.id} ref={infoRef} initial={{ opacity: 0, y: 30 }} animate={infoInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.7, ease: EASING }} className="bg-[#F5F0EA] rounded-3xl p-8 md:p-10 flex gap-6 relative z-10">
+                <div className="shrink-0 mt-1"><Info size={22} className="text-[#18102E]/40" /></div>
+                <div className="flex flex-col gap-3">
+                  <h3 className="text-[#18102E] text-lg font-medium">À savoir</h3>
+                  <ul className="flex flex-col gap-2.5">
+                    {pricingData.infoItems.map((info, i) => (
+                      <motion.li key={i} initial={{ opacity: 0, x: -16 }} animate={infoInView ? { opacity: 1, x: 0 } : {}} transition={{ duration: 0.5, delay: 0.1 + i * 0.09, ease: EASING }} className="flex items-start gap-3 text-[#18102E]/55 text-sm leading-relaxed">
+                        <Check size={14} className="shrink-0 mt-0.5 text-[#6C5CA8]/50" />{info}
+                      </motion.li>
+                    ))}
+                  </ul>
+                  <div className="pt-2">
+                    <Link href="/contact" className="text-[#6C5CA8]/60 text-sm hover:text-[#6C5CA8] transition-colors underline underline-offset-4">Une question ? Contactez-nous →</Link>
+                  </div>
+                </div>
+              </motion.div>
+            )
+          }
+          if (block.kind === 'fixed') return null
+          return <FreeBlockRenderer key={block.id} block={block} />
+        })}
       </main>
-      <AppFooter />
+      <AppFooter siteInfo={siteInfo} />
     </div>
   )
 }

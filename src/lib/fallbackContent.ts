@@ -112,6 +112,7 @@ export interface PageTextsContent {
   contactSubtitle: string
   instructorsSubtitle: string
   pricingSubtitle: string
+  histoireSubtitle: string
 }
 
 export const fallbackHomepage: HomepageContent = {
@@ -280,6 +281,7 @@ export const fallbackPageTexts: PageTextsContent = {
   contactSubtitle: 'Une question sur nos cours, les inscriptions ou un événement ? Nous sommes là pour vous répondre.',
   instructorsSubtitle: 'Une équipe de passionnés pour vous accompagner dans votre apprentissage, quel que soit votre niveau.',
   pricingSubtitle: 'Une tarification simple et transparente. Les tarifs sont annuels et incluent l\'adhésion à l\'association.',
+  histoireSubtitle: 'De Besné à Saint-Michel-Chef-Chef, une passion qui traverse le temps.',
 }
 
 const rawNews: NewsContent[] = [

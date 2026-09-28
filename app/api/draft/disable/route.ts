@@ -1,10 +1,8 @@
 import { draftMode } from 'next/headers'
-import { NextResponse } from 'next/server'
+import { NextResponse, type NextRequest } from 'next/server'
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const draft = await draftMode()
   draft.disable()
-  return NextResponse.redirect(
-    new URL('/', process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:5247')
-  )
+  return NextResponse.redirect(new URL('/', request.url))
 }

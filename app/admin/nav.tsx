@@ -1,0 +1,99 @@
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+interface NavEntry {
+  label: string
+  href: string
+  available: boolean
+}
+
+const COLLECTIONS: NavEntry[] = [
+  { label: 'Actualités', href: '/admin/actualites', available: true },
+  { label: 'Planning', href: '/admin/planning', available: true },
+  { label: 'Disciplines', href: '/admin/disciplines', available: true },
+  { label: 'Professeurs', href: '/admin/professeurs', available: true },
+  { label: 'Salles', href: '/admin/salles', available: true },
+]
+
+const PAGES: NavEntry[] = [
+  { label: 'Accueil', href: '/admin/accueil', available: true },
+  { label: 'Tarifs', href: '/admin/tarifs', available: true },
+  { label: 'Inscriptions', href: '/admin/inscriptions', available: true },
+  { label: 'Textes des pages', href: '/admin/textes', available: true },
+  { label: 'Informations du site', href: '/admin/informations', available: true },
+  { label: 'Référencement', href: '/admin/seo', available: true },
+]
+
+const LAYOUT: NavEntry[] = [{ label: 'Mise en page', href: '/admin/mise-en-page', available: true }]
+
+const MEDIA: NavEntry[] = [{ label: 'Médias', href: '/admin/medias', available: true }]
+
+const ACCOUNT: NavEntry[] = [{ label: 'Mon compte', href: '/admin/compte', available: true }]
+
+function NavGroup({ title, entries, pathname }: { title: string; entries: NavEntry[]; pathname: string }) {
+  return (
+    <div className="mb-7">
+      <p className="mb-2 text-xs uppercase tracking-wider text-neutral-400">{title}</p>
+      <ul className="space-y-1">
+        {entries.map((entry) => {
+          const isActive = pathname === entry.href
+
+          if (!entry.available) {
+            return (
+              <li
+                key={entry.href}
+                className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-neutral-400"
+              >
+                <span>{entry.label}</span>
+                <span className="text-[11px] text-neutral-400">bientôt</span>
+              </li>
+            )
+          }
+
+          return (
+            <li key={entry.href}>
+              <Link
+                href={entry.href}
+                aria-current={isActive ? 'page' : undefined}
+                className={
+                  isActive
+                    ? 'block rounded-md bg-[#6C5CA8] px-3 py-2 text-sm text-white'
+                    : 'block rounded-md px-3 py-2 text-sm text-neutral-700 transition-colors hover:bg-[#6C5CA8]/10 hover:text-[#6C5CA8]'
+                }
+              >
+                {entry.label}
+              </Link>
+            </li>
+          )
+        })}
+      </ul>
+    </div>
+  )
+}
+
+export function AdminNav() {
+  const pathname = usePathname()
+
+  return (
+    <nav aria-label="Sections d'administration">
+      <Link
+        href="/admin"
+        className={
+          pathname === '/admin'
+            ? 'mb-7 block rounded-md bg-[#6C5CA8] px-3 py-2 text-sm text-white'
+            : 'mb-7 block rounded-md px-3 py-2 text-sm text-neutral-700 transition-colors hover:bg-[#6C5CA8]/10 hover:text-[#6C5CA8]'
+        }
+      >
+        Vue d&apos;ensemble
+      </Link>
+
+      <NavGroup title="Contenus" entries={COLLECTIONS} pathname={pathname} />
+      <NavGroup title="Pages" entries={PAGES} pathname={pathname} />
+      <NavGroup title="Mise en page" entries={LAYOUT} pathname={pathname} />
+      <NavGroup title="Médias" entries={MEDIA} pathname={pathname} />
+      <NavGroup title="Compte" entries={ACCOUNT} pathname={pathname} />
+    </nav>
+  )
+}

@@ -1,0 +1,71 @@
+import { redirect } from 'next/navigation'
+import { prisma } from '../../../src/lib/db'
+import { getCurrentAdmin } from '../../../src/lib/adminAuth'
+import { SINGLETON_ID } from '../_shared/singleton-id'
+import { HistoryLink } from '../_shared/history-link'
+import { PublishStatus } from '../_shared/publish-status'
+import { resolvePublishState } from '../_shared/resolve-publish-state'
+import { PreviewLink } from '../_shared/preview-link'
+import { SiteInfoForm } from './site-info-form'
+
+export const dynamic = 'force-dynamic'
+
+const EMPTY = {
+  phone: '',
+  email: '',
+  mailingAddress: '',
+  instagramUrl: '',
+  facebookUrl: '',
+  twitterUrl: '',
+  websiteUrl: '',
+  season: '',
+  footerTagline: '',
+}
+
+export default async function SiteInfoPage() {
+  const account = await getCurrentAdmin()
+  if (!account) redirect('/admin/login')
+
+  const siteInfo = await prisma.siteInfo.findUnique({ where: { id: SINGLETON_ID } })
+  const publishState = await resolvePublishState('siteInfo', SINGLETON_ID, siteInfo?.publishedAt ?? null)
+
+  return (
+    <div>
+      <div className="flex items-baseline justify-between">
+        <h1
+          className="text-3xl text-[#6C5CA8] tracking-tight"
+          style={{ fontFamily: "'Instrument Serif', serif" }}
+        >
+          Informations du site
+        </h1>
+        <div className="flex items-center gap-4">
+          <PublishStatus contentType="siteInfo" entityId={SINGLETON_ID} state={publishState} />
+          <HistoryLink contentType="siteInfo" entityId={SINGLETON_ID} />
+          <PreviewLink publicPath="/" />
+        </div>
+      </div>
+
+      <p className="mt-3 text-sm text-neutral-500">
+        Vos coordonnées et vos réseaux, affichés dans le pied de page et sur la page Contact.
+      </p>
+
+      <SiteInfoForm
+        initialValues={
+          siteInfo
+            ? {
+                phone: siteInfo.phone,
+                email: siteInfo.email,
+                mailingAddress: siteInfo.mailingAddress,
+                instagramUrl: siteInfo.instagramUrl,
+                facebookUrl: siteInfo.facebookUrl,
+                twitterUrl: siteInfo.twitterUrl,
+                websiteUrl: siteInfo.websiteUrl,
+                season: siteInfo.season,
+                footerTagline: siteInfo.footerTagline,
+              }
+            : EMPTY
+        }
+      />
+    </div>
+  )
+}

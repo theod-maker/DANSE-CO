@@ -4,15 +4,20 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "next dev --port 5247",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "node --test \"src/**/*.test.ts\""
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.1.0",
+    "@prisma/adapter-neon": "^7.9.1",
+    "@prisma/client": "^7.9.1",
     "@sanity/client": "^7.20.0",
     "@sanity/presentation": "^2.0.0",
     "@sanity/vision": "^5.19.0",
     "@sanity/visual-editing": "^5.4.3",
+    "@vercel/blob": "^2.8.0",
     "framer-motion": "^12.40.0",
     "groq": "^5.19.0",
     "lucide-react": "^1.7.0",
@@ -28,7 +33,9 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.27",
+    "dotenv": "^17.4.2",
     "postcss": "^8.5.8",
+    "prisma": "^7.9.1",
     "tailwindcss": "^4.2.2",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "^5.2.2"
