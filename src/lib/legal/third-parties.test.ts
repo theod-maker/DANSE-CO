@@ -21,3 +21,9 @@ test('every third party names at least one host, a purpose and a moment', () => 
     assert.ok(party.when.length > 0, party.id)
   }
 })
+
+test('Google Maps is only contacted after a click on the map', () => {
+  const maps = listThirdParties(true).find((party) => party.id === 'google-maps')
+  assert.ok(maps)
+  assert.ok(maps.when.startsWith('Seulement si vous cliquez'))
+})

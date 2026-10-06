@@ -18,7 +18,7 @@ const GOOGLE_MAPS: ThirdParty = {
   id: 'google-maps',
   hosts: ['www.google.com', 'maps.googleapis.com', 'maps.gstatic.com'],
   purpose: 'Cartes des salles de cours.',
-  when: 'Sur la page Contact et sur la page présentant les salles, au moment où la carte s’affiche.',
+  when: 'Seulement si vous cliquez sur « Afficher la carte », sur la page Contact ou sur la page présentant les salles.',
 }
 
 const VERCEL_BLOB: ThirdParty = {
