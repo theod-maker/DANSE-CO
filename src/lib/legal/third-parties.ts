@@ -5,7 +5,7 @@ export interface ThirdParty {
   when: string
 }
 
-export const FONTS_ARE_SELF_HOSTED = false
+export const FONTS_ARE_SELF_HOSTED = true
 
 const GOOGLE_FONTS: ThirdParty = {
   id: 'google-fonts',
