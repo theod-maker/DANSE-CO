@@ -26,6 +26,7 @@ export function ConsentBanner({ isDisabled }: { isDisabled: boolean }) {
   const [isReopened, setIsReopened] = useState(false)
   const openerRef = useRef<HTMLElement | null>(null)
   const firstChoiceRef = useRef<HTMLButtonElement>(null)
+  const bannerRef = useRef<HTMLElement>(null)
 
   const { isVisible, announcedChoice } = computeBannerState({
     isMeasurementActive: isMounted && !isDisabled && analytics.isMeasurementActive(pathname),
@@ -69,6 +70,26 @@ export function ConsentBanner({ isDisabled }: { isDisabled: boolean }) {
     [analytics]
   )
 
+  useEffect(() => {
+    const banner = bannerRef.current
+    if (!isVisible || !banner) {
+      return
+    }
+    const root = document.documentElement
+    const reserveSpace = (): void => {
+      root.style.setProperty('--consent-banner-height', `${Math.ceil(banner.getBoundingClientRect().height + 24)}px`)
+    }
+    root.dataset.consentOpen = 'oui'
+    reserveSpace()
+    const observer = new ResizeObserver(reserveSpace)
+    observer.observe(banner)
+    return () => {
+      observer.disconnect()
+      delete root.dataset.consentOpen
+      root.style.removeProperty('--consent-banner-height')
+    }
+  }, [isVisible])
+
   if (!isVisible) {
     return null
   }
@@ -81,7 +102,7 @@ export function ConsentBanner({ isDisabled }: { isDisabled: boolean }) {
         : undefined
 
   return (
-    <section className={styles.banner} role="region" aria-labelledby="consent-title">
+    <section ref={bannerRef} className={styles.banner} role="region" aria-labelledby="consent-title">
       <h2 id="consent-title" className={styles.title}>
         {CONSENT_COPY.title}
       </h2>
