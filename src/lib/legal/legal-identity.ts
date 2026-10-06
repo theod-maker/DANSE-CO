@@ -21,7 +21,20 @@ export const HOSTING_PROVIDER = {
   address: '440 N Barranca Ave #4133, Covina, CA 91723, États-Unis',
 } as const
 
-export const LEGAL_IDENTITY: Partial<LegalIdentity> = {}
+export const LEGAL_IDENTITY: Partial<LegalIdentity> = {
+  publisherName: 'Dans’&Co',
+  legalForm: 'association déclarée, régie par la loi du 1er juillet 1901',
+  registrationKind: 'RNA',
+  registrationNumber: 'W443004723',
+  headOfficeAddress: '17 rue du Chevecier, 44730 Saint-Michel-Chef-Chef',
+  contactEmail: 'dansandco@outlook.fr',
+  contactPhone: '06 17 09 93 49',
+  databaseHostName: 'Neon',
+  dataRegion: 'Londres, Royaume-Uni (AWS eu-west-2)',
+  contactRetention: '12 mois après votre dernier message',
+  formspreeTransferSafeguard: 'clauses contractuelles types, selon la documentation de Formspree',
+  analyticsRetentionMonths: 12,
+}
 
 const PROVISIONAL_TEXT = /à compléter|a completer|\btodo\b|\btbd\b|\bn\/a\b|^x+$|^\?+$/i
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
