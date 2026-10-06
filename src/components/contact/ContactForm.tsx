@@ -1,6 +1,7 @@
 import { useState, useRef, type FormEvent } from 'react';
 import { Send, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { getAnalytics } from '../../lib/analytics/browser';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -96,8 +97,10 @@ function ContactForm() {
         headers: { Accept: 'application/json' },
       });
       setStatus(response.ok ? 'success' : 'error');
+      getAnalytics().track(response.ok ? 'contact_submitted' : 'contact_failed');
     } catch {
       setStatus('error');
+      getAnalytics().track('contact_failed');
     }
   };
 

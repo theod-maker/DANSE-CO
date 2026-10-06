@@ -1,0 +1,141 @@
+import type { PostHogConfig } from 'posthog-js'
+import { readConsent, serializeConsent, type ConsentChoice } from './consent.ts'
+import { isAnalyticsHost, isEventAllowed, isExcludedPath } from './scope.ts'
+
+export const ANALYTICS_PROPERTY = 'dans-co'
+export const RELAY_HOST = 'https://t.theodelporte.fr'
+export const POSTHOG_UI_HOST = 'https://eu.posthog.com'
+
+export type AnalyticsEvent = 'contact_submitted' | 'contact_failed'
+
+export interface PostHogLike {
+  init(key: string, config: Partial<PostHogConfig>): unknown
+  register(properties: Record<string, string>): void
+  opt_in_capturing(): void
+  opt_out_capturing(): void
+  clear_opt_in_out_capturing(): void
+  reset(): void
+  capture(event: string, properties?: Record<string, string>): void
+}
+
+export interface AnalyticsDependencies {
+  key: string | undefined
+  allowPreview: boolean
+  getHostname: () => string
+  readCookie: () => string
+  writeCookie: (value: string) => void
+  onIdle: () => Promise<void>
+  loadPosthog: () => Promise<PostHogLike>
+  warn: (message: string) => void
+}
+
+export interface Analytics {
+  syncPath: (pathname: string) => void
+  grantConsent: () => void
+  denyConsent: () => void
+  getConsent: () => ConsentChoice | undefined
+  subscribeConsent: (listener: () => void) => () => void
+  track: (event: AnalyticsEvent, properties?: Record<string, string>) => void
+}
+
+export function buildInitConfig(
+  hasConsent: boolean,
+  allowPreview: boolean
+): Partial<PostHogConfig> {
+  return {
+    api_host: RELAY_HOST,
+    ui_host: POSTHOG_UI_HOST,
+    cookieless_mode: 'on_reject',
+    opt_out_capturing_by_default: !hasConsent,
+    persistence: 'localStorage+cookie',
+    capture_pageview: 'history_change',
+    capture_pageleave: true,
+    disable_session_recording: true,
+    before_send: (captureResult) => {
+      if (captureResult === null) {
+        return null
+      }
+      const currentUrl = captureResult.properties?.$current_url
+      return typeof currentUrl === 'string' && isEventAllowed(currentUrl, allowPreview)
+        ? captureResult
+        : null
+    },
+  }
+}
+
+export function createAnalytics(dependencies: AnalyticsDependencies): Analytics {
+  const listeners = new Set<() => void>()
+  let client: PostHogLike | undefined
+  let isLoading = false
+
+  const getConsent = (): ConsentChoice | undefined => readConsent(dependencies.readCookie())
+
+  const notify = (): void => {
+    for (const listener of listeners) {
+      listener()
+    }
+  }
+
+  const registerProperty = (posthog: PostHogLike): void => {
+    posthog.register({ property: ANALYTICS_PROPERTY })
+  }
+
+  const load = async (): Promise<void> => {
+    await dependencies.onIdle()
+    const posthog = await dependencies.loadPosthog()
+    const hasConsent = getConsent() === 'granted'
+    posthog.init(dependencies.key ?? '', buildInitConfig(hasConsent, dependencies.allowPreview))
+    registerProperty(posthog)
+    if (hasConsent) {
+      posthog.opt_in_capturing()
+    } else {
+      posthog.clear_opt_in_out_capturing()
+    }
+    client = posthog
+  }
+
+  const syncPath = (pathname: string): void => {
+    if (!dependencies.key || isLoading) {
+      return
+    }
+    if (!isAnalyticsHost(dependencies.getHostname(), dependencies.allowPreview)) {
+      return
+    }
+    if (isExcludedPath(pathname)) {
+      return
+    }
+    isLoading = true
+    load().catch((error: unknown) => {
+      dependencies.warn(`[analytics] mesure indisponible, le site continue sans elle (${String(error)})`)
+    })
+  }
+
+  const grantConsent = (): void => {
+    dependencies.writeCookie(serializeConsent('granted', dependencies.getHostname()))
+    if (client) {
+      client.reset()
+      registerProperty(client)
+      client.opt_in_capturing()
+    }
+    notify()
+  }
+
+  const denyConsent = (): void => {
+    dependencies.writeCookie(serializeConsent('denied', dependencies.getHostname()))
+    client?.opt_out_capturing()
+    notify()
+  }
+
+  const subscribeConsent = (listener: () => void): (() => void) => {
+    listeners.add(listener)
+    return () => {
+      listeners.delete(listener)
+    }
+  }
+
+  const track = (event: AnalyticsEvent, properties?: Record<string, string>): void => {
+    client?.capture(event, properties)
+  }
+
+  return { syncPath, grantConsent, denyConsent, getConsent, subscribeConsent, track }
+}

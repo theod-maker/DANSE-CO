@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { isPreviewEnabled } from '../src/lib/content/preview'
 import { PreviewBanner } from './preview-banner'
+import { AnalyticsProvider } from '../src/components/analytics/AnalyticsProvider'
 import './globals.css'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dansandco.fr'
@@ -72,6 +73,7 @@ export default async function RootLayout({
         />
       </head>
       <body>
+        <AnalyticsProvider isDisabled={isOurPreview} />
         {isOurPreview && <PreviewBanner />}
         {children}
       </body>
