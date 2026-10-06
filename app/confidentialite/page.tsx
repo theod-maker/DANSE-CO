@@ -85,9 +85,9 @@ export default async function Confidentialite() {
 
       <LegalSection title="Cookies et stockage local">
         <p>
-          Voici tout ce que ce site peut déposer sur votre appareil. Rien d’autre n’est déposé. Avant votre choix,
-          rien n’est déposé du tout ; si vous refusez, seuls restent le cookie de votre choix et le témoin technique
-          de ce refus.
+          Voici tout ce que ce site lui-même peut déposer sur votre appareil. Avant votre choix, rien n’est déposé ;
+          si vous refusez, seuls restent le cookie de votre choix et le témoin technique de ce refus. Si vous affichez
+          une carte, Google peut déposer ses propres cookies : ce site n’y a pas accès.
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-[0.9rem]">

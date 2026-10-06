@@ -9,13 +9,13 @@ function parse(url: string): URL | undefined {
   }
 }
 
-export function isGoogleMapsEmbedUrl(url: string): boolean {
+export function googleMapsEmbedHref(url: string): string | undefined {
   const parsed = parse(url)
   if (!parsed) {
-    return false
+    return undefined
   }
   const isEmbedPath = parsed.pathname === EMBED_PATH || parsed.pathname.startsWith(`${EMBED_PATH}/`)
-  return (
+  const isAllowed =
     parsed.protocol === 'https:' &&
     parsed.hostname === EMBED_HOST &&
     parsed.port === '' &&
@@ -23,5 +23,9 @@ export function isGoogleMapsEmbedUrl(url: string): boolean {
     parsed.password === '' &&
     isEmbedPath &&
     !parsed.pathname.includes('..')
-  )
+  return isAllowed ? parsed.href : undefined
+}
+
+export function isGoogleMapsEmbedUrl(url: string): boolean {
+  return googleMapsEmbedHref(url) !== undefined
 }

@@ -1,6 +1,6 @@
 import { test } from 'node:test'
 import assert from 'node:assert/strict'
-import { isGoogleMapsEmbedUrl } from './map-embed.ts'
+import { googleMapsEmbedHref, isGoogleMapsEmbedUrl } from './map-embed.ts'
 import { fallbackVenues } from '../fallbackContent.ts'
 
 test('accepts the Google Maps embed addresses used by the site', () => {
@@ -36,4 +36,14 @@ test('refuses every other host, scheme or path', () => {
 test('refuses a path that only looks like the embed path after normalization', () => {
   assert.equal(isGoogleMapsEmbedUrl('https://www.google.com/maps/../evil/embed'), false)
   assert.equal(isGoogleMapsEmbedUrl('https://www.google.com/maps/embed/../../evil'), false)
+})
+
+test('returns the normalized address that the browser will load, never the raw string', () => {
+  assert.equal(
+    googleMapsEmbedHref('HTTPS://WWW.GOOGLE.COM:443/maps/embed?pb=!1m18'),
+    'https://www.google.com/maps/embed?pb=!1m18'
+  )
+  assert.equal(googleMapsEmbedHref('https://www.google.com/maps/embed?pb=a b'), 'https://www.google.com/maps/embed?pb=a%20b')
+  assert.equal(googleMapsEmbedHref('https://evil.com/maps/embed'), undefined)
+  assert.equal(googleMapsEmbedHref(''), undefined)
 })

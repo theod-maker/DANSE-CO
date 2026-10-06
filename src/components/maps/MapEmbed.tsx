@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { isGoogleMapsEmbedUrl } from '../../lib/maps/map-embed.ts'
+import { googleMapsEmbedHref } from '../../lib/maps/map-embed.ts'
 
 interface MapEmbedProps {
   embedUrl: string
@@ -12,7 +12,7 @@ interface MapEmbedProps {
 export function MapEmbed({ embedUrl, title, height }: MapEmbedProps) {
   const [isRequested, setIsRequested] = useState(false)
   const frameRef = useRef<HTMLIFrameElement>(null)
-  const canEmbed = isGoogleMapsEmbedUrl(embedUrl)
+  const embedHref = googleMapsEmbedHref(embedUrl)
 
   useEffect(() => {
     if (isRequested) {
@@ -20,17 +20,16 @@ export function MapEmbed({ embedUrl, title, height }: MapEmbedProps) {
     }
   }, [isRequested])
 
-  if (isRequested && canEmbed) {
+  if (isRequested && embedHref) {
     return (
       <iframe
         ref={frameRef}
-        src={embedUrl}
+        src={embedHref}
         width="100%"
         height={height}
         style={{ border: 0 }}
         allowFullScreen
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
+        referrerPolicy="strict-origin-when-cross-origin"
         title={`Carte ${title}`}
       />
     )
@@ -41,10 +40,10 @@ export function MapEmbed({ embedUrl, title, height }: MapEmbedProps) {
       style={{ height }}
       className="flex flex-col items-center justify-center gap-3 bg-[#EDEAF6]/60 px-5 py-4 text-center"
     >
-      {canEmbed && (
+      {embedHref ? (
         <>
           <p className="text-[#18102E]/70 text-sm max-w-xs">
-            En affichant la carte, vous chargez un contenu de Google, qui reçoit votre adresse IP.
+            En affichant la carte, vous chargez un contenu de Google, qui reçoit votre adresse IP et peut déposer ses propres cookies.
           </p>
           <button
             type="button"
@@ -54,6 +53,8 @@ export function MapEmbed({ embedUrl, title, height }: MapEmbedProps) {
             Afficher la carte
           </button>
         </>
+      ) : (
+        <p className="text-[#18102E]/70 text-sm max-w-xs">La carte n’est pas disponible pour le moment.</p>
       )}
     </div>
   )

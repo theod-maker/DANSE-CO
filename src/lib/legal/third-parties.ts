@@ -16,7 +16,7 @@ const GOOGLE_FONTS: ThirdParty = {
 
 const GOOGLE_MAPS: ThirdParty = {
   id: 'google-maps',
-  hosts: ['www.google.com', 'maps.googleapis.com', 'maps.gstatic.com'],
+  hosts: ['www.google.com', 'maps.googleapis.com', 'maps.gstatic.com', 'fonts.googleapis.com', 'fonts.gstatic.com'],
   purpose: 'Cartes des salles de cours.',
   when: 'Seulement si vous cliquez sur « Afficher la carte », sur la page Contact ou sur la page présentant les salles.',
 }
