@@ -1,0 +1,89 @@
+.banner {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 60;
+  width: min(420px, calc(100vw - 24px));
+  box-sizing: border-box;
+  padding: 20px 22px 18px;
+  background: var(--ivory);
+  color: var(--plum);
+  border: 1px solid var(--divider);
+  border-radius: 20px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.95) inset,
+    0 2px 16px rgba(108, 92, 168, 0.1),
+    0 12px 40px rgba(24, 16, 46, 0.14);
+  font-family: var(--font-ui);
+}
+
+.title {
+  margin: 0 0 6px;
+  font-family: var(--font-instrument);
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.status {
+  margin: 0 0 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--violet);
+}
+
+.body {
+  margin: 0 0 14px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.choice {
+  flex: 1 1 0;
+  min-height: 44px;
+  padding: 0 16px;
+  background: var(--violet-light);
+  color: var(--plum);
+  border: 1px solid var(--violet);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.choice:hover {
+  background: var(--violet);
+  color: var(--ivory);
+}
+
+.choice:focus-visible,
+.link:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+
+.link {
+  display: inline-block;
+  padding: 10px 0;
+  color: var(--violet);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .banner {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+    padding: 16px 16px 12px;
+  }
+}

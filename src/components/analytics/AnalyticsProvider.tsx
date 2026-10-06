@@ -8,9 +8,9 @@ export function AnalyticsProvider({ isDisabled }: { isDisabled: boolean }) {
   const pathname = usePathname()
 
   useEffect(() => {
-    if (!isDisabled) {
-      getAnalytics().syncPath(pathname)
-    }
+    const analytics = getAnalytics()
+    analytics.setDisabled(isDisabled)
+    analytics.syncPath(pathname)
   }, [isDisabled, pathname])
 
   return null

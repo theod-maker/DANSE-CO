@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link';
 import { fallbackSiteInfo, type SiteInfoContent } from '../../lib/fallbackContent';
+import { ConsentPreferencesButton } from '../analytics/ConsentPreferencesButton';
 
 const InstagramIcon = ({ size = 16 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -39,6 +40,7 @@ const AppFooter = ({ siteInfo = fallbackSiteInfo }: { siteInfo?: SiteInfoContent
           <Link href="/disciplines" className="hover:text-[#6C5CA8] transition-colors">Les danses</Link>
           <Link href="/histoire" className="hover:text-[#6C5CA8] transition-colors">L'histoire</Link>
           <Link href="/contact" className="hover:text-[#6C5CA8] transition-colors">Contact</Link>
+          <ConsentPreferencesButton />
         </div>
 
         <div className="flex gap-3">

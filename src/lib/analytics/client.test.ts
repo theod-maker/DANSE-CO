@@ -249,3 +249,33 @@ test('survives a loading failure with a warning that carries no event data', asy
   await settle()
   assert.equal(warnings.length, 1)
 })
+
+test('is active only on a public path of an allowed host with a key and not disabled', () => {
+  const analytics = createAnalytics(createHarness().dependencies)
+  assert.equal(analytics.isMeasurementActive('/planning'), true)
+  assert.equal(analytics.isMeasurementActive('/admin/login'), false)
+  assert.equal(analytics.isMeasurementActive('/studio'), false)
+  const withoutKey = createAnalytics(createHarness({ key: undefined }).dependencies)
+  assert.equal(withoutKey.isMeasurementActive('/planning'), false)
+  const wrongHost = createAnalytics(createHarness({ getHostname: () => 'example.com' }).dependencies)
+  assert.equal(wrongHost.isMeasurementActive('/planning'), false)
+})
+
+test('setDisabled turns measurement off, blocks loading and notifies once per change', async () => {
+  const harness = createHarness()
+  const analytics = createAnalytics(harness.dependencies)
+  let notifications = 0
+  analytics.subscribeConsent(() => {
+    notifications += 1
+  })
+  analytics.setDisabled(true)
+  analytics.setDisabled(true)
+  assert.equal(notifications, 1)
+  assert.equal(analytics.isMeasurementActive('/planning'), false)
+  analytics.syncPath('/planning')
+  await settle()
+  assert.equal(harness.loadCount.value, 0)
+  analytics.setDisabled(false)
+  assert.equal(notifications, 2)
+  assert.equal(analytics.isMeasurementActive('/planning'), true)
+})

@@ -35,6 +35,8 @@ export interface Analytics {
   denyConsent: () => void
   getConsent: () => ConsentChoice | undefined
   subscribeConsent: (listener: () => void) => () => void
+  isMeasurementActive: (pathname: string) => boolean
+  setDisabled: (isDisabled: boolean) => void
   track: (event: AnalyticsEvent, properties?: Record<string, string>) => void
 }
 
@@ -67,6 +69,7 @@ export function createAnalytics(dependencies: AnalyticsDependencies): Analytics 
   const listeners = new Set<() => void>()
   let client: PostHogLike | undefined
   let isLoading = false
+  let isDisabled = false
 
   const getConsent = (): ConsentChoice | undefined => readConsent(dependencies.readCookie())
 
@@ -94,14 +97,22 @@ export function createAnalytics(dependencies: AnalyticsDependencies): Analytics 
     client = posthog
   }
 
+  const isMeasurementActive = (pathname: string): boolean =>
+    !isDisabled &&
+    Boolean(dependencies.key) &&
+    isAnalyticsHost(dependencies.getHostname(), dependencies.allowPreview) &&
+    !isExcludedPath(pathname)
+
+  const setDisabled = (nextIsDisabled: boolean): void => {
+    if (nextIsDisabled === isDisabled) {
+      return
+    }
+    isDisabled = nextIsDisabled
+    notify()
+  }
+
   const syncPath = (pathname: string): void => {
-    if (!dependencies.key || isLoading) {
-      return
-    }
-    if (!isAnalyticsHost(dependencies.getHostname(), dependencies.allowPreview)) {
-      return
-    }
-    if (isExcludedPath(pathname)) {
+    if (isLoading || !isMeasurementActive(pathname)) {
       return
     }
     isLoading = true
@@ -137,5 +148,14 @@ export function createAnalytics(dependencies: AnalyticsDependencies): Analytics 
     client?.capture(event, properties)
   }
 
-  return { syncPath, grantConsent, denyConsent, getConsent, subscribeConsent, track }
+  return {
+    syncPath,
+    grantConsent,
+    denyConsent,
+    getConsent,
+    subscribeConsent,
+    isMeasurementActive,
+    setDisabled,
+    track,
+  }
 }
