@@ -63,7 +63,7 @@ export function ConsentBanner({ isDisabled }: { isDisabled: boolean }) {
         if (!target.hasAttribute('tabindex') && target.tagName === 'H1') {
           target.setAttribute('tabindex', '-1')
         }
-        target.focus()
+        target.focus({ preventScroll: true })
       }
     },
     [analytics]

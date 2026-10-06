@@ -32,7 +32,7 @@ test('reports every field of an empty identity', () => {
 })
 
 test('rejects blank and provisional text', () => {
-  for (const value of ['', '   ', 'à compléter', 'A COMPLETER', 'TODO', 'tbd', 'xxx', '???']) {
+  for (const value of ['', '   ', 'à compléter', 'A COMPLETER', 'À compléter (SIRET)', 'TODO', 'tbd', 'n/a', 'xxx', '???']) {
     assert.deepEqual(findMissingLegalFields({ ...COMPLETE, publisherName: value }), ['publisherName'], value)
   }
 })

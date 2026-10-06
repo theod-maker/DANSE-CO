@@ -2,6 +2,9 @@
   "name": "danse-and-co",
   "private": true,
   "version": "1.0.0",
+  "engines": {
+    "node": ">=22.18"
+  },
   "scripts": {
     "dev": "next dev --port 5247",
     "build": "node scripts/check-legal-identity.mts && prisma generate && next build",

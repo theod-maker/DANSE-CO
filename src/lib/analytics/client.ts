@@ -1,5 +1,6 @@
 import type { PostHogConfig } from 'posthog-js'
 import { readConsent, serializeConsent, type ConsentChoice } from './consent.ts'
+import { isPublicPosthogKey } from './public-key.ts'
 import { isAnalyticsHost, isEventAllowed, isExcludedPath } from './scope.ts'
 
 export const ANALYTICS_PROPERTY = 'dans-co'
@@ -26,6 +27,7 @@ export interface AnalyticsDependencies {
   writeCookie: (value: string) => void
   onIdle: () => Promise<void>
   loadPosthog: () => Promise<PostHogLike>
+  purgeStaleState: () => void
   warn: (message: string) => void
 }
 
@@ -40,9 +42,12 @@ export interface Analytics {
   track: (event: AnalyticsEvent, properties?: Record<string, string>) => void
 }
 
+const EVENTS_WITHOUT_CONSENT: readonly string[] = ['$pageview', '$pageleave']
+
 export function buildInitConfig(
   hasConsent: boolean,
-  allowPreview: boolean
+  allowPreview: boolean,
+  readCurrentConsent: () => ConsentChoice | undefined = () => (hasConsent ? 'granted' : undefined)
 ): Partial<PostHogConfig> {
   return {
     api_host: RELAY_HOST,
@@ -58,9 +63,19 @@ export function buildInitConfig(
         return null
       }
       const currentUrl = captureResult.properties?.$current_url
-      return typeof currentUrl === 'string' && isEventAllowed(currentUrl, allowPreview)
-        ? captureResult
-        : null
+      if (typeof currentUrl !== 'string' || !isEventAllowed(currentUrl, allowPreview)) {
+        return null
+      }
+      if (readCurrentConsent() === 'granted') {
+        return captureResult
+      }
+      if (!EVENTS_WITHOUT_CONSENT.includes(captureResult.event)) {
+        return null
+      }
+      return {
+        ...captureResult,
+        properties: { ...captureResult.properties, $geoip_disable: true },
+      }
     },
   }
 }
@@ -87,7 +102,13 @@ export function createAnalytics(dependencies: AnalyticsDependencies): Analytics 
     await dependencies.onIdle()
     const posthog = await dependencies.loadPosthog()
     const hasConsent = getConsent() === 'granted'
-    posthog.init(dependencies.key ?? '', buildInitConfig(hasConsent, dependencies.allowPreview))
+    if (!hasConsent) {
+      dependencies.purgeStaleState()
+    }
+    posthog.init(
+      dependencies.key ?? '',
+      buildInitConfig(hasConsent, dependencies.allowPreview, getConsent)
+    )
     registerProperty(posthog)
     if (hasConsent) {
       posthog.opt_in_capturing()
@@ -99,7 +120,7 @@ export function createAnalytics(dependencies: AnalyticsDependencies): Analytics 
 
   const isMeasurementActive = (pathname: string): boolean =>
     !isDisabled &&
-    Boolean(dependencies.key) &&
+    isPublicPosthogKey(dependencies.key) &&
     isAnalyticsHost(dependencies.getHostname(), dependencies.allowPreview) &&
     !isExcludedPath(pathname)
 

@@ -23,7 +23,7 @@ export const HOSTING_PROVIDER = {
 
 export const LEGAL_IDENTITY: Partial<LegalIdentity> = {}
 
-const PROVISIONAL_TEXT = /^(à compléter|a completer|todo|tbd|x+|\?+)$/i
+const PROVISIONAL_TEXT = /à compléter|a completer|\btodo\b|\btbd\b|\bn\/a\b|^x+$|^\?+$/i
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const REGISTRATION_PATTERNS: Record<RegistrationKind, RegExp> = {
   RNA: /^W\d{9}$/,

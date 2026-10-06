@@ -52,6 +52,7 @@ function createHarness(overrides: Partial<AnalyticsDependencies> = {}, initialCo
       loadCount.value += 1
       return Promise.resolve(posthog)
     },
+    purgeStaleState: () => calls.push('purge'),
     warn: () => undefined,
     ...overrides,
   }
@@ -92,7 +93,7 @@ test('opts in by default only when consent was granted', () => {
 })
 
 test('before_send drops events on excluded paths and other hosts', () => {
-  const { before_send: beforeSend } = buildInitConfig(false, false)
+  const { before_send: beforeSend } = buildInitConfig(true, false)
   assert.equal(typeof beforeSend, 'function')
   const send = beforeSend as (event: unknown) => unknown
   const publicEvent = { event: '$pageview', properties: { $current_url: 'https://dansandco.fr/planning' } }
@@ -278,4 +279,64 @@ test('setDisabled turns measurement off, blocks loading and notifies once per ch
   analytics.setDisabled(false)
   assert.equal(notifications, 2)
   assert.equal(analytics.isMeasurementActive('/planning'), true)
+})
+
+test('before_send keeps only page views and page leaves without consent, and disables geoip', () => {
+  const { before_send: beforeSend } = buildInitConfig(false, false, () => undefined)
+  const send = beforeSend as (event: unknown) => { properties: Record<string, unknown> } | null
+  const url = 'https://dansandco.fr/planning'
+  const pageview = send({ event: '$pageview', properties: { $current_url: url } })
+  assert.ok(pageview)
+  assert.equal(pageview.properties.$geoip_disable, true)
+  assert.ok(send({ event: '$pageleave', properties: { $current_url: url } }))
+  for (const event of ['$autocapture', 'contact_submitted', 'contact_failed', '$exception', '$web_vitals']) {
+    assert.equal(send({ event, properties: { $current_url: url } }), null, event)
+  }
+})
+
+test('before_send also restricts a denied visitor', () => {
+  const { before_send: beforeSend } = buildInitConfig(false, false, () => 'denied')
+  const send = beforeSend as (event: unknown) => unknown
+  assert.equal(send({ event: '$autocapture', properties: { $current_url: 'https://dansandco.fr/' } }), null)
+})
+
+test('before_send lets every event through once consent is granted, untouched', () => {
+  const { before_send: beforeSend } = buildInitConfig(true, false, () => 'granted')
+  const send = beforeSend as (event: unknown) => unknown
+  const autocapture = { event: '$autocapture', properties: { $current_url: 'https://dansandco.fr/' } }
+  assert.equal(send(autocapture), autocapture)
+})
+
+test('before_send reads the consent at send time, not at init time', () => {
+  let current: 'granted' | undefined
+  const { before_send: beforeSend } = buildInitConfig(false, false, () => current)
+  const send = beforeSend as (event: unknown) => unknown
+  const click = { event: '$autocapture', properties: { $current_url: 'https://dansandco.fr/' } }
+  assert.equal(send(click), null)
+  current = 'granted'
+  assert.equal(send(click), click)
+})
+
+test('purges stale PostHog state before init when consent is not granted', async () => {
+  const harness = createHarness({}, `${CONSENT_COOKIE_NAME}=denied`)
+  createAnalytics(harness.dependencies).syncPath('/')
+  await settle()
+  assert.ok(harness.calls.indexOf('purge') !== -1)
+  assert.ok(harness.calls.indexOf('purge') < harness.calls.indexOf('init'))
+})
+
+test('does not purge when consent is granted', async () => {
+  const harness = createHarness({}, `${CONSENT_COOKIE_NAME}=granted`)
+  createAnalytics(harness.dependencies).syncPath('/')
+  await settle()
+  assert.ok(!harness.calls.includes('purge'))
+})
+
+test('refuses a key that is not a public project key', async () => {
+  const harness = createHarness({ key: 'phx_personal_key' })
+  const analytics = createAnalytics(harness.dependencies)
+  analytics.syncPath('/planning')
+  await settle()
+  assert.equal(harness.loadCount.value, 0)
+  assert.equal(analytics.isMeasurementActive('/planning'), false)
 })
