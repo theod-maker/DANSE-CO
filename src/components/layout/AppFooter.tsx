@@ -40,6 +40,8 @@ const AppFooter = ({ siteInfo = fallbackSiteInfo }: { siteInfo?: SiteInfoContent
           <Link href="/disciplines" className="hover:text-[#6C5CA8] transition-colors">Les danses</Link>
           <Link href="/histoire" className="hover:text-[#6C5CA8] transition-colors">L'histoire</Link>
           <Link href="/contact" className="hover:text-[#6C5CA8] transition-colors">Contact</Link>
+          <Link href="/mentions-legales" className="hover:text-[#6C5CA8] transition-colors">Mentions légales</Link>
+          <Link href="/confidentialite" className="hover:text-[#6C5CA8] transition-colors">Confidentialité</Link>
           <ConsentPreferencesButton />
         </div>
 
