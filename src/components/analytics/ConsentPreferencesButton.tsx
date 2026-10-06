@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from 'react'
 import { usePathname } from 'next/navigation'
 import { getAnalytics } from '../../lib/analytics/browser.ts'
+import { FOOTER_LINK_CLASS } from '../layout/footer-styles.ts'
 import { CONSENT_COPY, OPEN_PREFERENCES_EVENT } from './consent-copy.ts'
 
 const subscribeToNothing = (): (() => void) => () => undefined
@@ -28,7 +29,7 @@ export function ConsentPreferencesButton() {
   return (
     <button
       type="button"
-      className="hover:text-[#6C5CA8] transition-colors"
+      className={FOOTER_LINK_CLASS}
       onClick={() => window.dispatchEvent(new Event(OPEN_PREFERENCES_EVENT))}
     >
       {CONSENT_COPY.preferences}

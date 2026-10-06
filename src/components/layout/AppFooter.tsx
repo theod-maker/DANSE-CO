@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { fallbackSiteInfo, type SiteInfoContent } from '../../lib/fallbackContent';
 import { ConsentPreferencesButton } from '../analytics/ConsentPreferencesButton';
+import { FOOTER_ICON_LINK_CLASS, FOOTER_LINK_CLASS } from './footer-styles';
 
 const InstagramIcon = ({ size = 16 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -21,7 +22,7 @@ const AppFooter = ({ siteInfo = fallbackSiteInfo }: { siteInfo?: SiteInfoContent
     <footer className="bg-[#F5F0EA] border-t border-[#18102E]/8 px-6 py-12">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-5 md:gap-8">
         <div>
-          <Link href="/">
+          <Link href="/" className={FOOTER_LINK_CLASS}>
             <span
               style={{ fontFamily: "'Instrument Serif', serif" }}
               className="text-[#18102E] text-xl tracking-tight"
@@ -29,30 +30,30 @@ const AppFooter = ({ siteInfo = fallbackSiteInfo }: { siteInfo?: SiteInfoContent
               Dans'&amp;Co
             </span>
           </Link>
-          <p className="text-[#18102E]/30 text-xs mt-2">{siteInfo.footerTagline}</p>
+          <p className="text-[#18102E]/60 text-xs mt-2">{siteInfo.footerTagline}</p>
         </div>
 
-        <div className="flex flex-wrap gap-x-4 gap-y-3 md:gap-x-8 text-sm text-[#18102E]/40">
-          <Link href="/planning" className="hover:text-[#6C5CA8] transition-colors">Planning</Link>
-          <Link href="/pricing" className="hover:text-[#6C5CA8] transition-colors">Tarifs</Link>
-          <Link href="/instructors" className="hover:text-[#6C5CA8] transition-colors">Les membres</Link>
-          <Link href="/actualites" className="hover:text-[#6C5CA8] transition-colors">Actualités</Link>
-          <Link href="/disciplines" className="hover:text-[#6C5CA8] transition-colors">Les danses</Link>
-          <Link href="/histoire" className="hover:text-[#6C5CA8] transition-colors">L'histoire</Link>
-          <Link href="/contact" className="hover:text-[#6C5CA8] transition-colors">Contact</Link>
-          <Link href="/mentions-legales" className="hover:text-[#6C5CA8] transition-colors">Mentions légales</Link>
-          <Link href="/confidentialite" className="hover:text-[#6C5CA8] transition-colors">Confidentialité</Link>
+        <div className="flex flex-wrap gap-x-4 gap-y-3 md:gap-x-8 text-sm text-[#18102E]/60">
+          <Link href="/planning" className={FOOTER_LINK_CLASS}>Planning</Link>
+          <Link href="/pricing" className={FOOTER_LINK_CLASS}>Tarifs</Link>
+          <Link href="/instructors" className={FOOTER_LINK_CLASS}>Les membres</Link>
+          <Link href="/actualites" className={FOOTER_LINK_CLASS}>Actualités</Link>
+          <Link href="/disciplines" className={FOOTER_LINK_CLASS}>Les danses</Link>
+          <Link href="/histoire" className={FOOTER_LINK_CLASS}>L'histoire</Link>
+          <Link href="/contact" className={FOOTER_LINK_CLASS}>Contact</Link>
+          <Link href="/mentions-legales" className={FOOTER_LINK_CLASS}>Mentions légales</Link>
+          <Link href="/confidentialite" className={FOOTER_LINK_CLASS}>Confidentialité</Link>
           <ConsentPreferencesButton />
         </div>
 
         <div className="flex gap-3">
           {siteInfo.instagramUrl && (
-            <a href={siteInfo.instagramUrl} target="_blank" rel="noopener noreferrer" className="liquid-glass rounded-full p-2.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-colors">
+            <a href={siteInfo.instagramUrl} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className={FOOTER_ICON_LINK_CLASS}>
               <InstagramIcon size={16} />
             </a>
           )}
           {siteInfo.facebookUrl && (
-            <a href={siteInfo.facebookUrl} target="_blank" rel="noopener noreferrer" className="liquid-glass rounded-full p-2.5 text-[#18102E]/40 hover:text-[#6C5CA8] transition-colors">
+            <a href={siteInfo.facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className={FOOTER_ICON_LINK_CLASS}>
               <FacebookIcon size={16} />
             </a>
           )}
