@@ -27,6 +27,7 @@ export const LEGAL_IDENTITY: Partial<LegalIdentity> = {
   registrationKind: 'RNA',
   registrationNumber: 'W443004723',
   headOfficeAddress: '17 rue du Chevecier, 44730 Saint-Michel-Chef-Chef',
+  publicationDirector: 'Adrien Mullot',
   contactEmail: 'dansandco@outlook.fr',
   contactPhone: '06 17 09 93 49',
   databaseHostName: 'Neon',
