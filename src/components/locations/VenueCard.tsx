@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { MapPin, Navigation, Check } from 'lucide-react';
+import { MapEmbed } from '../maps/MapEmbed';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -39,16 +40,7 @@ const VenueCard = ({ name, address, description, amenities, mapEmbedUrl, googleM
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
         ) : (
-          <iframe
-            src={mapEmbedUrl}
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title={`Carte ${name}`}
-          />
+          <MapEmbed embedUrl={mapEmbedUrl} title={name} height="100%" />
         )}
       </div>
 

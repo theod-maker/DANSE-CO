@@ -1,6 +1,18 @@
 import type { Metadata } from 'next'
 import { isPreviewEnabled } from '../src/lib/content/preview'
 import { PreviewBanner } from './preview-banner'
+import { AnalyticsProvider } from '../src/components/analytics/AnalyticsProvider'
+import { ConsentBanner } from '../src/components/analytics/ConsentBanner'
+import '@fontsource/instrument-serif/latin-400.css'
+import '@fontsource/instrument-serif/latin-400-italic.css'
+import '@fontsource/cormorant-garamond/latin-300.css'
+import '@fontsource/cormorant-garamond/latin-400.css'
+import '@fontsource/cormorant-garamond/latin-500.css'
+import '@fontsource/cormorant-garamond/latin-300-italic.css'
+import '@fontsource/cormorant-garamond/latin-400-italic.css'
+import '@fontsource/inter/latin-300.css'
+import '@fontsource/inter/latin-400.css'
+import '@fontsource/inter/latin-500.css'
 import './globals.css'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://dansandco.fr'
@@ -72,6 +84,8 @@ export default async function RootLayout({
         />
       </head>
       <body>
+        <AnalyticsProvider isDisabled={isOurPreview} />
+        <ConsentBanner isDisabled={isOurPreview} />
         {isOurPreview && <PreviewBanner />}
         {children}
       </body>

@@ -13,6 +13,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/contact', priority: 0.7, changeFrequency: 'monthly' as const },
     { path: '/histoire', priority: 0.5, changeFrequency: 'yearly' as const },
     { path: '/actualites', priority: 0.6, changeFrequency: 'weekly' as const },
+    { path: '/mentions-legales', priority: 0.2, changeFrequency: 'yearly' as const },
+    { path: '/confidentialite', priority: 0.2, changeFrequency: 'yearly' as const },
   ]
 
   return pages.map(({ path, priority, changeFrequency }) => ({

@@ -1,0 +1,121 @@
+.banner {
+  position: fixed;
+  left: 20px;
+  bottom: 20px;
+  z-index: 60;
+  width: min(380px, calc(100vw - 24px));
+  box-sizing: border-box;
+  padding: 18px 18px 16px;
+  background: rgba(253, 251, 247, 0.92);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  color: var(--plum);
+  border: 1px solid rgba(108, 92, 168, 0.16);
+  border-radius: 18px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 10px 32px rgba(24, 16, 46, 0.14),
+    0 2px 8px rgba(108, 92, 168, 0.08);
+  font-family: var(--font-ui);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.icon {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 4px;
+  box-sizing: border-box;
+  border-radius: 999px;
+  background: var(--violet-light);
+}
+
+.iconDough {
+  fill: var(--violet);
+}
+
+.iconChip {
+  fill: var(--violet-light);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.status {
+  margin: 0 0 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--violet);
+}
+
+.body {
+  margin: 0 0 14px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: rgba(24, 16, 46, 0.78);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.choice {
+  flex: 1 1 0;
+  min-height: 44px;
+  padding: 0 16px;
+  background: var(--violet);
+  color: var(--ivory);
+  border: 1px solid var(--violet);
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.choice:hover {
+  background: var(--plum);
+  border-color: var(--plum);
+}
+
+.choice:focus-visible,
+.link:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 2px;
+}
+
+.link {
+  color: var(--violet);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .banner {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    width: auto;
+    padding: 16px 16px 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .choice {
+    transition: none;
+  }
+}

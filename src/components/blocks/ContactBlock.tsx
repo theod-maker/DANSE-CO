@@ -2,6 +2,7 @@ import React, { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Phone, Mail, MapPin } from 'lucide-react'
 import { ContactForm } from '../contact/ContactForm'
+import { MapEmbed } from '../maps/MapEmbed'
 import { fallbackSiteInfo, fallbackVenues } from '../../lib/fallbackContent'
 
 const InstagramIcon = ({ size = 18 }: { size?: number }) => (
@@ -133,15 +134,10 @@ const ContactBlock: React.FC = () => {
             <div className="grid md:grid-cols-2 gap-6">
               {venues.map((venue) => (
                 <div key={venue._id} className="liquid-glass rounded-3xl overflow-hidden">
-                  <iframe
-                    src={venue.mapEmbedUrl}
-                    width="100%"
-                    height="220"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
+                  <MapEmbed
+                    embedUrl={venue.mapEmbedUrl}
                     title={venue.name}
+                    height={220}
                   />
                   <div className="px-5 py-4">
                     <p className="text-[#18102E] text-sm font-medium">{venue.name}</p>

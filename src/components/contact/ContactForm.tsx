@@ -1,6 +1,7 @@
 import { useState, useRef, type FormEvent } from 'react';
 import { Send, CheckCircle } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { getAnalytics } from '../../lib/analytics/browser';
 
 const EASING = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -89,16 +90,19 @@ function ContactForm() {
     e.preventDefault();
     const form = e.currentTarget;
     setStatus('sending');
+    let isSent = false;
     try {
       const response = await fetch(process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT!, {
         method: 'POST',
         body: new FormData(form),
         headers: { Accept: 'application/json' },
       });
-      setStatus(response.ok ? 'success' : 'error');
+      isSent = response.ok;
     } catch {
-      setStatus('error');
+      isSent = false;
     }
+    setStatus(isSent ? 'success' : 'error');
+    getAnalytics().track(isSent ? 'contact_submitted' : 'contact_failed');
   };
 
   return (

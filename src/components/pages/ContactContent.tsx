@@ -3,6 +3,7 @@ import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Phone, Mail, MapPin } from 'lucide-react'
 import { ContactForm } from '@/src/components/contact/ContactForm'
+import { MapEmbed } from '@/src/components/maps/MapEmbed'
 import AppNavbar from '@/src/components/layout/AppNavbar'
 import AppFooter from '@/src/components/layout/AppFooter'
 import FreeBlockRenderer from '@/src/components/page-blocks/FreeBlockRenderer'
@@ -114,7 +115,7 @@ export default function ContactContent({ siteInfo, pageTexts, venues, blocks }: 
             <div className="grid md:grid-cols-2 gap-6">
               {venues.map((venue) => (
                 <div key={venue._id} className="liquid-glass rounded-3xl overflow-hidden">
-                  <iframe src={venue.mapEmbedUrl} width="100%" height="220" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title={venue.name} />
+                  <MapEmbed embedUrl={venue.mapEmbedUrl} title={venue.name} height={220} />
                   <div className="px-5 py-4">
                     <p className="text-[#18102E] text-sm font-medium">{venue.name}</p>
                     <p className="text-[#18102E]/50 text-xs mt-1">{venue.address}</p>
