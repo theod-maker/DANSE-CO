@@ -103,11 +103,28 @@ export function ConsentBanner({ isDisabled }: { isDisabled: boolean }) {
 
   return (
     <section ref={bannerRef} className={styles.banner} role="region" aria-labelledby="consent-title">
-      <h2 id="consent-title" className={styles.title}>
-        {CONSENT_COPY.title}
-      </h2>
+      <div className={styles.header}>
+        <svg className={styles.icon} viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            className={styles.iconDough}
+            d="M20.5 11.2a3 3 0 0 1-3.2-2.9 3 3 0 0 1-3-3.1A9 9 0 1 0 20.5 11.2Z"
+          />
+          <circle className={styles.iconChip} cx="8.4" cy="9.6" r="1.3" />
+          <circle className={styles.iconChip} cx="11.6" cy="15.6" r="1.3" />
+          <circle className={styles.iconChip} cx="15.9" cy="13.2" r="1.1" />
+          <circle className={styles.iconChip} cx="7.4" cy="14.6" r="0.9" />
+        </svg>
+        <h2 id="consent-title" className={styles.title}>
+          {CONSENT_COPY.title}
+        </h2>
+      </div>
       {status && <p className={styles.status}>{status}</p>}
-      <p className={styles.body}>{CONSENT_COPY.body}</p>
+      <p className={styles.body}>
+        {CONSENT_COPY.body}{' '}
+        <Link href="/confidentialite" className={styles.link}>
+          {CONSENT_COPY.learnMore}
+        </Link>
+      </p>
       <div className={styles.actions}>
         <button
           ref={firstChoiceRef}
@@ -121,9 +138,6 @@ export function ConsentBanner({ isDisabled }: { isDisabled: boolean }) {
           {CONSENT_COPY.accept}
         </button>
       </div>
-      <Link href="/confidentialite" className={styles.link}>
-        {CONSENT_COPY.learnMore}
-      </Link>
     </section>
   )
 }

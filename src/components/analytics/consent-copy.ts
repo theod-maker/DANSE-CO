@@ -1,6 +1,6 @@
 export const CONSENT_COPY = {
-  title: 'Mesure des visites',
-  body: 'Dans’&Co compte les visites de ce site pour savoir quelles pages vous servent. Sans votre accord, le comptage reste anonyme et sans cookie. Si vous acceptez, un cookie nous permet aussi de savoir d’où viennent les visites (pays, ville) et ce qui vous intéresse. Aucune donnée n’est vendue.',
+  title: 'Cookies',
+  body: 'Nous utilisons des cookies pour mesurer l’audience et améliorer le site. Vous pouvez changer d’avis à tout moment.',
   refuse: 'Refuser',
   accept: 'Accepter',
   learnMore: 'En savoir plus',
