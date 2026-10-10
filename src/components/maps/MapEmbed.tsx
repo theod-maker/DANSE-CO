@@ -1,7 +1,11 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { getAnalytics } from '../../lib/analytics/browser.ts'
+import { shouldDisplayMap } from '../../lib/maps/map-display.ts'
 import { googleMapsEmbedHref } from '../../lib/maps/map-embed.ts'
+
+const subscribeToNothing = (): (() => void) => () => undefined
 
 interface MapEmbedProps {
   embedUrl: string
@@ -13,6 +17,9 @@ export function MapEmbed({ embedUrl, title, height }: MapEmbedProps) {
   const [isRequested, setIsRequested] = useState(false)
   const frameRef = useRef<HTMLIFrameElement>(null)
   const embedHref = googleMapsEmbedHref(embedUrl)
+  const analytics = getAnalytics()
+  const consent = useSyncExternalStore(analytics.subscribeConsent, analytics.getConsent, () => undefined)
+  const isMounted = useSyncExternalStore(subscribeToNothing, () => true, () => false)
 
   useEffect(() => {
     if (isRequested) {
@@ -20,7 +27,7 @@ export function MapEmbed({ embedUrl, title, height }: MapEmbedProps) {
     }
   }, [isRequested])
 
-  if (isRequested && embedHref) {
+  if (embedHref && shouldDisplayMap({ isMounted, consent, isRequested })) {
     return (
       <iframe
         ref={frameRef}
