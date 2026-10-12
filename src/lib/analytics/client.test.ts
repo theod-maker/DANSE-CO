@@ -73,10 +73,14 @@ test('builds the exact init configuration promised by the privacy page', () => {
   assert.equal(config.capture_pageview, 'history_change')
   assert.equal(config.capture_pageleave, true)
   assert.equal(config.disable_session_recording, true)
+  assert.equal(config.capture_heatmaps, false)
+  assert.equal(config.capture_dead_clicks, false)
   assert.equal(typeof config.before_send, 'function')
   assert.deepEqual(Object.keys(config).sort(), [
     'api_host',
     'before_send',
+    'capture_dead_clicks',
+    'capture_heatmaps',
     'capture_pageleave',
     'capture_pageview',
     'cookieless_mode',

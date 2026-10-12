@@ -58,6 +58,8 @@ export function buildInitConfig(
     capture_pageview: 'history_change',
     capture_pageleave: true,
     disable_session_recording: true,
+    capture_heatmaps: false,
+    capture_dead_clicks: false,
     before_send: (captureResult) => {
       if (captureResult === null) {
         return null
