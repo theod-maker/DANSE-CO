@@ -70,7 +70,7 @@ export default async function Confidentialite() {
         </p>
         <p>
           <strong>Si vous acceptez</strong>, la mesure devient plus détaillée : pays et ville déduits de votre
-          adresse IP avant que celle-ci soit supprimée, pages parcourues, clics sur les liens et les boutons, et
+          adresse IP avant que celle-ci soit supprimée, pages parcourues, clics sur les liens et les boutons, temps de chargement des pages, et
           envoi réussi ou échoué du formulaire de contact (sans son contenu). Un cookie et une entrée du stockage
           local de votre navigateur permettent de reconnaître votre navigateur d’une visite à l’autre, pendant 12
           mois au plus (voir le tableau plus bas). La base légale est votre consentement.
